@@ -12,12 +12,13 @@
  echo $precio_v = $_POST["precio_v"];
  echo $casa_productora = $_POST["casa_productora"];
  echo $cantidad_disponible = $existencia - $stock;
+ echo $codigo_impuesto = $_POST["impuestos"];
 
 include('../control/cone.php');
 $usuario = $_SESSION["usuario_logueado"];
 
-$conexion->query("INSERT INTO articulos (nombre, descripcion, existencia, stock, fcc,  fcv, status, categoria, precio_compra, precio_venta, casa_productora,cantidad_disponible, creado_por, almacen )
- values ('$nombre','$descripcion',$existencia, $stock,'$fcc','$fcv','$estado', '$categoria', $precio_c,$precio_v, '$casa_productora', $cantidad_disponible, '$usuario', $almacen)");
+$conexion->query("INSERT INTO articulos (nombre, descripcion, existencia, stock, codigo_impuesto,  fcv, status, categoria, precio_compra, precio_venta, casa_productora,cantidad_disponible, creado_por, almacen )
+ values ('$nombre','$descripcion',$existencia, $stock,$codigo_impuesto,'$fcv','$estado', '$categoria', $precio_c,$precio_v, '$casa_productora', $cantidad_disponible, '$usuario', $almacen)");
 
  header('location: ../../views/inventario.php');
  ?>

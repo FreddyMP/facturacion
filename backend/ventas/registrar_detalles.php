@@ -16,8 +16,13 @@
 
   //calculos de precio e itbis para las lineas detalle de las ventas
 
-    $impuesto = 18;
-    $porcentaje_impuesto_real = $impuesto / 100;
+    $impuesto = $_POST['impuesto'];
+    
+    $consulta_codigo_impuesto = "SELECT porcentaje from impuestos where id = $impuesto and borrado_por is null";
+    $query_codigo_impuesto = $conexion->query($consulta_codigo_impuesto);
+    $resultado = $query_codigo_impuesto->fetch_assoc();
+
+    $porcentaje_impuesto_real = $resultado['porcentaje'] / 100;
     $itbis = round($articulo["precio_venta"] * $porcentaje_impuesto_real, 2);
     $precio_sin_itbis = round($articulo["precio_venta"], 2);
     $precio_con_itbis = round($precio_sin_itbis + $itbis, 2); 

@@ -85,11 +85,11 @@
                 </div> 
                 <div class="col-md-6">
                     <label for="exampleFormControlInput1" class="form-label">Código de impuesto</label>
-                    <select class="form-control" name="almacen" id="">
+                    <select class="form-control" name="impuestos" id="">
                         <?php
                             while($codigos = $query_impuestos->fetch_assoc()){
                             ?>
-                            <option value="1"><?php echo $codigos["nombre"] ?></option>
+                            <option value="<?php echo $codigos["id"] ?>"><?php echo $codigos["nombre"] ?></option>
                             <?php
                             }
                         ?>
