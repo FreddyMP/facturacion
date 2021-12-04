@@ -56,7 +56,7 @@
                 <th scope="row"><?php echo $venta["cliente"] ?></th>
                 <td><?php echo $venta["forma_pago"] ?></td>
                 <td><?php echo $venta["condicion_pago"] ?></td>
-                <td>B02000000002</td>
+                <td><?php echo $venta["comprobante"] ?></td>
                 <td><?php echo "RD$ ".$venta["itbis"] ?></td>
                 <td><?php echo "RD$ ".$venta["descuentos"] ?></td>
                 <td><?php echo "RD$ ".$venta["bruto"] ?></td>

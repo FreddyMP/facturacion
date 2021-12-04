@@ -19,7 +19,7 @@
             <div class="col-md-4 p-4" style="border:solid 1px; border-radius: 5px;"  >
               <Strong>Información</Strong>  
                 <hr>
-                <form action="../backend/ventas/registrar_venta.php" method="post">
+                <form action="../backend/ventas/registrar_venta.php"  target = "_blank" method="post" >
                 <?php
                     if(isset($_GET["codigo"])){
                         $codigo= $_GET["codigo"];
@@ -44,7 +44,7 @@
                             </select>
                         </div>
                         <div class="col-md-3 mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Forma de pago</label>
+                            <label for="exampleFormControlInput1" class="form-label" id="ee">Forma de pago</label>
                             <select class="form-control" name="forma" id="">
                                 <option value="Tarjeta">Tarjeta</option>
                                 <option value="Efectivo">Efectivo</option>
@@ -73,7 +73,7 @@
                                 </select>
                         </div>
                         <div class="d-grid gap-2">
-                            <button class="btn btn-primary ">Facturar</button>
+                            <button class="btn btn-primary " id='facturado'>Facturar</button>
                         </div>
                     </div>
                 </form>
@@ -250,3 +250,8 @@
        
 
 </div>
+<script>
+$("#facturado").click(function(){
+    $(location).attr('href','punto_de_facturacion.php');
+});
+</script>
