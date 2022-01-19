@@ -7,13 +7,11 @@
     $usuario = $_SESSION["usuario_logueado"];
 
     #todos los articulos activos
-    $consulta_all = "SELECT id, nombre, precio_venta, existencia, stock, cantidad_disponible, codigo_impuesto from articulos  where status = 'Activo' and borrado_por is null and fecha_borrado is null";
-    $query_all = $conexion->query($consulta_all);
     $consulta_clientes = "SELECT id, nombre FROM pacientes where status = 'Activo' and borrado_por is null and fecha_borrado is null";
     $consulta_comprobantes = "SELECT id, nombre from tipos_comprobantes where borrado_por is null"
 
 ?>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <div class="p-5">
         <div class="row">
             <div class="col-md-4 p-4" style="border:solid 1px; border-radius: 5px;"  >
@@ -22,9 +20,9 @@
                 <form action="../backend/ventas/registrar_venta.php"  target = "_blank" method="post" >
                 <?php
                     if(isset($_GET["codigo"])){
-                        $codigo= $_GET["codigo"];
+                        $codigo = $_GET["codigo"];
                         ?>
-                            <input type="hidden" value="<?php echo $codigo ?>" name="codigo">
+                            <input type="hidden" value="<?php echo $codigo ?>" name="codigo" id="codigo_get">
                         <?php
                     }
                 ?>
@@ -46,7 +44,6 @@
                         <div class="col-md-3 mb-3">
                             <label for="exampleFormControlInput1" class="form-label" id="ee">Forma de pago</label>
                             <select class="form-control" name="forma" id="">
-                                <option value="Tarjeta">Tarjeta</option>
                                 <option value="Efectivo">Efectivo</option>
                                 <option value="Cheque">Cheque</option>
                             </select>
@@ -60,7 +57,7 @@
                                 </select>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Tipo de comprobante</label>
+                            <label for="exampleFormControlInput1" class="form-label">Comprobante</label>
                                 <select class="form-control" name="comprobante" id="">
                                 <?php 
                                     $query_comprobantes = $conexion->query($consulta_comprobantes);
@@ -79,7 +76,7 @@
                 </form>
                 <hr>
                <strong>Lista de artículos</strong> 
-                <input class="form-control mb-3" type="text" placeholder="Buscar artículo">
+                <input class="form-control mb-3" type="text" placeholder="Buscar artículo" id="buscar_art">
                 <div class="row">
                     <div class="col-md-3">
                            <strong> Cod. Art</strong>
@@ -98,56 +95,9 @@
                     </div>
 
                 </div>
-                <?php
-                    while($articulos = $query_all->fetch_assoc()){
-
-                ?>
-                <div class="row"> 
-                    <div class="col-md-3">
-                        <?php
-                            echo $articulos['nombre'];   
-                        ?>
-                    </div>
-                    <div class="col-md-2">
-                        <?php
-                            echo $articulos['codigo_impuesto'];  
-                        ?>
-                    </div>
-                    <div class="col-md-2">
-                        <?php
-                            echo $articulos['precio_venta'];  
-                        ?>
-                    </div>
-                    <div class="col-md-3">
-                        <form action="../backend/ventas/registrar_detalles.php" method="post">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <?php
-                                        if(isset($_GET['codigo']))
-                                        {
-                                            $codigo = $_GET['codigo'];
-                                        ?>
-                                            <input type="hidden" name="codigo" value="<?php echo $codigo?>">
-                                        <?php
-                                            }
-                                        ?>
-                                            <input type="number" name="cantidad" value="1" class="form-control"  placeholder="Cant." id="">
-                                            <input type="hidden" name="name" value="<?php echo $articulos['nombre']; ?>">
-                                            <input type="hidden" name="impuesto" value="<?php echo $articulos['codigo_impuesto']; ?>">
-                                            <input type="hidden" name="articulo" value="<?php echo $articulos['id']; ?>">
-                                            </div>
-                                            <div class="col-md-4">
-                                                <button class = "btn btn-primary">ADD</button>
-                                            </div>
-                                        </div>
-                                    </form>
-
-                                        
-                                </div><hr>
-                            </div>
-                            <?php
-                             }
-                    ?>
+                <div id="caja_articulos">
+                
+                </div>
                 
             </div>
             <div class="col-md-7 p-4" style="border:solid 1px; border-radius: 5px; margin-left:50px" >
@@ -173,6 +123,7 @@
                     </div>
                 <?php
                         if(isset($_GET["codigo"])){
+                            $codigo = $_GET["codigo"];
                             $consulta_code = "SELECT * from venta_detalle where codigo = '$codigo'";
                             $query_code = $conexion->query($consulta_code);
                             
@@ -218,6 +169,7 @@
                     <div class="row">
                         <?php
                         if(isset($_GET["codigo"])){
+                            $codigo = $_GET["codigo"];
                             $consulta_totales = "SELECT SUM(total_itbis) as itbis,SUM(total_sin_itbis) as total_sin, SUM(total_con_itbis) as total from venta_detalle where codigo = '$codigo'";
                             $query_consulta = $conexion->query($consulta_totales);
                             $total= $query_consulta->fetch_assoc();
@@ -251,6 +203,26 @@
 
 </div>
 <script>
+$("#buscar_art").keyup(function()
+        {
+            var articulo = $("#buscar_art").val();
+            var codigo_detalles = $("#codigo_get").val();
+            $.ajax
+            ({
+                type:"post",
+                url:"buscar_articulo.php",
+                dataType:'html',
+                data:{'nombre':articulo,'codigo':codigo_detalles},
+                success: function(data)
+                {
+                    $("#caja_articulos").empty();
+                    $("#caja_articulos").append(data);
+                }
+            }); 
+        });
+
+
+
 $("#facturado").click(function(){
     $(location).attr('href','punto_de_facturacion.php');
 });

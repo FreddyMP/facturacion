@@ -1,0 +1,3021 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html lang="es" translate="no" id="index-page"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>xPxApp</title>
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="apple-touch-icon" sizes="57x57" href="https://xpxapp.azurewebsites.net/assets/media/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="https://xpxapp.azurewebsites.net/assets/media/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="https://xpxapp.azurewebsites.net/assets/media/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="https://xpxapp.azurewebsites.net/assets/media/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="https://xpxapp.azurewebsites.net/assets/media/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="https://xpxapp.azurewebsites.net/assets/media/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="https://xpxapp.azurewebsites.net/assets/media/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="https://xpxapp.azurewebsites.net/assets/media/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="https://xpxapp.azurewebsites.net/assets/media/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192" href="https://xpxapp.azurewebsites.net/assets/media/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://xpxapp.azurewebsites.net/assets/media/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="https://xpxapp.azurewebsites.net/assets/media/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://xpxapp.azurewebsites.net/assets/media/favicon-16x16.png">
+	<link rel="manifest" href="https://xpxapp.azurewebsites.net/manifest.json">
+	<meta name="msapplication-TileColor" content="#007bff">
+	<meta name="msapplication-TileImage" content="/./assets/media/ms-icon-144x144.png">
+	<meta name="theme-color" content="#007bff">
+<link href="./xPxApp2_files/main.css" rel="stylesheet"></head>
+
+<body class="" style="">
+	<!-- ko if: currentRoute().header -->
+		<!-- ko
+			component: { name: currentRoute().header, params: {  currentRoute: currentRoute } } --><nav class="navbar navbar-light bg-light">
+	<div class="container-fluid">
+		<div class="nav navbar-nav mx-auto">
+			<div class="d-none d-sm-block h6 text-primary" data-bind="text: `@${currentRoute.loggedUserName} | ${currentRoute.institution} | ${currentRoute.department}`">nombre usuario y especialidad</div>
+			<div class="d-block d-sm-none h7 text-primary" data-bind="text: `@${currentRoute.loggedUserName} | ${currentRoute.institution} | ${currentRoute.department}`">nombre usuario y especialidad</div>	
+		</div>
+		<div class="nav navbar-nav">
+			<a class="h5" href="https://xpxapp.azurewebsites.net/records/compose" data-bind="click: cancel">
+				<!-- <i class="fas fa-times fa-lg"></i> -->
+				<i class="far fa-times-circle text-primary fa-lg"></i>
+			</a>
+		</div>
+	</div>
+</nav><!-- /ko -->
+	<!-- /ko -->
+
+	<!-- ko
+		component: { name: currentRoute().page, params: { currentRoute: currentRoute, store: store }} --><section style="padding-bottom:80px;" data-bind="loading:isLoading">
+	<div data-bind="component: { name: currentView , params: { vm: $data } }"><style>
+    div.disabled-cont {
+        pointer-events: none;
+        opacity: 0.5;
+    }
+
+    .modal-xl {
+        max-width: 97% !important;
+    }
+
+    @media (min-width: 576px) {
+        .container {
+            max-width: 97%;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .container {
+            max-width: 95%;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .container {
+            max-width: 95%;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .container {
+            max-width: 85%;
+        }
+    }
+</style>
+
+<div data-bind="template: { name: &#39;admission-note&#39;}">
+    <div class="container d-print-none" data-bind="topscroll: $data.vm.topscroll, visible: !$data.vm.isLoading">
+
+        <div data-bind="template: { name: &#39;heading-buttons&#39;, data: $data }">
+    <div class="row mb-4">
+        <div class="container-fluid" data-bind="visible: $data.vm.medicalRecord.recordId" style="display: none;">
+            <div class="float-right">  
+
+                <button class="btn btn-outline-danger btn-sm mt-1" data-bind="click: $data.vm.revokeEgress, visible: $data.vm.recordIsClosed() &amp;&amp; !$data.vm.medicalRecord.canceledDate, visible: $data.vm.recordIsClosed() &amp;&amp; !$data.vm.medicalRecord.canceledDate, enable $data.vm.elapsedHours($data.vm.medicalRecord.egressDate, $data.vm.medicalRecord.egressTime) &lt; 25" style="display: none;">
+                    <i class="fas fa-times">
+                        <span>Revocar egreso</span>
+                    </i>
+                </button>
+
+                <button class="btn btn-outline-primary btn-sm mt-1" data-bind="click: function() { $data.vm.switchTab(&#39;orderSets&#39;) }">
+                    <span class="d-none d-md-block"><i class="fas fa-capsules"></i> Ordenes médica</span>
+                    <span class="d-block d-md-none"><i class="fas fa-capsules"></i></span>
+                </button>
+
+                <button class="btn btn-outline-primary btn-sm mt-1" data-bind="click: function() { $data.vm.switchTab(&#39;progressNotes&#39;) }, visible: !$data.vm.medicalRecord.skipMedicalHistory ">
+                    <span class="d-none d-md-block"><i class="fas fa-user-clock"></i> Notas de evolución</span>
+                    <span class="d-block d-md-none"><i class="fas fa-user-clock"></i></span>                   
+                </button>
+             
+                <button class="btn btn-outline-primary btn-sm mt-1" data-bind="click: function() { $data.vm.switchTab(&#39;forms&#39;) }, visible: !$data.vm.medicalRecord.skipMedicalHistory ">
+                    <span class="d-none d-md-block"><i class="far fa-comment"></i> Comentarios</span>
+                    <span class="d-block d-md-none"><i class="far fa-comment"></i></span>                   
+                </button>
+
+                <button class="btn btn-outline-primary btn-sm mt-1" data-bind="click: $data.vm.printAdmissionNote, visible: !$data.vm.medicalRecord.skipMedicalHistory">        
+                    <span class="d-none d-md-block"><i class="fas fa-print"></i> Nota de ingreso</span>                    
+                    <span class="d-block d-md-none"><i class="fas fa-print"></i></span>     
+                </button>
+
+                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#cancelAdmissionModal" data-bind="click: $data.vm.setCancelAdmissionDateMedicalRecordEdit, visible: (!$data.vm.medicalRecord.roomAdmissionDate &amp;&amp; !$data.vm.medicalRecord.egressDate &amp;&amp; !$data.vm.medicalRecord.canceledDate &amp;&amp; !$data.vm.medicalRecord.identifier) ? true : false" style="display: none;">
+                    <span>Anular ingreso <i class="fas fa-times"></i></span>
+                </button>
+
+                <button class="btn btn-success btn-sm mt-1" data-toggle="modal" data-target="#egressModal" data-bind="click: $data.vm.setEgressDateMedicalRecordEdit, visible: !$data.vm.medicalRecord.egressDate &amp;&amp; !$data.vm.medicalRecord.canceledDate? true : false">
+                    <span>Dar egreso <i class="fas fa-check"></i></span>     
+                </button>
+
+                <button class="btn btn-secondary btn-sm mt-1" data-toggle="modal" data-target="#roomAdmissionModal" data-bind="click: $data.vm.setRoomAdmissionDateMedicalRecordEdit, visible: (!$data.vm.medicalRecord.roomAdmissionDate &amp;&amp; !$data.vm.medicalRecord.egressDate &amp;&amp; !$data.vm.medicalRecord.canceledDate) ? true : false">
+                    <span>Ingresar a sala <i class="fas fa-check"></i></span>     
+                </button>
+
+                <button class="btn btn-outline-info btn-sm mt-1" data-bind="click: $data.vm.printEgressNote, visible: $data.vm.recordIsClosed() &amp;&amp; !$data.vm.medicalRecord.canceledDate" style="display: none;">
+                    <i class="fas fa-print"><span data-bind="text: &#39; Dado de alta: &#39; +  $data.vm.getNormalizedDateString($data.vm.medicalRecord.egressDate, $data.vm.medicalRecord.egressTime)"> Dado de alta: NaN-NaN-NaN Invalid Date</span></i>
+                </button>
+
+                <button href="#" class="pl-0 btn btn-link btn-sm mt-1" data-toggle="modal" data-target="#egressModal" data-bind="click: $data.vm.setEgressMedicalRecordEdit, visible: $data.vm.recordIsClosed() &amp;&amp; !$data.vm.medicalRecord.canceledDate" style="display: none;">
+                    <span><i class="text-info far fa-edit fa-lg"></i></span>		
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+   
+        <div data-bind="template: { name: &#39;room&#39;, data: $data }">
+    <div class="row mt-2" data-bind="visible: $data.vm.medicalRecord.stage !== 3">
+        <div class="col-xl-10 col-lg-10 col-md-12">
+            <div class="form-group"> 
+                <div class="input-group">
+                    <div class="input-group-append" data-bind="visible: $data.vm.medicalRecord.stage === 2" style="display: none;">
+                        <div class="input-group-text" style="background-color: white; display: none;" data-bind="visible: $data.vm.medicalRecord.room">              
+                            <a href="https://xpxapp.azurewebsites.net/records/compose" role="button" class="btn-outline-success" data-bind="click: $data.vm.resetRoom"><i class="fas fa-plus"></i></a>		       
+                        </div>
+
+                        <div class="input-group-text" style="background-color: white" data-bind="visible: !$data.vm.medicalRecord.room">
+                            <a href="https://xpxapp.azurewebsites.net/records/compose" role="button" class="btn-outline-success" data-bind="click: $data.vm.undoResetRoom"><i class="fas fa-undo"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="input-group-prepend d-none d-lg-block">
+                        <span class="input-group-text" style="width:135px;">Habitación: </span>
+                    </div>
+
+                    <input class="form-control" type="text" data-bind="visible: $data.vm.medicalRecord.stage === 1, textInput: &#39;Sala de emergencias&#39;, enable: false" disabled="">
+                    <select class="form-control" style="background-color: rgb(255, 255, 153); display: none;" id="room-select" data-bind="visible: $data.vm.medicalRecord.stage === 2, options: $data.vm.availableRooms, value: $data.vm.medicalRecord.room, optionsValue:&#39;value&#39;, optionsText:&#39;displayName&#39;, style: { &#39;background-color&#39;: $data.vm.medicalRecord.room? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }"><option value="">Seleccionar</option><option value="Sala Clínica - 302">Sala Clínica - 302</option><option value="Sala Clínica - 303">Sala Clínica - 303</option><option value="Sala Clínica - 304">Sala Clínica - 304</option><option value="Sala Clínica - 305">Sala Clínica - 305</option><option value="Sala Clínica - 306">Sala Clínica - 306</option><option value="Sala Clínica - 307">Sala Clínica - 307</option><option value="Sala Clínica - 308">Sala Clínica - 308</option><option value="Sala Clínica - 309">Sala Clínica - 309</option><option value="Sala Clínica - 310">Sala Clínica - 310</option><option value="Sala Clínica - 311">Sala Clínica - 311</option><option value="Sala Clínica - 312">Sala Clínica - 312</option><option value="Sala Clínica - 313">Sala Clínica - 313</option><option value="Sala Clínica - 314">Sala Clínica - 314</option><option value="Sala Clínica - 315">Sala Clínica - 315</option><option value="Sala Clínica - 316">Sala Clínica - 316</option><option value="Sala Clínica - 317">Sala Clínica - 317</option><option value="Sala Clínica - 318">Sala Clínica - 318</option><option value="Sala Clínica - 319">Sala Clínica - 319</option><option value="Sala Clínica - 320">Sala Clínica - 320</option><option value="Sala Clínica - 321">Sala Clínica - 321</option><option value="Sala Clínica - 322">Sala Clínica - 322</option><option value="Sala Clínica - 323">Sala Clínica - 323</option><option value="Sala Clínica - 324">Sala Clínica - 324</option><option value="Sala Clínica - 325">Sala Clínica - 325</option><option value="Sala Clínica - 326">Sala Clínica - 326</option><option value="Sala Clínica - 327">Sala Clínica - 327</option><option value="Sala Clínica - 328">Sala Clínica - 328</option><option value="UCIP">UCIP</option></select>
+                  
+                    <input class="form-control d-none d-sm-block" type="text" placeholder="Cama" style="max-width: 77px;" data-bind="$data.vm.medicalRecord.bed">
+
+                    <div class="input-group-append" data-bind="visible: $data.vm.medicalRecord.stage === 2" style="display: none;">
+                        <span class="input-group-text" data-bind="text: $data.vm.medicalRecord.calculateRoomAdmissionTime() ">18923 días</span>
+                    </div>
+                                   
+                    <button class="btn btn-outline-danger btn-sm ml-2" data-toggle="modal" data-target="#inpatientTransferModal" data-bind="click: $data.vm.setInpatientTransferMedicalRecordEdit, visible: true">            
+                        <span class="d-none d-md-block"><i class="fas fa-suitcase-rolling"></i> Traslado interno</span>             
+                        <span class="d-block d-md-none"><i class="fas fa-suitcase-rolling"></i></span>                               
+                    </button>
+                </div>
+            </div>
+        </div>   
+    </div>
+</div>
+   
+        <div data-bind="template: { name: &#39;generalData&#39;, data: $data }">
+    <div class="mt-2">
+        <div class="h5">Datos generales <span class="badge badge-secondary" data-bind="click: function() { $data.vm.switchView(&#39;generalData&#39;) }, visible: !$data.vm.recordIsClosed()">- Editar -</span></div>
+     
+        <div class="d-none d-lg-block" data-bind="template: { name: &#39;generalData-lg&#39;, data: $data }">
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group"> 
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" style="width:135px;">FN: </span>
+                    </div>
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput: $data.vm.getNormalizedDateString($data.vm.medicalRecord.dob, $data.vm.medicalRecord.dobTime, false) + &#39; [&#39; + $data.vm.medicalRecord.caculateShortAge() + &#39;]&#39;, enable: false" disabled="">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" style="width:135px;">Ingreso: </span>
+                    </div>
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput: $data.vm.getNormalizedDateString($data.vm.medicalRecord.admissionDate, $data.vm.medicalRecord.admissionTime) + &#39; [&#39; + $data.vm.medicalRecord.calculateAdmisionTime() + &#39;]&#39;, enable: false" disabled="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="input-group">             
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="width:135px;">No. expediente: </span>
+                    </div>      
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput: vm.medicalRecord.identifier, enable: false" placeholder="No. expediente" maxlength="50" disabled="">
+                </div>
+            </div>
+        </div> 
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="input-group">             
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="width:135px;">Seguro: </span>
+                    </div>      
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput: vm.medicalRecord.assuranceName, enable: false" placeholder="Seguro" maxlength="50" disabled="">
+                </div>
+            </div>
+        </div>       
+    </div>
+    
+    <div data-bind="template: { name: &#39;generalData-short&#39;, data: $data }">
+    <div class="row">   
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="width:135px;">Nombres: </span>
+                    </div>
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput:  $data.vm.medicalRecord.firstName, enable: false" disabled="">
+                </div>
+            </div>    
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="width:135px;">Apellidos: </span>
+                    </div>
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput:  $data.vm.medicalRecord.lastName, enable: false" disabled="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="width:135px;">Natural: </span>
+                    </div>
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput:  $data.vm.medicalRecord.birthPlace, enable: false" disabled="">
+                </div>
+            </div>
+        </div>
+            
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="width:135px;">Residente: </span>
+                    </div>
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput:  $data.vm.medicalRecord.domicile, enable: false" disabled="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row"> 
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="width:135px;">Tipo de sangre: </span>
+                    </div>
+                    <select style="background-color: white;" class="form-control" data-bind="value:  $data.vm.medicalRecord.bloodType, options: $data.vm.options.bloodTypes, optionsValue:&#39;value&#39;, optionsText:&#39;displayName&#39;, enable: false" disabled=""><option value="">Seleccionar</option><option value="A Rh (+)">A Rh (+)</option><option value="A Rh (-)">A Rh (-)</option><option value="B Rh (+)">B Rh (+)</option><option value="B Rh (-)">B Rh (-)</option><option value="AB Rh (+)">AB Rh (+)</option><option value="AB Rh (-)">AB Rh (-)</option><option value="O Rh (+)">O Rh (+)</option><option value="O Rh (-)">O Rh (-)</option></select>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-md-6">    
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="width:135px;">Alergias: </span>
+                    </div>
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput:  $data.vm.medicalRecord.allergies, enable: false" disabled="">
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>
+      
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="width:135px;">Género: </span>
+                    </div>
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="value: vm.medicalRecord.gender === &#39;f&#39;? &#39;Femenino&#39; : &#39;Masculino&#39;, enable: false" maxlength="50" disabled="">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <div class="input-group">      
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="width:135px;">Peso (Kg): </span>
+                    </div>
+                    <input style="background-color: white;" class="form-control" type="number" step="0.5" data-bind="value: vm.medicalRecord.weight, enable: false" maxlength="50" disabled="">      
+                </div>
+            </div>
+        </div>
+            
+        <div class="col-md-4">
+            <div class="form-group">
+                <div class="input-group">             
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="width:135px;">Altura (cm): </span>
+                    </div>       
+                    <input style="background-color: white;" class="form-control" type="number" step="0.5" data-bind="value: vm.medicalRecord.height, enable: false" placeholder="Altura (cm)" maxlength="50" disabled="">
+                </div>
+            </div>
+        </div>     
+    </div>
+</div>
+
+        <div class="d-block d-lg-none" style="margin-top: 20px" data-bind="template: { name: &#39;generalData-mobile&#39;, data: $data }">
+
+    <div class="row mt-1">
+        <div class="col-md-6 col pr-md-1">
+            <div class="form-group"> 
+                <div class="input-group has-float-label">
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput: $data.vm.getNormalizedDateString($data.vm.medicalRecord.dob, $data.vm.medicalRecord.dobTime, false) + &#39; [&#39; + $data.vm.medicalRecord.caculateShortAge() + &#39;]&#39;, enable: false" disabled="">
+                    <label>Fecha de nacimiento</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 pl-md-1">
+            <div class="form-group">
+                <div class="input-group has-float-label">
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput: $data.vm.getNormalizedDateString($data.vm.medicalRecord.admissionDate, $data.vm.medicalRecord.admissionTime) + &#39; [&#39; + $data.vm.medicalRecord.calculateAdmisionTime() + &#39;]&#39;, enable: false" disabled="">        
+                    <label>Fecha de ingreso</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-1">
+        <div class="col-6 pr-1">
+            <div class="form-group">
+                <div class="input-group has-float-label">             
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput: vm.medicalRecord.identifier, enable: false" maxlength="50" disabled="">
+                    <label>No. de expediente</label>
+                </div>
+            </div>
+        </div> 
+
+        <div class="col-6 pl-1">
+            <div class="form-group">
+                <div class="input-group has-float-label">             
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput: vm.medicalRecord.assuranceName, enable: false" maxlength="50" disabled="">         
+                    <label>Seguro</label>
+                </div>
+            </div>
+        </div>       
+    </div>
+
+    <div class="row mt-1">   
+        <div class="col-sm-6 col pr-md-1">
+            <div class="form-group">
+                <div class="input-group has-float-label">
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput:  $data.vm.medicalRecord.firstName, enable: false" disabled="">
+                    <label>Nombres</label>
+                </div>
+            </div>    
+        </div>
+
+        <div class="col-sm-6 pl-md-1">
+            <div class="form-group">
+                <div class="input-group has-float-label">
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput:  $data.vm.medicalRecord.lastName, enable: false" disabled="">
+                    <label>Apellidos</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-1">
+        <div class="col-sm-6 col pr-md-1">
+            <div class="form-group">
+                <div class="input-group has-float-label">
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput:  $data.vm.medicalRecord.birthPlace, enable: false" disabled="">
+                    <label>Natural</label>
+                </div>
+            </div>
+        </div>
+            
+        <div class="col-sm-6 pl-md-1">
+            <div class="form-group">
+                <div class="input-group has-float-label">
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput:  $data.vm.medicalRecord.domicile, enable: false" disabled="">    
+                    <label>Residente</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-1"> 
+        <div class="col-6 pr-1">
+            <div class="form-group">
+                <div class="input-group has-float-label">
+                    <select style="background-color: white;" class="form-control" data-bind="value:  $data.vm.medicalRecord.bloodType, options: $data.vm.options.bloodTypes, optionsValue:&#39;value&#39;, optionsText:&#39;displayName&#39;, enable: false" disabled=""><option value="">Seleccionar</option><option value="A Rh (+)">A Rh (+)</option><option value="A Rh (-)">A Rh (-)</option><option value="B Rh (+)">B Rh (+)</option><option value="B Rh (-)">B Rh (-)</option><option value="AB Rh (+)">AB Rh (+)</option><option value="AB Rh (-)">AB Rh (-)</option><option value="O Rh (+)">O Rh (+)</option><option value="O Rh (-)">O Rh (-)</option></select>       
+                    <label>Tipo sanguineo</label>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-6 pl-1">    
+            <div class="form-group">
+                <div class="input-group has-float-label">
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput:  $data.vm.medicalRecord.allergies, enable: false" disabled="">
+                    <label>Alergias</label>
+                </div>
+            </div>
+        </div>  
+    </div>
+
+    <div class="row mt-1">
+        <div class="col-4 pr-1">
+            <div class="form-group">
+                <div class="input-group has-float-label">
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="value: vm.medicalRecord.gender === &#39;f&#39;? &#39;Femenino&#39; : &#39;Masculino&#39;, enable: false" maxlength="50" disabled="">
+                    <label>Género</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4 pl-1">
+            <div class="form-group">
+                <div class="input-group has-float-label">      
+                    <input style="background-color: white;" class="form-control" type="number" step="0.5" data-bind="value: vm.medicalRecord.weight, enable: false" maxlength="50" disabled="">         
+                    <label>Peso (Kg)</label>
+                </div>
+            </div>
+        </div>
+            
+        <div class="col-4 pl-1">
+            <div class="form-group">
+                <div class="input-group has-float-label">             
+                    <input style="background-color: white;" class="form-control" type="number" step="0.5" data-bind="value: vm.medicalRecord.height, enable: false" placeholder="Altura (cm)" maxlength="50" disabled="">      
+                    <label>Altura (cm)</label>
+                </div>
+            </div>
+        </div>     
+    </div>
+</div>
+    </div>
+</div>
+
+        <div data-bind="template: { name: &#39;chiefComplaint&#39;, data: $data, if: !$data.vm.medicalRecord.skipMedicalHistory }">
+    <div class="mt-2" data-bind="visible: $data.vm.medicalRecord.stage !== 3">
+        <div class="h5 text-justify" style="margin-top:20px">Historia de la enfermedad actual <span class="badge badge-secondary" data-bind="click: function() { $data.vm.switchView(&#39;generalData&#39;) }, visible: !$data.vm.recordIsClosed()">- Editar -</span></div>
+        
+        <div class="row">
+            <div class="col-md-12 text-justify">        
+                <div class="mb-3" data-bind="text: $data.vm.processedGeneralData">Se trata de paciente femenina de 35 años de edad, natural de santo domingo  y residente en la isabela, quien llega vía emergencia por presentar:</div>  
+
+				<div data-bind="foreach: $data.vm.medicalRecord.processChiefComplaintRows()">
+					<div class="mb-2">
+						<span class="font-weight-bold" data-bind="text: ($index() +1) + &#39;) &#39; + text + &#39;: &#39;">1) dolor adominal: </span><span data-bind="text: description">de 01 día de evolución, estomago  inflamado </span>
+					</div>
+				</div>             
+            </div> 
+        </div>
+    </div>
+</div>
+    
+        <div data-bind="template: { name: &#39;pass-medical-history&#39;, data: $data , if: !$data.vm.medicalRecord.skipMedicalHistory }">
+    <div class="mt-2">
+        <div class="card flex-column align-items-star bg-light">
+            <div class="h5 card-header mb-0 pt-1 pb-1">
+                <a role="button" data-toggle="collapse" data-target="#passMedicalHistory" aria-expanded="true" aria-controls="passMedicalHistory" class="">
+                    <i class="fas fa-angle-double-right"></i>
+                    <span class="h5"> Antecedentes: </span> <span class="badge badge-secondary" data-bind="click: function() { $data.vm.switchView(&#39;passMedicalHistory&#39;) }, visible: !$data.vm.recordIsClosed()">- Editar -</span>
+                </a>
+            </div>
+
+            <div id="passMedicalHistory" class="collapse show" aria-labelledby="passMedicalHistory" style="">
+                <div class="card-body">
+
+                    <section data-bind="visible: $data.vm.medicalRecord.perinatalMedicalHistory" style="display: none;">
+                        <h5 class="mb-2"><u>Antecedentes Perinatales</u></h5>
+
+                        <div class="text-justify"> 
+                            <div data-bind="html: $data.vm.medicalRecord.perinatalMedicalHistory"></div>
+                        </div>
+                    </section>                            
+                            
+                    <section class="mt-4">
+                        <h5 class="mb-2"><u>Antecedentes Personales Patológicos</u></h5>
+                                
+                        <div class="text-justify">
+                            <div data-bind="html: $data.vm.medicalRecord.pastMedicalHistory"></div>
+                        </div>
+                    </section>
+                            
+                    <section class="mt-4">   
+                        <h5 class="mb-2"><u>Antecedentes Heredo-Familiar</u></h5>
+
+                        <div class="text-justify">
+                            <div data-bind="html: $data.vm.medicalRecord.maybeOfFamilyHistoryContentString()"></div>
+                        </div>
+                    </section>
+                                                   
+                    <section class="mt-4">
+                        <h5 class="mb-2"><u>Esquema de Inmunización</u></h5>
+       
+                        <div class="text-justify">
+                            <div data-bind="html: $data.vm.medicalRecord.immunization"></div>
+                        </div>
+                    </section>                   
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+  
+        <div data-bind="template: { name: &#39;physical-examination&#39;, data: $data, if: !$data.vm.medicalRecord.skipMedicalHistory }">
+    <section class="mt-2" data-bind="visible: $data.vm.medicalRecord.stage !== 3">
+        <div class="card flex-column align-items-star bg-light">
+            <div class="h5 card-header mb-0 pt-1 pb-1">
+                <a role="button" data-toggle="collapse" data-target="#physicalExamination" aria-expanded="true" aria-controls="physicalExamination" class="">
+                    <i class="fas fa-angle-double-right"></i>
+                    <span class="h5"> Examen Físico: </span><span class="badge badge-secondary" data-bind="click: function() { $data.vm.switchView(&#39;physicalExamination&#39;) }, visible: !$data.vm.recordIsClosed()">- Editar -</span>
+                </a>
+            </div>
+    
+            <div id="physicalExamination" class="collapse show" aria-labelledby="physicalExamination" style="">
+                <div class="card-body">
+                    <div class="text-justify" data-bind="html: $data.vm.medicalRecord.maybeOfPhysicalExaminationContentString()"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+        <div data-bind="template: { name: &#39;inpatient-diagnostic&#39;, data: $data }">
+	<span class="d-none d-md-block">
+		<div data-bind="template: { name: &#39;inpatient-diagnostic-md&#39;, data: $data }">
+    <div class="mt-2">
+        <div class="h5 mt-4">Diagnóstico:
+            <span data-bind="visible: $data.vm.isVisibleHideSuspendedDiagnostics() &amp;&amp; !$data.vm.isAdmissionRecordMode, click: $data.vm.hideAllSuspendedDiagnosticsAndTreatments" class="badge badge-pill badge-warning" style="display: none;">- Ocultar suspendido -</span>
+            <span class="badge badge-primary" data-bind="visible: $data.vm.isVisibleShowAllDiagnostics() &amp;&amp; !$data.vm.isAdmissionRecordMode, click: $data.vm.showAllDiagnosticsAndTreaments" style="display: none;">- Mostrar todos -</span>
+            <span class="badge badge-success" data-bind="visible: $data.vm.isVisibleShowCurrentDiagnostics() &amp;&amp; !$data.vm.isAdmissionRecordMode, click: $data.vm.showACurrentsDiagnosticsAndTreaments" style="display: none;">- Mostrar actuales -</span>
+            <span class="badge badge-info" data-bind="visible: !$data.vm.isAdmissionRecordMode &amp;&amp; $data.vm.medicalRecord.stage === 2, click: $data.vm.setSkippableInternmentDiagnosticsAndTreatments" style="display: none;">- Activar reordenar en la nota de ingreso -</span>
+            <span class="badge badge-primary" data-bind="visible: $data.vm.isAdmissionRecordMode &amp;&amp; $data.vm.medicalRecord.stage === 2, click: $data.vm.reSetSkippableInternmentDiagnosticsAndTreatments" style="display: none;">- Deactivar reordenar en la nota de ingreso -</span>
+            <span class="badge badge-secondary" data-bind="visible: !$data.vm.recordIsClosed(), click: function(){ $data.vm.switchView(&#39;admissionSummary&#39;) }">- Editar -</span>
+        </div>
+        
+        <div data-bind="foreach: $data.vm.medicalRecord.diagnostic">
+            <div class="input-group" data-bind="visible: $data.show">
+                <div class="input-group-text" style="background-color: white; border-color: white; display: none;" data-bind="visible: $parent.vm.medicalRecord.diagnostic.length &gt; 1 &amp;&amp; $parent.vm.medicalRecord.stage !== 3">
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success mr-3" data-bind="event: { click: function(data, event){ $parent.vm.moveUp($parent.vm.medicalRecord.diagnostic, data)}}"><i class="fas fa-chevron-circle-up"></i></a>		 
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success" data-bind="event: { click: function(data, event){ $parent.vm.moveDown($parent.vm.medicalRecord.diagnostic, data)}}"><i class="fas fa-chevron-circle-down"></i></a>
+                </div>
+
+                <span class="input-group-text pr-1" style="background-color: white; border-color: white;">
+                    <span class="pr-1" data-bind="text: $data.name.trimEndChar(&#39;.&#39;)">embarazada</span>
+                    <span class="badge badge-warning" data-bind="text: &#39;- SUSPENDIDO -&#39;, visible: !$parent.vm.recordIsClosed() &amp;&amp; suspendedDate? true : false" style="display: none;">- SUSPENDIDO -</span>
+                    <span data-bind="visible: $parent.vm.recordIsClosed() &amp;&amp; !$parent.vm.isVisibleShowAllDiagnostics(), html: &#39;&lt;strong&gt;&#39; + &#39; (&#39; + $parent.vm.getStageText($data) + &#39;)&#39; +&#39;&lt;/strong&gt;&#39;" style="display: none;"><strong> (ingreso)</strong></span>
+                </span>
+                     
+            </div>
+        </div>
+    </div>
+</div>
+	</span> 
+
+	<span class="d-block d-md-none">
+		<div data-bind="template: { name: &#39;inpatient-diagnostic-mobile&#39;, data: $data  }">
+    <div class="mt-2">
+        <div class="h5 mt-4">Diagnóstico:
+            <span data-bind="visible: $data.vm.isVisibleHideSuspendedDiagnostics(), click: $data.vm.hideAllSuspendedDiagnosticsAndTreatments" class="badge badge-pill badge-warning" style="display: none;">- Ocultar suspendido -</span>
+            <span class="badge badge-primary" data-bind="visible: $data.vm.isVisibleShowAllDiagnostics(), click: $data.vm.showAllDiagnosticsAndTreaments" style="display: none;">- Mostrar todos -</span>
+            <span class="badge badge-success" data-bind="click: $data.vm.showACurrentsDiagnosticsAndTreaments, visible: $data.vm.isVisibleShowCurrentDiagnostics()" style="display: none;">- Mostrar actuales -</span>
+            <span class="badge badge-secondary" data-bind="click: function(){ $data.vm.switchView(&#39;admissionSummary&#39;) }, visible: !$data.vm.recordIsClosed()">- Editar -</span>
+        </div>
+
+        <div data-bind="foreach: $data.vm.medicalRecord.diagnostic">
+            <div class="container-fluid mb-2" data-bind="visible: $data.show">
+                <span class="pr-1" style="background-color: white; border-color: white;" data-bind="html: $data.name.trimEndChar(&#39;.&#39;)">embarazada</span> 
+                <span class="badge badge-warning" data-bind="text: &#39;- SUSPENDIDO -&#39;, visible: !$parent.vm.recordIsClosed() &amp;&amp; suspendedDate? true : false" style="display: none;">- SUSPENDIDO -</span>
+                <div data-bind="visible: $parent.vm.recordIsClosed() &amp;&amp; !$parent.vm.isVisibleShowAllDiagnostics(), html: &#39;&lt;strong&gt;&#39; + &#39; (&#39; + $parent.vm.getStageText($data) + &#39;)&#39; +&#39;&lt;/strong&gt;&#39;" style="display: none;"><strong> (ingreso)</strong></div>
+            </div>
+        </div>
+    </div>
+</div>
+	</span>
+</div>
+
+        <div data-bind="template: { name: &#39;inpatient-treatment&#39;, data: $data }">
+	<span class="d-none d-md-block">
+		<div data-bind="template: { name: &#39;inpatient-treatment-md&#39;, data: $data }">
+    <div class="mt-2">
+        <div class="h5 mt-4">Tratamiento:
+            <span class="badge badge-pill badge-warning" data-bind="visible: $data.vm.isVisibleHideSuspendedTreatments() &amp;&amp; !$data.vm.isAdmissionRecordMode, html: &#39; - Ocultar suspendido - &#39;, click: $data.vm.hideAllSuspendedDiagnosticsAndTreatments" style="display: none;"> - Ocultar suspendido - </span> 
+            <span class="badge badge-primary" data-bind="visible: $data.vm.isVisibleShowAllTreatments() &amp;&amp; !$data.vm.isAdmissionRecordMode, text: &#39;- Mostrar todos -&#39;, click: $data.vm.showAllDiagnosticsAndTreaments" style="display: none;">- Mostrar todos -</span>
+            <span class="badge badge-success" data-bind=" visible: $data.vm.isVisibleShowCurrentTreatments() &amp;&amp; !$data.vm.isAdmissionRecordMode, text: &#39;- Mostrar actuales -&#39;, click: $data.vm.showACurrentsDiagnosticsAndTreaments" style="display: none;">- Mostrar actuales -</span>
+            <span class="badge badge-info" data-bind="visible: !$data.vm.isAdmissionRecordMode &amp;&amp; $data.vm.medicalRecord.stage === 2, click: $data.vm.setSkippableInternmentDiagnosticsAndTreatments" style="display: none;">- Activar reordenar en la nota de ingreso -</span>
+            <span class="badge badge-primary" data-bind="visible: $data.vm.isAdmissionRecordMode &amp;&amp; $data.vm.medicalRecord.stage === 2, click: $data.vm.reSetSkippableInternmentDiagnosticsAndTreatments" style="display: none;">- Deactivar reordenar en la nota de ingreso -</span>
+            <span class="badge badge-secondary" data-bind="visible: !$data.vm.recordIsClosed(), text: &#39;- Editar -&#39;, click: function(){ $data.vm.switchView(&#39;admissionSummary&#39;) }">- Editar -</span>
+        </div>
+
+        <div data-bind="foreach: $data.vm.medicalRecord.treatment ">
+            <div class="input-group" data-bind="visible: $data.show">
+                <!-- Move row -->
+                <div class="input-group-text" style="background-color: white; border-color: white; display: none;" data-bind="visible: $parent.vm.medicalRecord.treatment.length &gt; 1 &amp;&amp; $parent.vm.medicalRecord.stage !== 3">
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success mr-3" data-bind="event: { click: function(data, event){ $parent.vm.moveUp($parent.vm.medicalRecord.treatment, data)}}"><i class="fas fa-chevron-circle-up"></i></a>		    
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success" data-bind="event: { click: function(data, event){ $parent.vm.moveDown($parent.vm.medicalRecord.treatment, data)}}"><i class="fas fa-chevron-circle-down"></i></a>
+                </div>
+
+                <!-- Check visible/no visible in inpatients reports -->
+                <span data-bind="visible:  $parent.vm.medicalRecord.stage !== 3">
+                    <span>[</span>
+                    <span data-bind="visible: !$data.visibleInInpatientsReport || $data.suspendedDate, style: { &#39;pointer-events&#39;: $data.suspendedDate ? &#39;none&#39; : &#39;&#39;, opacity:  $data.suspendedDate ? 0.5 : &#39;&#39; }" style="display: none;">
+                        <button class="btn btn-link btn-sm pr-0 pl-0" href="#" data-bind="click: function() { $data.visibleInInpatientsReport = true }"> 
+                            <!-- <i class="text-success fas fa-check"></i> -->
+                            <i class="far fa-copy"></i>
+                            <i class="text-danger far fa-eye-slash"></i>
+                        </button>	
+                    </span>
+
+                    <span data-bind="visible: $data.visibleInInpatientsReport  &amp;&amp; !$data.suspendedDate, style: { &#39;pointer-events&#39;: suspendedDate ? &#39;none&#39; : &#39;&#39;, opacity:  $data.suspendedDate ? 0.5 : &#39;&#39; }"> 
+                        <button class="btn btn-link btn-sm pr-0 pl-0" href="#" data-bind="click: function() {  $data.visibleInInpatientsReport = false }"> 
+                            <!-- <i class="text-danger fas fa-ban"></i> -->
+                            <i class="far fa-copy"></i>
+                            <i class="text-success far fa-eye"></i>
+                        </button>	
+                    </span>
+                    <span>]</span>
+                </span>
+
+                <span class="input-group-text pr-0" style="background-color: white; border-color: white;" data-bind="class: !$data.visibleInInpatientsReport || $data.suspendedDate? &#39;text-muted&#39; : &#39;&#39;  ">
+                    <span class="pr-1" data-bind="html: $data.name.trimEndChar(&#39;.&#39;) + &#39; &#39; + ($data.getCurrentDosageString()?   &#39;(&#39; + &#39;&lt;i&gt;&#39; + $data.getCurrentDosageString()  + &#39;&lt;/i&gt;&#39; + &#39;) &#39; : &#39;&#39;)  +  $parent.vm.getAdministrarionWayString($data) +  ($data.recordStage !== 3 ? &#39; [&#39; + $data.getTime($parent.vm.medicalRecord.getEgressDateTimeUtcString()) + &#39;]&#39; : &#39;&#39;)">ve television  [0 días]</span>
+                    <span class="badge badge-warning" data-bind="text: &#39;- SUSPENDIDO -&#39;, visible: !$parent.vm.recordIsClosed() &amp;&amp; suspendedDate? true : false" style="display: none;">- SUSPENDIDO -</span>
+                    <span data-bind="visible: $parent.vm.recordIsClosed() &amp;&amp; !$parent.vm.isVisibleShowAllTreatments(), html: &#39;&lt;strong&gt;&#39; + &#39;(&#39; + $parent.vm.getStageText($data) + &#39;)&#39; +&#39;&lt;/strong&gt;&#39;" style="display: none;"><strong>(ingreso)</strong></span>                    
+                </span>
+            </div>
+        </div>
+    </div> 
+</div>
+	</span> 
+
+	<span class="d-block d-md-none">
+		<div data-bind="template: { name: &#39;inpatient-treatment-mobile&#39;, data: $data  }">
+    <div class="mt-2">
+        <div class="h5 mt-4">Tratamiento:
+            <span class="badge badge-pill badge-warning" data-bind="html: &#39;- Ocultar suspendido -&#39;, visible: $data.vm.isVisibleHideSuspendedTreatments(), click: $data.vm.hideAllSuspendedDiagnosticsAndTreatments" style="display: none;">- Ocultar suspendido -</span> 
+            <span class="badge badge-primary" data-bind="html: &#39;- Mostrar todos -&#39;, visible: $data.vm.isVisibleShowAllTreatments(), click: $data.vm.showAllDiagnosticsAndTreaments" style="display: none;">- Mostrar todos -</span>
+            <span class="badge badge-success" data-bind="html: &#39;- Mostrar actuales -&#39;, click: $data.vm.showACurrentsDiagnosticsAndTreaments, visible: $data.vm.isVisibleShowCurrentTreatments()" style="display: none;">- Mostrar actuales -</span>
+            <span class="badge badge-secondary" data-bind="html: &#39;- Editar -&#39;, click: function(){ $data.vm.switchView(&#39;admissionSummary&#39;) }, visible: !$data.vm.recordIsClosed()">- Editar -</span>
+        </div>
+        
+        <div data-bind="foreach: $data.vm.medicalRecord.treatment">
+            <div class="container-fluid mb-2" data-bind="visible: $data.show">
+                <span style="background-color: white; border-color: white;" data-bind="html: name.trimEndChar(&#39;.&#39;) + &#39; &#39; + (getCurrentDosageString()?   &#39;(&#39; + &#39;&lt;i&gt;&#39; + getCurrentDosageString()  + &#39;&lt;/i&gt;&#39; + &#39;) &#39; : &#39;&#39;)  +  $parent.vm.getAdministrarionWayString($data) +  ($data.recordStage !== 3 ? &#39; [&#39; + $data.getTime($parent.vm.medicalRecord.getEgressDateTimeUtcString()) + &#39;]&#39; : &#39;&#39;)">ve television  [0 días]</span>
+                <span class="badge badge-warning" data-bind="text: &#39;- SUSPENDIDO -&#39;, visible: !$parent.vm.recordIsClosed() &amp;&amp; suspendedDate? true : false" style="display: none;">- SUSPENDIDO -</span>
+                <div data-bind="visible: $parent.vm.recordIsClosed() &amp;&amp; !$parent.vm.isVisibleShowAllTreatments(), html: &#39;&lt;strong&gt;&#39; + &#39;(&#39; + $parent.vm.getStageText($data) + &#39;)&#39; +&#39;&lt;/strong&gt;&#39;" style="display: none;"><strong>(ingreso)</strong></div>
+            </div>
+        </div>
+    </div> 
+</div>
+	</span>
+</div>
+
+        <div data-bind="template: { name: &#39;notes&#39;, data: $data }">
+    <section class="mt-3" data-bind="visible: $data.vm.medicalRecord.notes &amp;&amp; $data.vm.medicalRecord.stage !== 3">
+        <div class="card flex-column align-items-star bg-light">
+            <div class="h5 card-header mb-0">
+                <a role="button" data-toggle="collapse" data-target="#notes" aria-expanded="true" aria-controls="notes" class="">
+                    <i class="fas fa-angle-double-right"></i>
+                    <span class="h5"> Notas: </span> <span class="badge badge-secondary" data-bind="click: function() { $data.vm.switchView(&#39;admissionSummary&#39;) }, visible: !$data.vm.recordIsClosed()">- Editar -</span>
+                </a>
+            </div>
+
+            <div id="notes" class="collapse show" aria-labelledby="notes" style="">
+                <div class="card-body">  
+                    <div data-bind="html: $data.vm.medicalRecord.maybeOfNotesString()"><div><h5>esto es una prueba</h5>undefined</div></div>        
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+        <div data-bind="template: { name: &#39;patient-controls&#39;, data: $data, if: vm.medicalRecord.stage !== 3  }">
+	<div class="mt-3">
+            
+        <div class="h5 text-uppercase text-center">Controles</div>
+        <hr>
+                
+		<div class="row mt-3 mb-1">	
+			<div class="col-md-12">
+                <div class="h6 text-uppercase font-weight-bold">Controles habituales</div>
+                <div data-bind="template: { name: &#39;custom-patient-controls&#39;, data: { vm: $data.vm, kind: &#39;routine&#39; }  }">
+	<div class="mt-3">        
+        <div class="row">	
+            <div class="col-12 mt-2">  
+                <div data-bind="foreach: $data.vm.medicalRecord.controls"></div>
+            </div> 
+        </div>
+
+        <div class="row mb-2">
+			<div class="col-12">
+				<button class="btn btn-primary btn-sm" data-bind="click: function() { $parent.vm.addControl($data.kind) }, enable: !$parent.vm.isAnyControlEmpty($parent.vm.medicalRecord.controls)"><i class="fas fa-plus"></i> Agregar</button>
+			</div>
+		</div>  			
+    </div>
+  
+    <datalist id="routineControlList">
+        <option value="SV C/hora"></option>  
+        <option value="SV C/2 horas"></option>
+        <option value="SV C/4 horas"></option>
+    </datalist>
+
+    <datalist id="specialControlList">
+        <option value="Peso diario"></option>
+        <option value="Perímetro abdominal"></option>
+        <option value="Perímetro cefálico"></option>
+    </datalist>
+</div>
+			</div>
+        </div>   
+
+		<div class="row mt-3 mb-1">	
+			<div class="container-fluid">
+				<div class="form-check form-check-inline mb-1">     
+					<label class="form-check-label">    
+						&nbsp;Balance hídrico&nbsp;        
+					</label>
+					<input class="form-check-input" type="checkbox" data-bind="checked: $data.vm.medicalRecord.fluidBalance">    
+				</div>
+
+				<div class="form-check form-check-inline mb-1">     
+					<label class="form-check-label">    
+						&nbsp;Diuresis horaria&nbsp;        
+					</label>
+					<input class="form-check-input" type="checkbox" data-bind="checked: $data.vm.medicalRecord.hourlyDiuresis">    
+				</div>
+
+				<div class="form-check form-check-inline mb-1">     
+					<label class="form-check-label">    
+						&nbsp;Diuresis media horaria&nbsp;        
+					</label>
+					<input class="form-check-input" type="checkbox" data-bind="checked: $data.vm.medicalRecord.hourlyMeanDiuresis">    
+				</div>
+			
+				<div class="form-check form-check-inline mb-1">     
+					<label class="form-check-label">    
+						&nbsp;Curva térmica&nbsp;        
+					</label>
+					<input class="form-check-input" type="checkbox" data-bind="checked: $data.vm.medicalRecord.timeTemperatureCurve">    
+				</div>
+			</div>			
+        </div>  
+                
+		<div class="row mt-2 mb-1">	
+			<div class="col-md-12">
+                <div class="h6 text-uppercase font-weight-bold">Otros controles especiales</div>
+
+                <div data-bind="template: { name: &#39;custom-patient-controls&#39;, data: { vm: $data.vm, kind: &#39;special&#39; }  }">
+	<div class="mt-3">        
+        <div class="row">	
+            <div class="col-12 mt-2">  
+                <div data-bind="foreach: $data.vm.medicalRecord.controls"></div>
+            </div> 
+        </div>
+
+        <div class="row mb-2">
+			<div class="col-12">
+				<button class="btn btn-primary btn-sm" data-bind="click: function() { $parent.vm.addControl($data.kind) }, enable: !$parent.vm.isAnyControlEmpty($parent.vm.medicalRecord.controls)"><i class="fas fa-plus"></i> Agregar</button>
+			</div>
+		</div>  			
+    </div>
+  
+    <datalist id="routineControlList">
+        <option value="SV C/hora"></option>  
+        <option value="SV C/2 horas"></option>
+        <option value="SV C/4 horas"></option>
+    </datalist>
+
+    <datalist id="specialControlList">
+        <option value="Peso diario"></option>
+        <option value="Perímetro abdominal"></option>
+        <option value="Perímetro cefálico"></option>
+    </datalist>
+</div>
+			</div>
+        </div>   
+	</div>
+</div>
+
+        <div data-bind="template: { name: &#39;others-Therapy&#39;, data: $data, if: vm.medicalRecord.stage !== 3  }">
+	<div class="mt-4 mb-2">
+        <div class="h5 text-uppercase text-center font-weight-bold">Otras ordenes terapéuticas</div>
+        <hr>
+                
+        <div class="row">
+            <div class="col-lg-6 col-mb-12">
+                <div class="row mb-2">	
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text d-flex align-items-start">Dieta</div>
+                            </div>
+                            <textarea type="text" rows="1" class="form-control  auto-expand" data-bind="textInput: $data.vm.medicalRecord.diet, style: { &#39;background-color&#39;: $data.vm.medicalRecord.diet? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" style="background-color: rgb(255, 255, 153);"></textarea>
+                        </div>
+                    </div>
+                </div> 
+
+                <div class="row mb-2">	
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text d-flex align-items-start">Actividad física</div>
+                            </div>
+                            <textarea type="text" rows="1" class="form-control auto-expand" data-bind="textInput: $data.vm.medicalRecord.physicalActivity, style: { &#39;background-color&#39;: $data.vm.medicalRecord.physicalActivity? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" style="background-color: rgb(255, 255, 153);"></textarea>
+                        </div>
+                    </div>
+                </div> 
+
+                <div class="row mb-2">	
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text d-flex align-items-start">Postura</div>
+                            </div>
+                            <textarea type="text" rows="1" class="form-control auto-expand" data-bind="textInput: $data.vm.medicalRecord.position, style: { &#39;background-color&#39;: $data.vm.medicalRecord.position? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" style="background-color: rgb(255, 255, 153);"></textarea>
+                        </div>
+                    </div>
+                </div> 
+                
+                 <div class="row mb-2">	
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text d-flex align-items-start">Curas</div>
+                            </div>
+                            <textarea type="text" rows="1" class="form-control auto-expand" data-bind="textInput: $data.vm.medicalRecord.cures, style: { &#39;background-color&#39;: $data.vm.medicalRecord.cures? &#39;white&#39; : &#39;rgb(206,248,206)&#39; }" style="background-color: rgb(206, 248, 206);"></textarea>
+                        </div>
+                    </div>
+                </div>                  
+            </div>   
+
+            <div class="col-lg-6 col-mb-12">
+                <div class="row mb-2">	
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text d-flex align-items-start">Oxígeno</div>
+                            </div>
+                            <textarea type="text" rows="1" class="form-control auto-expand" data-bind="textInput: $data.vm.medicalRecord.oxygenTherapy, style: { &#39;background-color&#39;: $data.vm.medicalRecord.oxygenTherapy? &#39;white&#39; : &#39;rgb(206,248,206)&#39; }" style="background-color: rgb(206, 248, 206);"></textarea>
+                        </div>
+                    </div>
+                </div> 
+
+                <div class="row mb-2">	
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text d-flex align-items-start">Fisioterapia respiratoria</div>
+                            </div>
+                            <textarea type="text" rows="1" class="form-control auto-expand" data-bind="textInput: $data.vm.medicalRecord.chestPhysiotherapy, style: { &#39;background-color&#39;: $data.vm.medicalRecord.chestPhysiotherapy? &#39;white&#39; : &#39;rgb(206,248,206)&#39; }" style="background-color: rgb(206, 248, 206);"></textarea>
+                        </div>
+                    </div>
+                </div> 
+
+                <div class="row mb-2">	
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text d-flex align-items-start">Sondas</div>
+                            </div>
+                            <textarea type="text" rows="1" class="form-control auto-expand" data-bind="textInput: $data.vm.medicalRecord.catheters, style: { &#39;background-color&#39;: $data.vm.medicalRecord.catheters? &#39;white&#39; : &#39;rgb(206,248,206)&#39; }" style="background-color: rgb(206, 248, 206);"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-2">	
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text d-flex align-items-start">Drenajes</div>
+                            </div>
+                            <textarea type="text" rows="1" class="form-control auto-expand" data-bind="textInput: $data.vm.medicalRecord.drains, style: { &#39;background-color&#39;: $data.vm.medicalRecord.drains? &#39;white&#39; : &#39;rgb(206,248,206)&#39; }" style="background-color: rgb(206, 248, 206);"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>    
+        </div> 
+
+		<div class="row mb-2">	
+			<div class="col-md-12">
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text d-flex align-items-start">Nebulización</span>
+					</div>
+					<textarea type="text" rows="1" class="form-control auto-expand" data-bind="textInput: $data.vm.medicalRecord.nebulization, style: { &#39;background-color&#39;: $data.vm.medicalRecord.nebulization? &#39;white&#39; : &#39;rgb(206,248,206)&#39; }" placeholder="Ejemplo: Salbutamol: 0.5ml/3ml | Budesonide: un vial/2ml" style="background-color: rgb(206, 248, 206);"></textarea>
+				</div>
+			</div>
+        </div> 
+        
+		<div class="row mb-2">	
+			<div class="col-md-12">
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text d-flex align-items-start">Otros</span>
+					</div>
+					<textarea type="text" rows="1" class="form-control auto-expand" data-bind="textInput: $data.vm.medicalRecord.othersOrderSets, style: { &#39;background-color&#39;: $data.vm.medicalRecord.othersOrderSets? &#39;white&#39; : &#39;rgb(206,248,206)&#39; }" style="background-color: rgb(206, 248, 206);"></textarea>
+				</div>
+			</div>
+        </div> 
+	</div>
+</div>
+
+        <div data-bind="template: { name: &#39;signs&#39;, data: $data }">
+    <article>
+        <div class="h5 mt-4">Firmas:</div>
+
+        <div class="container" data-bind="html: &#39;&lt;strong&gt;Ingreso: &lt;/strong&gt;&#39; + (vm.medicalRecord.sign?  vm.medicalRecord.maybeOfAdmissionSingString() : &#39;NO FIRMADOS&#39;) + &#39;.&#39;"><strong>Ingreso: </strong>dr yo si soy.</div>
+        <div class="container" data-bind="visible: vm.medicalRecord.stage === 3, html: &#39;&lt;strong&gt;Engreso: &lt;/strong&gt;&#39; + vm.medicalRecord.maybeOfEgressSingString() + &#39;.&#39;" style="display: none;"><strong>Engreso: </strong>null.</div>
+    </article>
+</div>
+    </div>
+</div>
+
+<script type="text/html" id="admission-note">
+    <div class="container d-print-none" data-bind="topscroll: $data.vm.topscroll, visible: !$data.vm.isLoading">
+
+        <div data-bind="template: { name: 'heading-buttons', data: $data }"></div>
+   
+        <div data-bind="template: { name: 'room', data: $data }"></div>
+   
+        <div data-bind="template: { name: 'generalData', data: $data }"></div>
+
+        <div data-bind="template: { name: 'chiefComplaint', data: $data, if: !$data.vm.medicalRecord.skipMedicalHistory }"></div>
+    
+        <div data-bind="template: { name: 'pass-medical-history', data: $data , if: !$data.vm.medicalRecord.skipMedicalHistory }"></div>
+  
+        <div data-bind="template: { name: 'physical-examination', data: $data, if: !$data.vm.medicalRecord.skipMedicalHistory }"></div>
+
+        <div data-bind="template: { name: 'inpatient-diagnostic', data: $data }"></div>
+
+        <div data-bind="template: { name: 'inpatient-treatment', data: $data }"></div>
+
+        <div data-bind="template: { name: 'notes', data: $data }"></div>
+
+        <div data-bind="template: { name: 'patient-controls', data: $data, if: vm.medicalRecord.stage !== 3  }"></div>
+
+        <div data-bind="template: { name: 'others-Therapy', data: $data, if: vm.medicalRecord.stage !== 3  }"></div>
+
+        <div data-bind="template: { name: 'signs', data: $data }"></div>
+    </div>
+</script>
+
+<script type="text/html" id="heading-buttons">
+    <div class="row mb-4">
+        <div class="container-fluid" data-bind="visible: $data.vm.medicalRecord.recordId">
+            <div class="float-right">  
+
+                <button class="btn btn-outline-danger btn-sm mt-1" data-bind="click: $data.vm.revokeEgress, visible: $data.vm.recordIsClosed() && !$data.vm.medicalRecord.canceledDate, visible: $data.vm.recordIsClosed() && !$data.vm.medicalRecord.canceledDate, enable $data.vm.elapsedHours($data.vm.medicalRecord.egressDate, $data.vm.medicalRecord.egressTime) < 25">
+                    <i class="fas fa-times">
+                        <span>Revocar egreso</span>
+                    </i>
+                </button>
+
+                <button class="btn btn-outline-primary btn-sm mt-1" data-bind="click: function() { $data.vm.switchTab('orderSets') }">
+                    <span class="d-none d-md-block"><i class="fas fa-capsules"></i> Ordenes médica</span>
+                    <span class="d-block d-md-none"><i class="fas fa-capsules"></i></span>
+                </button>
+
+                <button class="btn btn-outline-primary btn-sm mt-1" data-bind="click: function() { $data.vm.switchTab('progressNotes') }, visible: !$data.vm.medicalRecord.skipMedicalHistory ">
+                    <span class="d-none d-md-block"><i class="fas fa-user-clock"></i> Notas de evolución</span>
+                    <span class="d-block d-md-none"><i class="fas fa-user-clock"></i></span>                   
+                </button>
+             
+                <button class="btn btn-outline-primary btn-sm mt-1" data-bind="click: function() { $data.vm.switchTab('forms') }, visible: !$data.vm.medicalRecord.skipMedicalHistory ">
+                    <span class="d-none d-md-block"><i class="far fa-comment"></i></i> Comentarios</span>
+                    <span class="d-block d-md-none"><i class="far fa-comment"></i></span>                   
+                </button>
+
+                <button class="btn btn-outline-primary btn-sm mt-1" data-bind="click: $data.vm.printAdmissionNote, visible: !$data.vm.medicalRecord.skipMedicalHistory">        
+                    <span class="d-none d-md-block"><i class="fas fa-print"></i> Nota de ingreso</span>                    
+                    <span class="d-block d-md-none"><i class="fas fa-print"></i></span>     
+                </button>
+
+                <button class="btn btn-danger btn-sm" data-toggle="modal" data-target="#cancelAdmissionModal" data-bind="click: $data.vm.setCancelAdmissionDateMedicalRecordEdit, visible: (!$data.vm.medicalRecord.roomAdmissionDate && !$data.vm.medicalRecord.egressDate && !$data.vm.medicalRecord.canceledDate && !$data.vm.medicalRecord.identifier) ? true : false">
+                    <span>Anular ingreso <i class="fas fa-times"></i></span>
+                </button>
+
+                <button class="btn btn-success btn-sm mt-1" data-toggle="modal" data-target="#egressModal" data-bind="click: $data.vm.setEgressDateMedicalRecordEdit, visible: !$data.vm.medicalRecord.egressDate && !$data.vm.medicalRecord.canceledDate? true : false">
+                    <span>Dar egreso <i class="fas fa-check"></i></span>     
+                </button>
+
+                <button class="btn btn-secondary btn-sm mt-1" data-toggle="modal" data-target="#roomAdmissionModal" data-bind="click: $data.vm.setRoomAdmissionDateMedicalRecordEdit, visible: (!$data.vm.medicalRecord.roomAdmissionDate && !$data.vm.medicalRecord.egressDate && !$data.vm.medicalRecord.canceledDate) ? true : false">
+                    <span>Ingresar a sala <i class="fas fa-check"></i></span>     
+                </button>
+
+                <button class="btn btn-outline-info btn-sm mt-1" data-bind="click: $data.vm.printEgressNote, visible: $data.vm.recordIsClosed() && !$data.vm.medicalRecord.canceledDate">
+                    <i class="fas fa-print"><span data-bind="text: ' Dado de alta: ' +  $data.vm.getNormalizedDateString($data.vm.medicalRecord.egressDate, $data.vm.medicalRecord.egressTime)"></span></i>
+                </button>
+
+                <button  href="#" class="pl-0 btn btn-link btn-sm mt-1" data-toggle="modal" data-target="#egressModal" data-bind="click: $data.vm.setEgressMedicalRecordEdit, visible: $data.vm.recordIsClosed() && !$data.vm.medicalRecord.canceledDate">
+                    <span><i class="text-info far fa-edit fa-lg"></i></span>		
+                </button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="generalData">
+    <div class="mt-2">
+        <div class="h5">Datos generales <span class="badge badge-secondary" data-bind="click: function() { $data.vm.switchView('generalData') }, visible: !$data.vm.recordIsClosed()">- Editar -</span></div>
+     
+        <div class="d-none d-lg-block" data-bind="template: { name: 'generalData-lg', data: $data }"></div>
+
+        <div class="d-block d-lg-none" style="margin-top: 20px" data-bind="template: { name: 'generalData-mobile', data: $data }"></div>
+    </div>
+</script>
+
+<script type="text/html" id="generalData-lg">
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group"> 
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" style="width:135px;">FN: </span>
+                    </div>
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput: $data.vm.getNormalizedDateString($data.vm.medicalRecord.dob, $data.vm.medicalRecord.dobTime, false) + ' [' + $data.vm.medicalRecord.caculateShortAge() + ']', enable: false">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" style="width:135px;">Ingreso: </span>
+                    </div>
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput: $data.vm.getNormalizedDateString($data.vm.medicalRecord.admissionDate, $data.vm.medicalRecord.admissionTime) + ' [' + $data.vm.medicalRecord.calculateAdmisionTime() + ']', enable: false">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="input-group">             
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="width:135px;">No. expediente: </span>
+                    </div>      
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput: vm.medicalRecord.identifier, enable: false" placeholder="No. expediente" maxlength="50">
+                </div>
+            </div>
+        </div> 
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="input-group">             
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="width:135px;">Seguro: </span>
+                    </div>      
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput: vm.medicalRecord.assuranceName, enable: false" placeholder="Seguro" maxlength="50">
+                </div>
+            </div>
+        </div>       
+    </div>
+    
+    <div data-bind="template: { name: 'generalData-short', data: $data }"></div>
+      
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="width:135px;">Género: </span>
+                    </div>
+                    <input style="background-color: white;" class="form-control" type="text"
+                        data-bind="value: vm.medicalRecord.gender === 'f'? 'Femenino' : 'Masculino', enable: false" maxlength="50">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-group">
+                <div class="input-group">      
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="width:135px;">Peso (Kg): </span>
+                    </div>
+                    <input style="background-color: white;" class="form-control" type="number" step="0.5" data-bind="value: vm.medicalRecord.weight, enable: false" maxlength="50">      
+                </div>
+            </div>
+        </div>
+            
+        <div class="col-md-4">
+            <div class="form-group">
+                <div class="input-group">             
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="width:135px;">Altura (cm): </span>
+                    </div>       
+                    <input style="background-color: white;" class="form-control" type="number" step="0.5" data-bind="value: vm.medicalRecord.height, enable: false" placeholder="Altura (cm)" maxlength="50">
+                </div>
+            </div>
+        </div>     
+    </div>
+</script>
+
+<script type="text/html" id="generalData-short">
+    <div class="row">   
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="width:135px;">Nombres: </span>
+                    </div>
+                    <input style="background-color: white;"  class="form-control" type="text" data-bind="textInput:  $data.vm.medicalRecord.firstName, enable: false">
+                </div>
+            </div>    
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="width:135px;">Apellidos: </span>
+                    </div>
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput:  $data.vm.medicalRecord.lastName, enable: false">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="width:135px;">Natural: </span>
+                    </div>
+                    <input style="background-color: white;" class="form-control"  type="text" data-bind="textInput:  $data.vm.medicalRecord.birthPlace, enable: false">
+                </div>
+            </div>
+        </div>
+            
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="width:135px;">Residente: </span>
+                    </div>
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput:  $data.vm.medicalRecord.domicile, enable: false">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row"> 
+        <div class="col-md-6">
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="width:135px;">Tipo de sangre: </span>
+                    </div>
+                    <select style="background-color: white;" class="form-control" data-bind="value:  $data.vm.medicalRecord.bloodType, options: $data.vm.options.bloodTypes, optionsValue:'value', optionsText:'displayName', enable: false"></select>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-md-6">    
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-append">
+                        <span class="input-group-text" style="width:135px;">Alergias: </span>
+                    </div>
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput:  $data.vm.medicalRecord.allergies, enable: false">
+                </div>
+            </div>
+        </div>  
+    </div>
+</script>
+
+<script type="text/html" id="generalData-mobile">
+
+    <div class="row mt-1">
+        <div class="col-md-6 col pr-md-1">
+            <div class="form-group"> 
+                <div class="input-group has-float-label">
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput: $data.vm.getNormalizedDateString($data.vm.medicalRecord.dob, $data.vm.medicalRecord.dobTime, false) + ' [' + $data.vm.medicalRecord.caculateShortAge() + ']', enable: false">
+                    <label>Fecha de nacimiento</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 pl-md-1">
+            <div class="form-group">
+                <div class="input-group has-float-label">
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput: $data.vm.getNormalizedDateString($data.vm.medicalRecord.admissionDate, $data.vm.medicalRecord.admissionTime) + ' [' + $data.vm.medicalRecord.calculateAdmisionTime() + ']', enable: false">        
+                    <label>Fecha de ingreso</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-1">
+        <div class="col-6 pr-1">
+            <div class="form-group">
+                <div class="input-group has-float-label">             
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput: vm.medicalRecord.identifier, enable: false" maxlength="50">
+                    <label>No. de expediente</label>
+                </div>
+            </div>
+        </div> 
+
+        <div class="col-6 pl-1">
+            <div class="form-group">
+                <div class="input-group has-float-label">             
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput: vm.medicalRecord.assuranceName, enable: false" maxlength="50">         
+                    <label>Seguro</label>
+                </div>
+            </div>
+        </div>       
+    </div>
+
+    <div class="row mt-1">   
+        <div class="col-sm-6 col pr-md-1">
+            <div class="form-group">
+                <div class="input-group has-float-label">
+                    <input style="background-color: white;"  class="form-control"  type="text" data-bind="textInput:  $data.vm.medicalRecord.firstName, enable: false">
+                    <label>Nombres</label>
+                </div>
+            </div>    
+        </div>
+
+        <div class="col-sm-6 pl-md-1">
+            <div class="form-group">
+                <div class="input-group has-float-label">
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput:  $data.vm.medicalRecord.lastName, enable: false">
+                    <label>Apellidos</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-1">
+        <div class="col-sm-6 col pr-md-1">
+            <div class="form-group">
+                <div class="input-group has-float-label">
+                    <input style="background-color: white;" class="form-control"  type="text" data-bind="textInput:  $data.vm.medicalRecord.birthPlace, enable: false">
+                    <label>Natural</label>
+                </div>
+            </div>
+        </div>
+            
+        <div class="col-sm-6 pl-md-1">
+            <div class="form-group">
+                <div class="input-group has-float-label">
+                    <input style="background-color: white;" class="form-control" type="text" data-bind="textInput:  $data.vm.medicalRecord.domicile, enable: false">    
+                    <label>Residente</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-1"> 
+        <div class="col-6 pr-1">
+            <div class="form-group">
+                <div class="input-group has-float-label">
+                    <select style="background-color: white;" class="form-control" data-bind="value:  $data.vm.medicalRecord.bloodType, options: $data.vm.options.bloodTypes, optionsValue:'value', optionsText:'displayName', enable: false"></select>       
+                    <label>Tipo sanguineo</label>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col-6 pl-1">    
+            <div class="form-group">
+                <div class="input-group has-float-label">
+                    <input style="background-color: white;" class="form-control"  type="text" data-bind="textInput:  $data.vm.medicalRecord.allergies, enable: false">
+                    <label>Alergias</label>
+                </div>
+            </div>
+        </div>  
+    </div>
+
+    <div class="row mt-1">
+        <div class="col-4 pr-1">
+            <div class="form-group">
+                <div class="input-group has-float-label">
+                    <input style="background-color: white;" class="form-control" type="text"
+                        data-bind="value: vm.medicalRecord.gender === 'f'? 'Femenino' : 'Masculino', enable: false"
+                        maxlength="50">
+                    <label>Género</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4 pl-1">
+            <div class="form-group">
+                <div class="input-group has-float-label">      
+                    <input style="background-color: white;" class="form-control" type="number" step="0.5" data-bind="value: vm.medicalRecord.weight, enable: false" maxlength="50">         
+                    <label>Peso (Kg)</label>
+                </div>
+            </div>
+        </div>
+            
+        <div class="col-4 pl-1">
+            <div class="form-group">
+                <div class="input-group has-float-label">             
+                    <input style="background-color: white;" class="form-control" type="number" step="0.5" data-bind="value: vm.medicalRecord.height, enable: false" placeholder="Altura (cm)" maxlength="50">      
+                    <label>Altura (cm)</label>
+                </div>
+            </div>
+        </div>     
+    </div>
+</script>
+
+<script type="text/html" id="chiefComplaint">
+    <div class="mt-2" data-bind="visible: $data.vm.medicalRecord.stage !== 3">
+        <div class="h5 text-justify" style="margin-top:20px">Historia de la enfermedad actual <span class="badge badge-secondary" data-bind="click: function() { $data.vm.switchView('generalData') }, visible: !$data.vm.recordIsClosed()">- Editar -</span></div>
+        
+        <div class="row">
+            <div class="col-md-12 text-justify">        
+                <div class="mb-3" data-bind="text: $data.vm.processedGeneralData"></div>  
+
+				<div data-bind="foreach: $data.vm.medicalRecord.processChiefComplaintRows()">
+					<div class="mb-2">
+						<span class="font-weight-bold" data-bind="text: ($index() +1) + ') ' + text + ': '"></span><span  data-bind="text: description"></span>
+					</div>
+				</div>             
+            </div> 
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="pass-medical-history">
+    <div class="mt-2">
+        <div class="card flex-column align-items-star bg-light">
+            <div class="h5 card-header mb-0 pt-1 pb-1">
+                <a role="button" data-toggle="collapse" data-target="#passMedicalHistory" aria-expanded="false" aria-controls="passMedicalHistory">
+                    <i class="fas fa-angle-double-right"></i>
+                    <span class="h5"> Antecedentes: </span> <span class="badge badge-secondary" data-bind="click: function() { $data.vm.switchView('passMedicalHistory') }, visible: !$data.vm.recordIsClosed()">- Editar -</span>
+                </a>
+            </div>
+
+            <div id="passMedicalHistory" class="collapse" aria-labelledby="passMedicalHistory">
+                <div class="card-body">
+
+                    <section data-bind="visible: $data.vm.medicalRecord.perinatalMedicalHistory">
+                        <h5 class="mb-2"><u>Antecedentes Perinatales</u></h5>
+
+                        <div class="text-justify"> 
+                            <div data-bind="html: $data.vm.medicalRecord.perinatalMedicalHistory"></div>
+                        </div>
+                    </section>                            
+                            
+                    <section class="mt-4">
+                        <h5 class="mb-2"><u>Antecedentes Personales Patológicos</u></h5>
+                                
+                        <div class="text-justify">
+                            <div data-bind="html: $data.vm.medicalRecord.pastMedicalHistory"></div>
+                        </div>
+                    </section>
+                            
+                    <section class="mt-4">   
+                        <h5 class="mb-2"><u>Antecedentes Heredo-Familiar</u></h5>
+
+                        <div class="text-justify">
+                            <div data-bind="html: $data.vm.medicalRecord.maybeOfFamilyHistoryContentString()"></div>
+                        </div>
+                    </section>
+                                                   
+                    <section class="mt-4">
+                        <h5 class="mb-2"><u>Esquema de Inmunización</u></h5>
+       
+                        <div class="text-justify">
+                            <div data-bind="html: $data.vm.medicalRecord.immunization"></div>
+                        </div>
+                    </section>                   
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="physical-examination">
+    <section class="mt-2" data-bind="visible: $data.vm.medicalRecord.stage !== 3">
+        <div class="card flex-column align-items-star bg-light">
+            <div class="h5 card-header mb-0 pt-1 pb-1">
+                <a role="button" data-toggle="collapse" data-target="#physicalExamination" aria-expanded="false"
+                    aria-controls="physicalExamination">
+                    <i class="fas fa-angle-double-right"></i>
+                    <span class="h5"> Examen Físico: </span><span class="badge badge-secondary" data-bind="click: function() { $data.vm.switchView('physicalExamination') }, visible: !$data.vm.recordIsClosed()">- Editar -</span>
+                </a>
+            </div>
+    
+            <div id="physicalExamination" class="collapse" aria-labelledby="physicalExamination">
+                <div class="card-body">
+                    <div class="text-justify" data-bind="html: $data.vm.medicalRecord.maybeOfPhysicalExaminationContentString()"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+</script>
+
+<script type="text/html" id="inpatient-diagnostic">
+	<span class="d-none d-md-block">
+		<div data-bind="template: { name: 'inpatient-diagnostic-md', data: $data }"></div>
+	</span> 
+
+	<span class="d-block d-md-none">
+		<div data-bind="template: { name: 'inpatient-diagnostic-mobile', data: $data  }"></div>
+	</span>
+</script>
+
+<script type="text/html" id="inpatient-diagnostic-md">
+    <div class="mt-2">
+        <div class="h5 mt-4">Diagnóstico:
+            <span data-bind="visible: $data.vm.isVisibleHideSuspendedDiagnostics() && !$data.vm.isAdmissionRecordMode, click: $data.vm.hideAllSuspendedDiagnosticsAndTreatments" class="badge badge-pill badge-warning">- Ocultar suspendido -</span>
+            <span class="badge badge-primary" data-bind="visible: $data.vm.isVisibleShowAllDiagnostics() && !$data.vm.isAdmissionRecordMode, click: $data.vm.showAllDiagnosticsAndTreaments">- Mostrar todos -</span>
+            <span class="badge badge-success" data-bind="visible: $data.vm.isVisibleShowCurrentDiagnostics() && !$data.vm.isAdmissionRecordMode, click: $data.vm.showACurrentsDiagnosticsAndTreaments">- Mostrar actuales -</span>
+            <span class="badge badge-info" data-bind="visible: !$data.vm.isAdmissionRecordMode && $data.vm.medicalRecord.stage === 2, click: $data.vm.setSkippableInternmentDiagnosticsAndTreatments">- Activar reordenar en la nota de ingreso -</span>
+            <span class="badge badge-primary" data-bind="visible: $data.vm.isAdmissionRecordMode && $data.vm.medicalRecord.stage === 2, click: $data.vm.reSetSkippableInternmentDiagnosticsAndTreatments">- Deactivar reordenar en la nota de ingreso -</span>
+            <span class="badge badge-secondary" data-bind="visible: !$data.vm.recordIsClosed(), click: function(){ $data.vm.switchView('admissionSummary') }">- Editar -</span>
+        </div>
+        
+        <div data-bind="foreach: $data.vm.medicalRecord.diagnostic">
+            <div class="input-group" data-bind="visible: $data.show">
+                <div class="input-group-text" style="background-color: white; border-color: white;" data-bind="visible: $parent.vm.medicalRecord.diagnostic.length > 1 && $parent.vm.medicalRecord.stage !== 3">
+                    <a href="#" role="button" class="btn-outline-success mr-3" data-bind="event: { click: function(data, event){ $parent.vm.moveUp($parent.vm.medicalRecord.diagnostic, data)}}"><i class="fas fa-chevron-circle-up"></i></a>		 
+                    <a href="#" role="button" class="btn-outline-success" data-bind="event: { click: function(data, event){ $parent.vm.moveDown($parent.vm.medicalRecord.diagnostic, data)}}"><i class="fas fa-chevron-circle-down"></i></a>
+                </div>
+
+                <span class="input-group-text pr-1" style="background-color: white; border-color: white;" >
+                    <span class="pr-1" data-bind="text: $data.name.trimEndChar('.')"></span>
+                    <span class="badge badge-warning" data-bind="text: '- SUSPENDIDO -', visible: !$parent.vm.recordIsClosed() && suspendedDate? true : false"></span>
+                    <span data-bind="visible: $parent.vm.recordIsClosed() && !$parent.vm.isVisibleShowAllDiagnostics(), html: '<strong>' + ' (' + $parent.vm.getStageText($data) + ')' +'</strong>'"></span>
+                </span>
+                     
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="inpatient-diagnostic-mobile">
+    <div class="mt-2">
+        <div class="h5 mt-4">Diagnóstico:
+            <span data-bind="visible: $data.vm.isVisibleHideSuspendedDiagnostics(), click: $data.vm.hideAllSuspendedDiagnosticsAndTreatments" class="badge badge-pill badge-warning">- Ocultar suspendido -</span>
+            <span class="badge badge-primary" data-bind="visible: $data.vm.isVisibleShowAllDiagnostics(), click: $data.vm.showAllDiagnosticsAndTreaments">- Mostrar todos -</span>
+            <span class="badge badge-success" data-bind="click: $data.vm.showACurrentsDiagnosticsAndTreaments, visible: $data.vm.isVisibleShowCurrentDiagnostics()">- Mostrar actuales -</span>
+            <span class="badge badge-secondary" data-bind="click: function(){ $data.vm.switchView('admissionSummary') }, visible: !$data.vm.recordIsClosed()">- Editar -</span>
+        </div>
+
+        <div data-bind="foreach: $data.vm.medicalRecord.diagnostic">
+            <div class="container-fluid mb-2" data-bind="visible: $data.show">
+                <span class="pr-1" style="background-color: white; border-color: white;" data-bind="html: $data.name.trimEndChar('.')"></span> 
+                <span class="badge badge-warning" data-bind="text: '- SUSPENDIDO -', visible: !$parent.vm.recordIsClosed() && suspendedDate? true : false"></span>
+                <div data-bind="visible: $parent.vm.recordIsClosed() && !$parent.vm.isVisibleShowAllDiagnostics(), html: '<strong>' + ' (' + $parent.vm.getStageText($data) + ')' +'</strong>'"></div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="inpatient-treatment">
+	<span class="d-none d-md-block">
+		<div data-bind="template: { name: 'inpatient-treatment-md', data: $data }"></div>
+	</span> 
+
+	<span class="d-block d-md-none">
+		<div data-bind="template: { name: 'inpatient-treatment-mobile', data: $data  }"></div>
+	</span>
+</script>
+
+<script type="text/html" id="inpatient-treatment-md">
+    <div class="mt-2">
+        <div class="h5 mt-4">Tratamiento:
+            <span class="badge badge-pill badge-warning" data-bind="visible: $data.vm.isVisibleHideSuspendedTreatments() && !$data.vm.isAdmissionRecordMode, html: ' - Ocultar suspendido - ', click: $data.vm.hideAllSuspendedDiagnosticsAndTreatments"></span> 
+            <span class="badge badge-primary" data-bind="visible: $data.vm.isVisibleShowAllTreatments() && !$data.vm.isAdmissionRecordMode, text: '- Mostrar todos -', click: $data.vm.showAllDiagnosticsAndTreaments"></span>
+            <span class="badge badge-success" data-bind=" visible: $data.vm.isVisibleShowCurrentTreatments() && !$data.vm.isAdmissionRecordMode, text: '- Mostrar actuales -', click: $data.vm.showACurrentsDiagnosticsAndTreaments"></span>
+            <span class="badge badge-info" data-bind="visible: !$data.vm.isAdmissionRecordMode && $data.vm.medicalRecord.stage === 2, click: $data.vm.setSkippableInternmentDiagnosticsAndTreatments">- Activar reordenar en la nota de ingreso -</span>
+            <span class="badge badge-primary" data-bind="visible: $data.vm.isAdmissionRecordMode && $data.vm.medicalRecord.stage === 2, click: $data.vm.reSetSkippableInternmentDiagnosticsAndTreatments">- Deactivar reordenar en la nota de ingreso -</span>
+            <span class="badge badge-secondary" data-bind="visible: !$data.vm.recordIsClosed(), text: '- Editar -', click: function(){ $data.vm.switchView('admissionSummary') }"></span>
+        </div>
+
+        <div data-bind="foreach: $data.vm.medicalRecord.treatment ">
+            <div class="input-group" data-bind="visible: $data.show">
+                <!-- Move row -->
+                <div class="input-group-text" style="background-color: white; border-color: white;" data-bind="visible: $parent.vm.medicalRecord.treatment.length > 1 && $parent.vm.medicalRecord.stage !== 3">
+                    <a href="#" role="button" class="btn-outline-success mr-3" data-bind="event: { click: function(data, event){ $parent.vm.moveUp($parent.vm.medicalRecord.treatment, data)}}"><i class="fas fa-chevron-circle-up"></i></a>		    
+                    <a href="#" role="button" class="btn-outline-success" data-bind="event: { click: function(data, event){ $parent.vm.moveDown($parent.vm.medicalRecord.treatment, data)}}"><i class="fas fa-chevron-circle-down"></i></a>
+                </div>
+
+                <!-- Check visible/no visible in inpatients reports -->
+                <span data-bind="visible:  $parent.vm.medicalRecord.stage !== 3">
+                    <span>[</span>
+                    <span data-bind="visible: !$data.visibleInInpatientsReport || $data.suspendedDate, style: { 'pointer-events': $data.suspendedDate ? 'none' : '', opacity:  $data.suspendedDate ? 0.5 : '' }">
+                        <button class="btn btn-link btn-sm pr-0 pl-0" href="#" data-bind="click: function() { $data.visibleInInpatientsReport = true }"> 
+                            <!-- <i class="text-success fas fa-check"></i> -->
+                            <i class="far fa-copy"></i>
+                            <i class="text-danger far fa-eye-slash"></i>
+                        </button>	
+                    </span>
+
+                    <span data-bind="visible: $data.visibleInInpatientsReport  && !$data.suspendedDate, style: { 'pointer-events': suspendedDate ? 'none' : '', opacity:  $data.suspendedDate ? 0.5 : '' }"> 
+                        <button class="btn btn-link btn-sm pr-0 pl-0" href="#" data-bind="click: function() {  $data.visibleInInpatientsReport = false }"> 
+                            <!-- <i class="text-danger fas fa-ban"></i> -->
+                            <i class="far fa-copy"></i>
+                            <i class="text-success far fa-eye"></i>
+                        </button>	
+                    </span>
+                    <span>]</span>
+                </span>
+
+                <span class="input-group-text pr-0" style="background-color: white; border-color: white;" data-bind="class: !$data.visibleInInpatientsReport || $data.suspendedDate? 'text-muted' : ''  ">
+                    <span class="pr-1" data-bind="html: $data.name.trimEndChar('.') + ' ' + ($data.getCurrentDosageString()?   '(' + '<i>' + $data.getCurrentDosageString()  + '</i>' + ') ' : '')  +  $parent.vm.getAdministrarionWayString($data) +  ($data.recordStage !== 3 ? ' [' + $data.getTime($parent.vm.medicalRecord.getEgressDateTimeUtcString()) + ']' : '')"></span>
+                    <span class="badge badge-warning" data-bind="text: '- SUSPENDIDO -', visible: !$parent.vm.recordIsClosed() && suspendedDate? true : false"></span>
+                    <span data-bind="visible: $parent.vm.recordIsClosed() && !$parent.vm.isVisibleShowAllTreatments(), html: '<strong>' + '(' + $parent.vm.getStageText($data) + ')' +'</strong>'"></span>                    
+                </span>
+            </div>
+        </div>
+    </div> 
+</script>
+
+<script type="text/html" id="inpatient-treatment-mobile">
+    <div class="mt-2">
+        <div class="h5 mt-4">Tratamiento:
+            <span class="badge badge-pill badge-warning" data-bind="html: '- Ocultar suspendido -', visible: $data.vm.isVisibleHideSuspendedTreatments(), click: $data.vm.hideAllSuspendedDiagnosticsAndTreatments"></span> 
+            <span class="badge badge-primary" data-bind="html: '- Mostrar todos -', visible: $data.vm.isVisibleShowAllTreatments(), click: $data.vm.showAllDiagnosticsAndTreaments"></span>
+            <span class="badge badge-success" data-bind="html: '- Mostrar actuales -', click: $data.vm.showACurrentsDiagnosticsAndTreaments, visible: $data.vm.isVisibleShowCurrentTreatments()"></span>
+            <span class="badge badge-secondary" data-bind="html: '- Editar -', click: function(){ $data.vm.switchView('admissionSummary') }, visible: !$data.vm.recordIsClosed()"></span>
+        </div>
+        
+        <div data-bind="foreach: $data.vm.medicalRecord.treatment">
+            <div class="container-fluid mb-2" data-bind="visible: $data.show">
+                <span style="background-color: white; border-color: white;" data-bind="html: name.trimEndChar('.') + ' ' + (getCurrentDosageString()?   '(' + '<i>' + getCurrentDosageString()  + '</i>' + ') ' : '')  +  $parent.vm.getAdministrarionWayString($data) +  ($data.recordStage !== 3 ? ' [' + $data.getTime($parent.vm.medicalRecord.getEgressDateTimeUtcString()) + ']' : '')"></span>
+                <span class="badge badge-warning" data-bind="text: '- SUSPENDIDO -', visible: !$parent.vm.recordIsClosed() && suspendedDate? true : false"></span>
+                <div data-bind="visible: $parent.vm.recordIsClosed() && !$parent.vm.isVisibleShowAllTreatments(), html: '<strong>' + '(' + $parent.vm.getStageText($data) + ')' +'</strong>'"></div>
+            </div>
+        </div>
+    </div> 
+</script>
+
+<script type="text/html" id="notes" class="collapse show" style="">
+    <section class="mt-3" data-bind="visible: $data.vm.medicalRecord.notes && $data.vm.medicalRecord.stage !== 3">
+        <div class="card flex-column align-items-star bg-light">
+            <div class="h5 card-header mb-0">
+                <a role="button" data-toggle="collapse" data-target="#notes" aria-expanded="false" aria-controls="notes">
+                    <i class="fas fa-angle-double-right"></i>
+                    <span class="h5"> Notas: </span> <span class="badge badge-secondary" data-bind="click: function() { $data.vm.switchView('admissionSummary') }, visible: !$data.vm.recordIsClosed()">- Editar -</span>
+                </a>
+            </div>
+
+            <div id="notes" class="collapse" aria-labelledby="notes">
+                <div class="card-body">  
+                    <div data-bind="html: $data.vm.medicalRecord.maybeOfNotesString()"></div>        
+                </div>
+            </div>
+        </div>
+    </section>
+</script>
+
+<script type="text/html" id="patient-controls">
+	<div class="mt-3">
+            
+        <div class="h5 text-uppercase text-center">Controles</div>
+        <hr>
+                
+		<div class="row mt-3 mb-1">	
+			<div class="col-md-12">
+                <div class="h6 text-uppercase font-weight-bold">Controles habituales</div>
+                <div data-bind="template: { name: 'custom-patient-controls', data: { vm: $data.vm, kind: 'routine' }  }"></div>
+			</div>
+        </div>   
+
+		<div class="row mt-3 mb-1">	
+			<div class="container-fluid">
+				<div class="form-check form-check-inline mb-1">     
+					<label class="form-check-label">    
+						&nbsp;Balance hídrico&nbsp;        
+					</label>
+					<input class="form-check-input" type="checkbox" data-bind="checked: $data.vm.medicalRecord.fluidBalance">    
+				</div>
+
+				<div class="form-check form-check-inline mb-1">     
+					<label class="form-check-label">    
+						&nbsp;Diuresis horaria&nbsp;        
+					</label>
+					<input class="form-check-input" type="checkbox" data-bind="checked: $data.vm.medicalRecord.hourlyDiuresis">    
+				</div>
+
+				<div class="form-check form-check-inline mb-1">     
+					<label class="form-check-label">    
+						&nbsp;Diuresis media horaria&nbsp;        
+					</label>
+					<input class="form-check-input" type="checkbox" data-bind="checked: $data.vm.medicalRecord.hourlyMeanDiuresis">    
+				</div>
+			
+				<div class="form-check form-check-inline mb-1">     
+					<label class="form-check-label">    
+						&nbsp;Curva térmica&nbsp;        
+					</label>
+					<input class="form-check-input" type="checkbox" data-bind="checked: $data.vm.medicalRecord.timeTemperatureCurve">    
+				</div>
+			</div>			
+        </div>  
+                
+		<div class="row mt-2 mb-1">	
+			<div class="col-md-12">
+                <div class="h6 text-uppercase font-weight-bold">Otros controles especiales</div>
+
+                <div data-bind="template: { name: 'custom-patient-controls', data: { vm: $data.vm, kind: 'special' }  }"></div>
+			</div>
+        </div>   
+	</div>
+</script>
+
+<script type="text/html" id="custom-patient-controls">
+	<div class="mt-3">        
+        <div class="row">	
+            <div class="col-12 mt-2">  
+                <div data-bind="foreach: $data.vm.medicalRecord.controls">		
+                    <div data-bind="visible: $data.controlType === $parent.kind">
+                        <div class="input-group">
+      
+                            <div class="input-group-text" style="background-color: white; border-color: lightgray;" data-bind="class: ($parent.vm.medicalRecord.controls.filter(x => x.controlType === $parent.kind).length < 2) ? 'disabled-cont': ''">
+                                <a href="#" role="button" class="btn-outline-success mr-3" data-bind="event: { click: function(data, event){ $parent.vm.moveUpControl($parent.vm.medicalRecord.controls, data, $parent.kind)}}"><i class="fas fa-chevron-circle-up"></i></a>		    
+                                <a href="#" role="button" class="btn-outline-success" data-bind="event: { click: function(data, event){ $parent.vm.moveDownControl($parent.vm.medicalRecord.controls, data, $parent.kind)}}"><i class="fas fa-chevron-circle-down"></i></a>
+                            </div>
+
+                            <div class="input-group-text"  style="background-color: white">    
+                                <a href="#"  role="button" class="btn-outline-danger" data-bind="click: $parent.vm.removeControl"><i class="fas fa-times"></i></a>		    
+                            </div>
+
+                            <input class="form-control" data-bind="textInput: $data.name, attr:{ list: $parent.kind + 'ControlList' }, style: { 'background-color': $data.name? '' : 'rgb(255,255,153)' }" placeholder="Nombre">
+                       
+                            <div class="input-group-append" data-bind="visible: $data.name">
+                                <div class="input-group-text">
+                                    <input type="checkbox" data-bind="checked: $data.active">    
+                                </div>		 
+                            </div>
+                        </div> 
+
+                        <input class="form-control mb-3" data-bind="textInput: $data.note, enable: $data.name" placeholder="Nota breve, sí aplica...">
+                    </div>
+                </div>
+            </div> 
+        </div>
+
+        <div class="row mb-2">
+			<div class="col-12">
+				<button class="btn btn-primary btn-sm" data-bind="click: function() { $parent.vm.addControl($data.kind) }, enable: !$parent.vm.isAnyControlEmpty($parent.vm.medicalRecord.controls)"><i class="fas fa-plus"></i> Agregar</button>
+			</div>
+		</div>  			
+    </div>
+  
+    <datalist id="routineControlList">
+        <option value="SV C/hora"></option>  
+        <option value="SV C/2 horas"></option>
+        <option value="SV C/4 horas"></option>
+    </datalist>
+
+    <datalist id="specialControlList">
+        <option value="Peso diario"></option>
+        <option value="Perímetro abdominal"></option>
+        <option value="Perímetro cefálico"></option>
+    </datalist>
+</script>
+
+<script type="text/html" id="others-Therapy">
+	<div class="mt-4 mb-2">
+        <div class="h5 text-uppercase text-center font-weight-bold">Otras ordenes terapéuticas</div>
+        <hr>
+                
+        <div class=row>
+            <div class="col-lg-6 col-mb-12">
+                <div class="row mb-2">	
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text d-flex align-items-start">Dieta</div>
+                            </div>
+                            <textarea type="text" rows="1" class="form-control  auto-expand" data-bind="textInput: $data.vm.medicalRecord.diet, style: { 'background-color': $data.vm.medicalRecord.diet? 'white' : 'rgb(255,255,153)' }"></textarea>
+                        </div>
+                    </div>
+                </div> 
+
+                <div class="row mb-2">	
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text d-flex align-items-start">Actividad física</div>
+                            </div>
+                            <textarea type="text" rows="1" class="form-control auto-expand" data-bind="textInput: $data.vm.medicalRecord.physicalActivity, style: { 'background-color': $data.vm.medicalRecord.physicalActivity? 'white' : 'rgb(255,255,153)' }"></textarea>
+                        </div>
+                    </div>
+                </div> 
+
+                <div class="row mb-2">	
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text d-flex align-items-start">Postura</div>
+                            </div>
+                            <textarea type="text" rows="1" class="form-control auto-expand" data-bind="textInput: $data.vm.medicalRecord.position, style: { 'background-color': $data.vm.medicalRecord.position? 'white' : 'rgb(255,255,153)' }"></textarea>
+                        </div>
+                    </div>
+                </div> 
+                
+                 <div class="row mb-2">	
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text d-flex align-items-start">Curas</div>
+                            </div>
+                            <textarea type="text" rows="1" class="form-control auto-expand" data-bind="textInput: $data.vm.medicalRecord.cures, style: { 'background-color': $data.vm.medicalRecord.cures? 'white' : 'rgb(206,248,206)' }"></textarea>
+                        </div>
+                    </div>
+                </div>                  
+            </div>   
+
+            <div class="col-lg-6 col-mb-12">
+                <div class="row mb-2">	
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text d-flex align-items-start">Oxígeno</div>
+                            </div>
+                            <textarea type="text" rows="1" class="form-control auto-expand" data-bind="textInput: $data.vm.medicalRecord.oxygenTherapy, style: { 'background-color': $data.vm.medicalRecord.oxygenTherapy? 'white' : 'rgb(206,248,206)' }"></textarea>
+                        </div>
+                    </div>
+                </div> 
+
+                <div class="row mb-2">	
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text d-flex align-items-start">Fisioterapia respiratoria</div>
+                            </div>
+                            <textarea type="text" rows="1" class="form-control auto-expand" data-bind="textInput: $data.vm.medicalRecord.chestPhysiotherapy, style: { 'background-color': $data.vm.medicalRecord.chestPhysiotherapy? 'white' : 'rgb(206,248,206)' }"></textarea>
+                        </div>
+                    </div>
+                </div> 
+
+                <div class="row mb-2">	
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text d-flex align-items-start">Sondas</div>
+                            </div>
+                            <textarea type="text" rows="1" class="form-control auto-expand" data-bind="textInput: $data.vm.medicalRecord.catheters, style: { 'background-color': $data.vm.medicalRecord.catheters? 'white' : 'rgb(206,248,206)' }"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-2">	
+                    <div class="col-md-12">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text d-flex align-items-start">Drenajes</div>
+                            </div>
+                            <textarea type="text" rows="1" class="form-control auto-expand" data-bind="textInput: $data.vm.medicalRecord.drains, style: { 'background-color': $data.vm.medicalRecord.drains? 'white' : 'rgb(206,248,206)' }"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>    
+        </div> 
+
+		<div class="row mb-2">	
+			<div class="col-md-12">
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text d-flex align-items-start">Nebulización</span>
+					</div>
+					<textarea type="text" rows="1" class="form-control auto-expand" data-bind="textInput: $data.vm.medicalRecord.nebulization, style: { 'background-color': $data.vm.medicalRecord.nebulization? 'white' : 'rgb(206,248,206)' }" placeholder="Ejemplo: Salbutamol: 0.5ml/3ml | Budesonide: un vial/2ml" ></textarea>
+				</div>
+			</div>
+        </div> 
+        
+		<div class="row mb-2">	
+			<div class="col-md-12">
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text d-flex align-items-start">Otros</span>
+					</div>
+					<textarea type="text" rows="1"  class="form-control auto-expand" data-bind="textInput: $data.vm.medicalRecord.othersOrderSets, style: { 'background-color': $data.vm.medicalRecord.othersOrderSets? 'white' : 'rgb(206,248,206)' }"></textarea>
+				</div>
+			</div>
+        </div> 
+	</div>
+</script>
+
+<script type="text/html" id="signs">
+    <article>
+        <div class="h5 mt-4">Firmas:</div>
+
+        <div class="container" data-bind="html: '<strong>Ingreso: </strong>' + (vm.medicalRecord.sign?  vm.medicalRecord.maybeOfAdmissionSingString() : 'NO FIRMADOS') + '.'"></div>
+        <div class="container" data-bind="visible: vm.medicalRecord.stage === 3, html: '<strong>Engreso: </strong>' + vm.medicalRecord.maybeOfEgressSingString() + '.'"></div>
+    </article>
+</script>
+
+<script type="text/html" id="emergencyAdmissionDate">
+    <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label  class="font-weight-bold" for="admissionDate">Fecha de admisión a emergencia</label>
+                    <div class="input-group">
+                        <input class="form-control" id="admissionDate" type="date" data-bind="textInput: $data.vm.medicalRecord.admissionDate, enable: false" required>
+                        <div class="input-group-append">
+                            <input class="form-control" type="time" data-bind="textInput: $data.vm.medicalRecord.admissionTime, enable: false" required>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>    
+</script>
+
+<script type="text/html" id="room">
+    <div class="row mt-2" data-bind="visible: $data.vm.medicalRecord.stage !== 3">
+        <div class="col-xl-10 col-lg-10 col-md-12">
+            <div class="form-group"> 
+                <div class="input-group">
+                    <div class="input-group-append" data-bind="visible: $data.vm.medicalRecord.stage === 2">
+                        <div class="input-group-text"  style="background-color: white" data-bind="visible: $data.vm.medicalRecord.room">              
+                            <a href="" role="button" class="btn-outline-success" data-bind="click: $data.vm.resetRoom"><i class="fas fa-plus"></i></a>		       
+                        </div>
+
+                        <div class="input-group-text" style="background-color: white" data-bind="visible: !$data.vm.medicalRecord.room">
+                            <a href="" role="button" class="btn-outline-success" data-bind="click: $data.vm.undoResetRoom"><i class="fas fa-undo"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="input-group-prepend d-none d-lg-block">
+                        <span class="input-group-text" style="width:135px;">Habitación: </span>
+                    </div>
+
+                    <input class="form-control" type="text" data-bind="visible: $data.vm.medicalRecord.stage === 1, textInput: 'Sala de emergencias', enable: false">
+                    <select class="form-control" style="background-color: white;" id="room-select" data-bind="visible: $data.vm.medicalRecord.stage === 2, options: $data.vm.availableRooms, value: $data.vm.medicalRecord.room, optionsValue:'value', optionsText:'displayName', style: { 'background-color': $data.vm.medicalRecord.room? 'white' : 'rgb(255,255,153)' }"></select>
+                  
+                    <input class="form-control d-none d-sm-block" type="text" placeholder="Cama" style="max-width: 77px;" data-bind="$data.vm.medicalRecord.bed">
+
+                    <div class="input-group-append" data-bind="visible: $data.vm.medicalRecord.stage === 2">
+                        <span class="input-group-text" data-bind="text: $data.vm.medicalRecord.calculateRoomAdmissionTime() "></span>
+                    </div>
+                                   
+                    <button class="btn btn-outline-danger btn-sm ml-2" data-toggle="modal" data-target="#inpatientTransferModal" 
+                    data-bind="click: $data.vm.setInpatientTransferMedicalRecordEdit, visible: true">            
+                        <span class="d-none d-md-block"><i class="fas fa-suitcase-rolling"></i> Traslado interno</span>             
+                        <span class="d-block d-md-none"><i class="fas fa-suitcase-rolling"></i></span>                               
+                    </button>
+                </div>
+            </div>
+        </div>   
+    </div>
+</script>
+
+<div class="modal fade" id="roomAdmissionModal" tabindex="-1" role="dialog" aria-labelledby="roomAdmissionLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="roomAdmissionLabel">Admisión a sala</h5>
+                <button id="btnCloseRoomAdmissionModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <div data-bind="template: { name: &#39;emergencyAdmissionDate&#39;, data: $data }">
+    <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label class="font-weight-bold" for="admissionDate">Fecha de admisión a emergencia</label>
+                    <div class="input-group">
+                        <input class="form-control" id="admissionDate" type="date" data-bind="textInput: $data.vm.medicalRecord.admissionDate, enable: false" required="" disabled="">
+                        <div class="input-group-append">
+                            <input class="form-control" type="time" data-bind="textInput: $data.vm.medicalRecord.admissionTime, enable: false" required="" disabled="">
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>    
+</div>
+
+                <div class="row">
+                    <div class="col-8">
+                        <div class="form-group">
+                            <label class="font-weight-bold" for="roomAdmissionDate">Fecha de admisión a sala</label>
+                            <div class="input-group">
+                                <input class="form-control" id="roomAdmissionDate" type="date" data-bind="textInput:  $data.vm.medicalRecordEdit.roomAdmissionDate" required="">
+                                <div class="input-group-append">
+                                    <input class="form-control" type="time" data-bind="textInput:  $data.vm.medicalRecordEdit.roomAdmissionTime" required="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <label class="font-weight-bold" for="room">Habitación</label>
+                        <div class="input-group-append">
+
+                            <!-- ko if:  $data.vm.medicalRecordEdit.stage === 1 --><!-- /ko -->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="float-right">
+                    <button class="btn btn-primary btn-sm" data-bind="click: function(){ $data.vm.doRoomAdmission() }, enable: $data.vm.canDoRoomAdmission()" disabled="">
+                        <i class="fas fa-check"></i> Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="inpatientTransferModal" tabindex="-1" role="dialog" aria-labelledby="inpatientTransferLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="inpatientTransferLabel">Traslado interno</h5>
+                <button id="btnCloseInpatientTransferModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label class="font-weight-bold" for="roomTransferDate">Fecha de Traslado</label>
+                            <div class="input-group">
+                                <input class="form-control" id="roomTransferDate" type="date" data-bind="textInput:  $data.vm.medicalRecordEdit.adhoDate" required="">
+                                <div class="input-group-append">
+                                    <input class="form-control" type="time" data-bind="textInput: $data.vm.medicalRecordEdit.adhoTime" required="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <label class="font-weight-bold" for="room">Departamento destino</label>
+                        <div class="input-group-append">
+                            <select class="form-control" style="background-color: rgb(255, 255, 153);" id="department-select" data-bind="options: $data.vm.availableDepartments, value: $data.vm.medicalRecordEdit.department, optionsValue:&#39;value&#39;, optionsText:&#39;displayName&#39;, style: { &#39;background-color&#39;: $data.vm.medicalRecordEdit.department? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }"><option value="">Seleccionar</option><option value="Cirugía pediátrica">Cirugía pediátrica</option><option value="Neonatología">Neonatología</option></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" data-bind="visible: $data.vm.medicalRecordEdit.department &amp;&amp; $data.vm.medicalRecord.stage === 2" style="display: none;">
+                    <div class="col">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-prepend d-none d-lg-block">
+                                    <span class="input-group-text" style="width:135px;">Habitación: </span>
+                                </div>
+
+                                <!-- ko if:  $data.vm.medicalRecordEdit.stage === 0 -->
+                                <select class="form-control" style="background-color: rgb(255, 255, 153);" id="transfer-room-select" data-bind="options: $data.vm.availableTransferRooms, value: $data.vm.medicalRecordEdit.room, optionsValue:&#39;value&#39;, optionsText:&#39;displayName&#39;, style: { &#39;background-color&#39;: $data.vm.medicalRecordEdit.room? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }"></select>
+                                <!-- /ko -->
+
+                                <input class="form-control d-none d-sm-block" type="text" placeholder="Cama | Cuna" style="max-width: 200px;" data-bind="$data.vm.medicalRecordEdit.bed">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="float-right">
+                    <button class="btn btn-primary btn-sm" data-bind="click: function(){ $data.vm.doInpatientTransfer() }, enable: $data.vm.canDoInpatientTransfer()" disabled="">
+                        <i class="fas fa-check"></i> Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="egressModal" tabindex="-1" role="dialog" aria-labelledby="egressLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="egressLabel">Dar la de alta</h4>
+                <button id="btnCloseEgressModal" type="button" class="close" data-dismiss="modal" aria-label="Close" data-bind="click: $data.vm.resetEgress">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body" data-bind="visible: !$data.vm.isLoading">
+                
+                <div data-bind="template: { name: &#39;emergencyAdmissionDate&#39;, data: $data }">
+    <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label class="font-weight-bold" for="admissionDate">Fecha de admisión a emergencia</label>
+                    <div class="input-group">
+                        <input class="form-control" id="admissionDate" type="date" data-bind="textInput: $data.vm.medicalRecord.admissionDate, enable: false" required="" disabled="">
+                        <div class="input-group-append">
+                            <input class="form-control" type="time" data-bind="textInput: $data.vm.medicalRecord.admissionTime, enable: false" required="" disabled="">
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>    
+</div>
+
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label class="font-weight-bold" for="egressDate">Fecha de egreso:</label>
+                            <div class="input-group">
+                                <input class="form-control" id="egressDate" type="date" data-bind="textInput: $data.vm.medicalRecordEdit.egressDate" required="">
+                                <div class="input-group-append">
+                                    <input class="form-control" type="time" data-bind="textInput: $data.vm.medicalRecordEdit.egressTime" required="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <label class="font-weight-bold" for="egressType">Tipo de egreso:</label>
+                        <div class="input-group">
+                            <select class="form-control" id="egressType" data-bind="value: $data.vm.medicalRecordEdit.egressType, options: $data.vm.options.egressTypes, optionsValue:&#39;value&#39;, optionsText:&#39;displayName&#39;, style: { &#39;background-color&#39;: $data.vm.medicalRecordEdit.egressType? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" style="background-color: rgb(255, 255, 153);"><option value="">Seleccionar</option><option value="1">De alta médica</option><option value="2">De alta a petición</option><option value="3">Fuga</option><option value="4">Traslado</option><option value="5">Deceso</option></select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div data-bind="visible: $data.vm.medicalRecordEdit.egressType === 4? true: false" style="display: none;">
+                            <label class="font-weight-bold" for="referredTo">Lugar de traslado:</label>
+                            <input class="form-control" id="referredTo" type="text" data-bind="textInput: $data.vm.medicalRecordEdit.referredTo, style: { &#39;background-color&#39;: $data.vm.medicalRecordEdit.referredTo? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" style="background-color: rgb(255, 255, 153);">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" data-bind="visible: $data.vm.medicalRecordEdit.egressType &gt; 0" style="display: none;">
+                    <div class="col-md-12">
+
+                        <div data-bind="template: { name: &#39;diagnosticCurrents&#39;, data: $data }">
+    <div style="margin-top:20px">
+        <div class="h4 mb-3">Diagnóstico actuales:</div>
+        <ul data-bind="foreach: $data.vm.medicalRecord.diagnostic">
+            <li data-bind="visible: suspendedDate? false : true"> 
+                <span class="font-weight-bold" data-bind="text: name">embarazada</span>
+            </li>
+        </ul>       
+    </div>	 
+</div>
+
+                        <div data-bind="template: { name: &#39;diagnosticEgress&#39;, data: $data, if: $data.vm.medicalRecordEdit.egressType != 4 ||  $data.vm.medicalRecordEdit.referredTo }">
+    <div style="margin-top:20px; margin-bottom:20px">	
+
+        <div class="h4 mb-3" data-bind="text: $data.vm.medicalRecordEdit.egressType &lt; 5? &#39;Diagnóstico de egreso:&#39; : &#39;Diagnóstico de deceso:&#39;">Diagnóstico de egreso:</div>
+
+		<div data-bind="foreach: $data.vm.medicalRecordEdit.diagnostic"></div>
+        
+		<div class="row" style="margin-top:10px; margin-left:1px">			
+			<div class="col-12">			
+				<button class="btn btn-primary btn-sm" data-bind="click: function() { $data.vm.addDiagnosticRow($data.vm.medicalRecordEdit) }, enable: $data.vm.canAddDiagnosticOrTreament($data.vm.medicalRecord)"><i class="fas fa-plus"></i> Agregar</button>	
+			</div>		
+        </div>	
+	</div>	
+</div>
+
+                        <div data-bind="template: { name: &#39;choice-inpatient-paraclinics&#39;, data: $data, if: $data.vm.medicalRecordEdit.diagnostic.length &gt; 0 }"></div>
+
+                        <div data-bind="template: { name: &#39;egressComment&#39;, data: $data, if: $data.vm.medicalRecordEdit.diagnostic.length &gt; 0 }, class: $data.vm.canAddDiagnostic($data.vm.medicalRecordEdit)? &#39;&#39; : &#39;disabled-cont&#39;"></div>
+
+                        <div data-bind="template: { name: &#39;choice-inpatient-treatment&#39;, data: $data, if: $data.vm.medicalRecordEdit.diagnostic.length &gt; 0  &amp;&amp; $data.vm.medicalRecordEdit.egressComment }"></div>
+
+                        <div data-bind="template: { name: &#39;treatmentEgress&#39;, data: $data, if: $data.vm.medicalRecordEdit.diagnostic.length &gt; 0 &amp;&amp; $data.vm.medicalRecordEdit.egressComment &amp;&amp; $data.vm.medicalRecord.treatment.some(x =&gt; x.visibleInEgressForm) }, visible: $data.vm.medicalRecordEdit.egressType === 1 || $data.vm.medicalRecordEdit.egressType === 2" style="display: none;"></div>
+
+                        <div data-bind="template: { name: &#39;signEgress&#39;, data: $data, if: $data.vm.medicalRecordEdit.diagnostic.length &gt; 0 &amp;&amp; $data.vm.medicalRecordEdit.egressComment &amp;&amp; $data.vm.medicalRecord.treatment.some(x =&gt; x.visibleInEgressForm) }"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div>
+                    <button class="btn btn-primary btn-sm" data-bind="click: function(){ $data.vm.doEgress() }, enable: $data.vm.canDoEgress()" disabled="">
+                        <i class="fas fa-check"></i>
+                        <span> Guardar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="cancelAdmissionModal" tabindex="-1" role="dialog" aria-labelledby="cancelAdmissionLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelAdmissionLabel">Anular ingreso</h5>
+                <button id="btnCloseCancelAdmissionModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div data-bind="template: { name: &#39;emergencyAdmissionDate&#39;, data: $data }">
+    <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label class="font-weight-bold" for="admissionDate">Fecha de admisión a emergencia</label>
+                    <div class="input-group">
+                        <input class="form-control" id="admissionDate" type="date" data-bind="textInput: $data.vm.medicalRecord.admissionDate, enable: false" required="" disabled="">
+                        <div class="input-group-append">
+                            <input class="form-control" type="time" data-bind="textInput: $data.vm.medicalRecord.admissionTime, enable: false" required="" disabled="">
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>    
+</div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label class="font-weight-bold" for="canceledDate">Fecha de cancelacion de ingreso</label>
+
+                            <div class="input-group">
+                                <input class="form-control" id="canceledDate" type="date" data-bind="textInput:  $data.vm.medicalRecordEdit.canceledDate" required="">
+                                <div class="input-group-append">
+                                    <input class="form-control" type="time" data-bind="textInput:  $data.vm.medicalRecordEdit.canceledTime" required="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+           <div class="modal-footer">
+                <div class="float-right">
+                    <button class="btn btn-primary btn-sm" data-bind="click: function(){ $data.vm.doCancelAdmission() }, enable: $data.vm.canDoCancelAdmission()" disabled="">
+                        <i class="fas fa-check"></i> Guardar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="diagnosticCurrents">
+    <div style="margin-top:20px">
+        <div class="h4 mb-3">Diagnóstico actuales:</div>
+        <ul data-bind="foreach: $data.vm.medicalRecord.diagnostic">
+            <li data-bind="visible: suspendedDate? false : true"> 
+                <span class="font-weight-bold" data-bind="text: name"></span >
+            </li>
+        </ul>       
+    </div>	 
+</script>
+
+<script type="text/html" id="diagnosticEgress">
+    <div style="margin-top:20px; margin-bottom:20px">	
+
+        <div class="h4 mb-3" data-bind="text: $data.vm.medicalRecordEdit.egressType < 5? 'Diagnóstico de egreso:' : 'Diagnóstico de deceso:'">Diagnóstico de egreso:</div>
+
+		<div data-bind="foreach: $data.vm.medicalRecordEdit.diagnostic">		
+			<div class="row no-gutters" style="margin-top:10px">		
+				<div class="col-10">			
+					<div class="input-group-prepend">		
+						<div class="input-group-text">
+							<a href=""  role="button" class="btn-outline-danger" data-bind="click: function(data) { $parent.vm.removeDiagnosticRow($parent.vm.medicalRecordEdit, data) }"><i class="fas fa-times"></i></a>		
+						</div>					
+						<input class="form-control" data-bind="textInput: $data.name, style: { 'background-color': $data.name? 'white' : 'rgb(255,255,153)' }"  placeholder="Nuevo diagnóstico" />				
+					</div>				
+                </div>
+                                
+                <div class="col-2">		
+                    <input class="form-control" data-bind="textInput: $data.code"  placeholder="Códigos CIE" />				                            
+                </div>
+			</div>
+		</div>
+        
+		<div class="row" style="margin-top:10px; margin-left:1px">			
+			<div class="col-12">			
+				<button class="btn btn-primary btn-sm"  data-bind="click: function() { $data.vm.addDiagnosticRow($data.vm.medicalRecordEdit) }, enable: $data.vm.canAddDiagnosticOrTreament($data.vm.medicalRecord)"><i class="fas fa-plus"></i> Agregar</button>	
+			</div>		
+        </div>	
+	</div>	
+</script>
+
+<script type="text/html" id="choice-inpatient-paraclinics">
+    <hr>
+                    
+    <div class="h4 mb-3">Paraclínicos:</div>
+
+    <div style="height:233px; overflow-y: auto; overflow-x: hidden;" data-bind="topscroll: 0">
+
+        <div style="margin-top:20px">
+            <span class="h5">Cultivos:</span><span data-bind="visible: $data.vm.getCultures().length < 1"> no realizados</span>
+        
+            <div data-bind="template: { name: 'content-results', data: $data.vm.getCultures()}"></div>
+        </div>
+
+        <div style="margin-top:20px">
+            <span class="h5">Laboratorios:</span><span data-bind="visible: $data.vm.getLaboratories().length < 1"> no realizados</span>
+
+            <div data-bind="template: { name: 'content-results', data: $data.vm.getLaboratories()}"></div>
+        </div>
+
+        <div style="margin-top:20px">
+            <span class="h5">Imágenes:</span><span data-bind="visible: $data.vm.getImages().length < 1"> no realizados</span>
+
+            <div data-bind="template: { name: 'content-results', data: $data.vm.getImages()}"></div>
+        </div>
+
+        <div style="margin-top:20px">
+            <span class="h5">Estudios:</span><span data-bind="visible: $data.vm.getStudies().length < 1"> no realizados</span>
+
+            <div data-bind="template: { name: 'content-results', data: $data.vm.getStudies()}"></div>
+        </div>
+    </div>
+
+    <hr>
+</script>
+
+<script type="text/html" id="content-results">
+    <ul data-bind="foreach: $data">
+        <li style="margin-bottom:7px; margin-top: 7px">
+            <span class="font-weight-bold" data-bind="text: name + ' (' + $parents[1].vm.getNormalizedDateString ($data.doneDate, $data.doneTime, false) + ')'"></span>
+            <span class="text-uppercase" data-bind="html: marker? ' [' +  `<strong>${marker}</strong>` + ']' : ''"></span>
+            <p class="container pt-1" data-bind="html: $data.maybeOfContentString()"></p>
+        </li>
+    </ul>
+</script>
+
+<script type="text/html" id="egressComment">
+    <article>          
+        <div class="h4 mb-3" data-bind="text: $data.vm.medicalRecordEdit.egressType < 5? 'Comentario de egreso:' : 'Comentario:'">Comentario de egreso:</div>
+                           
+        <textarea class="form-control auto-expand" style="margin-top:10px" data-bind="enable: $data.vm.medicalRecordEdit.diagnostic.length > 0, textInput: $data.vm.medicalRecordEdit.egressComment, style: { 'background-color': $data.vm.medicalRecordEdit.egressComment || $data.vm.medicalRecordEdit.diagnostic.length < 1 ? '' : 'rgb(255,255,153)' }, attr:{ placeholder: $data.vm.medicalRecordEdit.egressType < 5 ? 'Condiciones del paciente al egreso, hallazgos, estudios y procedimientos que fundamentaron el diagnóstico final, etc.' : 'Comentario...'}" rows="2"></textarea>		
+    </article>  
+
+    <hr>
+</script>
+
+<script type="text/html" id="choice-inpatient-treatment">
+
+    <div class="h4 mb-2">Tratamiento intrahospitalario:</div>
+
+    <strong class="mb-2">Por favor seleccione los tratamiento que desea figuren en el formulario de egreso.</strong>
+
+    <div style="color: transparent;">Hacking</div>
+
+    <div style="height:233px; overflow-y: auto; overflow-x: hidden;" data-bind="topscroll: 0">
+        <div data-bind="foreach: $data.vm.medicalRecord.treatment">
+            <div class="input-group-prepend">	
+                <div class="input-group-text" style="background-color: white; border-color: white">
+                    <input type="checkbox" data-bind="checked: $data.visibleInEgressForm"> 
+                </div>	 
+
+                <div class="input-group-text" style="background-color: white; border-color: white">     
+                    <span  data-bind="text: name + ' ' + getCurrentDosageString()  + ' '  + $parents[0].vm.options.treatmentAdministrations.find(x => x.value === administration).displayName  + ' [' + getTime($parents[0].vm.medicalRecord.getEgressDateTimeUtcString()) + ']'"></span><span> </span><span class="badge badge-pill badge-warning"  data-bind="visible: suspendedDate? true : false"> - SUSP -</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="treatmentEgress">
+    <article style="margin-top:20px">		
+		<div class="h4 mb-3">Tratamiento ambulatorio:</div>	
+
+		<div data-bind="foreach: $data.vm.medicalRecordEdit.treatment">			
+			<div class="list-group" style="margin-top:10px">
+				<div class="list-group-item list-group-item-light" >			
+					<div class="input-group-prepend">			
+						<div class="input-group-text">
+							<a href=""  role="button" class="btn-outline-danger" data-bind="click: function(data) { $parent.vm.removeTreatmentRow($parent.vm.medicalRecordEdit, data) }"><i class="fas fa-times"></i></a>		
+						</div>					
+						<input class="form-control" data-bind="textInput: $data.name, style: { 'background-color': $data.name? '' : 'rgb(255,255,153)' }"  placeholder="Nuevo tratamiento" />	
+						
+						<div class="input-group-append">
+							<select id="treatmentAdministrations-select" class="form-control" data-bind="value: $data.administration, options: $parent.vm.options.treatmentAdministrations, optionsValue:'value', optionsText:'displayName', style: { 'background-color': $data.administration !== null? '' : 'rgb(255,255,153)' }"></select>
+                        </div>
+                    </div>	
+
+                    <!-- <input  class="form-control mt-1" data-bind="visible: isDrug, value: $data.presentation, style: { 'background-color': $data.presentation? '' : 'rgb(255,255,153)' }" placeholder="Presentación">
+                    <div class="input-group-append mt-2" data-bind="visible: isDrug">                    
+						<input  class="form-control" data-bind="value: $data.dosage, enable: $data.presentation, style: { 'background-color': $data.dosage || !$data.presentation? '' : 'rgb(255,255,153)' }" placeholder="Dosificación">
+						<input  class="form-control" data-bind="value: $data.dose, enable: $data.dosage" placeholder="Dosis">
+                        <input  class="form-control" data-bind="value: $data.frequency, enable: $data.dose" placeholder="Frecuencia">
+					</div>	
+                    <textarea class="form-control auto-expand" style="margin-top:10px" data-bind="visible: $data.administration, textInput: $data.note" rows="1" placeholder="Indicación de uso..."></textarea>		 -->
+				</div>			
+			</div>
+		</div>
+			
+		<div class="row" style="margin-top:10px; margin-left:1px">				
+			<div class="col12">				
+				<button class="btn btn-primary btn-sm"  data-bind="click: function() { $data.vm.addTreatmentRow($data.vm.medicalRecordEdit) }, enable: !$data.vm.isAnyTreatmentRowEmpty($data.vm.medicalRecordEdit) && !$data.vm.hasTreatmentDuplicates($data.vm.medicalRecordEdit) && $data.vm.medicalRecordEdit.diagnostic.length > 0 && !$data.vm.isAnyDiagnosticRowEmpty($data.vm.medicalRecordEdit)"><i class="fas fa-plus"></i> Agregar</button>	
+			</div>		
+		</div>		
+		<hr>	
+	</article>	
+</script>
+
+<script type="text/html" id="signEgress">
+    <article class="mt-1 mb-2">
+        <div class="row mt-4">
+    
+            <div class="col-6" style="font-size: 20px;">
+                <div class="text-center"></div>
+            </div>
+    
+            <div class="col-6" style="font-size: 20px;">
+                                
+                <div class="h4">Firma</div>
+                <hr>
+
+                <textarea class="form-control auto-expand" data-bind="enable: $data.vm.medicalRecordEdit.egressComment, textInput: $data.vm.medicalRecordEdit.signEgress, style: { 'background-color': $data.vm.medicalRecordEdit.signEgress || !$data.vm.medicalRecordEdit.egressComment ? '' : 'rgb(255,255,153)' }" placeholder="Dr. Fulano&#10;Dr. Mengano&#10;Dr. Etcétera" rows="3"></textarea>
+            </div>
+        </div>
+    </article>
+</script>
+
+<!-- Print section -->
+<!-- https://medium.com/@Idan_Co/the-ultimate-print-html-template-with-header-footer-568f415f6d2a -->
+<!-- https://www.jotform.com/blog/css-perfect-print-stylesheet-98272/ -->
+<style>
+    .header,
+    .header-space {
+        height: 120px;
+    }
+
+    .footer,
+    .footer-space {
+        height: 40px;
+    }
+
+    .header {
+        position: fixed;
+        top: 0;
+    }
+
+    .footer {
+        position: fixed;
+        bottom: 0;
+    }
+</style>
+
+<div class="d-none d-print-block">
+    <div data-bind="template: { name: $data.vm.printViewName, data: $data }">
+    <div data-bind="template: { name: &#39;stamped-sheet&#39;, data: $data }">
+    <table>
+        <thead>
+            <tr>
+                <td>
+                    <div class="header-space">&nbsp;</div>
+                    <div style="color: transparent;">Hacking</div>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <div class="text-center font-italic" style="font-size: 20px;" data-bind="text: $data.vm.getYearName($data.vm.medicalRecord.admissionDate)"></div>
+
+                    <div class="content">
+                        <div data-bind="template: { name: $data.vm.printViewName + &#39;-content&#39;, data: $data }">
+    <div class="container mt-2">
+                            
+        <h3 class="text-center text-uppercase">Departamento de Pediatría</h3>
+
+        <h4 class="text-center">Nota de ingreso</h4>
+                                
+        <h5 class="text-center" data-bind="text: $data.vm.getNormalizedDate($data.vm.medicalRecord.admissionDate, $data.vm.medicalRecord.admissionTime).date">23-10-2021</h5>              
+                            
+        <h5 class="text-center" data-bind="text: $data.vm.getNormalizedDate($data.vm.medicalRecord.admissionDate, $data.vm.medicalRecord.admissionTime).time">05:36 PM</h5>
+                                 
+        <h3 class="text-center text-uppercase" data-bind="text: $data.vm.medicalRecord.firstName + &#39; &#39; + $data.vm.medicalRecord.lastName">dfosnofslfkgjsf sfgsfgs</h3>         
+    </div>
+                                        
+    <div class="container mt-4" style="font-size: 20px;">       
+        <div class="mb-3 text-justify" data-bind="text: $data.vm.processedGeneralData">Se trata de paciente femenina de 35 años de edad, natural de santo domingo  y residente en la isabela, quien llega vía emergencia por presentar:</div>
+        <div data-bind="foreach: $data.vm.medicalRecord.processChiefComplaintRows()">
+            <div class="mb-2 text-justify">
+                <span class="font-weight-bold" data-bind="text: ($index() +1) + &#39;) &#39; + text + &#39;: &#39;">1) dolor adominal: </span><span data-bind="text: description">de 01 día de evolución, estomago  inflamado </span> 
+            </div>
+        </div>
+    </div>
+                                       
+    <div class="container mt-4" data-bind="visible: $data.vm.medicalRecord.perinatalMedicalHistory" style="display: none;">         
+        <h4 class="mb-3 text-center"><u>Antecedentes Perinatales</u></h4>
+
+        <div class="text-justify" style="font-size: 20px;">               
+            <div data-bind="html: $data.vm.medicalRecord.perinatalMedicalHistory"></div>         
+        </div>
+    </div>                            
+                                                    
+    <div class="container mt-4">                  
+        <h4 class="mb-3 text-center"><u>Antecedentes Personales Patológicos</u></h4>
+
+        <div class="text-justify" style="font-size: 20px;">
+            <div data-bind="html: $data.vm.medicalRecord.pastMedicalHistory"></div>     
+        </div>         
+    </div>
+                                                
+    <div class="container mt-4">                 
+        <h4 class="mb-3 text-center"><u>Antecedentes Heredo-Familiar</u></h4>
+                      
+        <div class="text-justify" style="font-size: 20px;">         
+            <div data-bind="html: $data.vm.medicalRecord.maybeOfFamilyHistoryContentString()"></div>             
+        </div>         
+    </div>
+              
+    <div class="container mt-4">           
+        <h4 class="mb-3 text-center"><u>Esquema de Inmunización</u></h4>
+                     
+        <div class="text-justify" style="font-size: 20px;">                 
+            <div data-bind="html: $data.vm.medicalRecord.immunization"></div>
+        </div>       
+    </div>
+                       
+    <div class="container mt-4 mb-4">          
+        <h4 class="mb-3 mt-4 text-center"><u>Examen Físico</u></h4>
+
+        <div class="text-justify" style="font-size: 20px;">
+            <div data-bind="html: $data.vm.medicalRecord.maybeOfPhysicalExaminationContentString()"></div>     
+        </div>     
+    </div>
+
+    <div class="container text-center mt-4">                   
+        <h4 class="mb-2"><u>Diagnóstico:</u></h4>
+        <!-- adhoc @lomina -->
+        <div data-bind="foreach: $data.vm.medicalRecord.diagnostic.slice().filter(x =&gt; x.recordStage === 1).sort((a,b)=&gt; a.ordinal - b.ordinal)" style="font-size: 20px;">                      
+            <div class="mb-1">               
+                <span data-bind="text: name + &#39;.&#39;">embarazada.</span>          
+            </div>               
+        </div>   
+        <!-- adhoc @lomina -->
+    </div>
+                                                
+    <div class="container text-center mt-4 mb-4">              
+        <h4 class="mb-2"><u>Tratamiento:</u></h4>
+        <!-- adhoc @lomina -->
+        <div data-bind="foreach: $data.vm.medicalRecord.treatment.slice().filter(x =&gt; x.recordStage === 1 &amp;&amp; x.visibleInAdmissionForm).sort((a,b)=&gt; a.ordinal - b.ordinal)" style="font-size: 20px;">
+            <div class="mb-1">            
+                <span data-bind="text: name + &#39; &#39; + (getAdmisionDosageString()? &#39;(&#39; + getAdmisionDosageString() + &#39;) &#39; : &#39;&#39;) + $parent.vm.getAdministrarionWayString($data)">ve television </span>
+            </div>
+        </div>   
+        <!-- adhoc @lomina -->
+    </div>
+                   
+    <div class="container mt-4" data-bind="visible: $data.vm.medicalRecord.notes">               
+        <div class="text-justify" style="font-size: 20px;">
+            <div data-bind="html: $data.vm.medicalRecord.maybeOfNotesString()"><div><h5>esto es una prueba</h5>undefined</div></div>
+        </div>
+    </div>
+                  
+    <div class="container mt-4">              
+        <div class="row mt-4" style="margin-top:10px">
+                                    
+            <div class="col-6" style="font-size: 20px;">             
+                <div class="text-center"></div>   
+            </div>   
+
+            <div class="col-6" style="font-size: 20px;">      
+                <div class="text-right" data-bind="html: $data.vm.medicalRecord.maybeOfSingString()">dr yo si soy</div>      
+            </div>              
+        </div>  
+    </div>
+</div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>
+                    <div class="footer-space">&nbsp;</div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="header">
+        <div class="container">
+            <img data-bind="attr: { src: $data.vm.getHospitalLogoPath($data.vm.medicalRecord) }" height="120px" class="float-left" alt="Logo Hospital" src="./xPxApp2_files/hmisllm-horizontal-logo.png">
+            <img data-bind="attr: {src: $data.vm.getDepartmentLogoPath($data.vm.medicalRecord) }" width="120px" class="float-right" alt="Logo Departamento" src="./xPxApp2_files/hmisllm-pediatria-logo.png">
+        </div>
+        <div class="container">
+ 
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <p class="text-center text-muted"><small>Av. San Vicente de Paúl, No. 84, esq. Av. Presidente Estrella Ureña, Los Mina, Sto. Dgo. Este, República Dominicana.</small></p>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+
+<script type="text/html" id="admission-note-print">
+    <div data-bind="template: { name: 'stamped-sheet', data: $data }"></div>
+</script>
+
+<script type="text/html" id="stamped-sheet">
+    <table>
+        <thead>
+            <tr>
+                <td>
+                    <div class="header-space">&nbsp;</div>
+                    <div style="color: transparent;">Hacking</div>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <div class="text-center font-italic"  style="font-size: 20px;" data-bind="text: $data.vm.getYearName($data.vm.medicalRecord.admissionDate)"></div>
+
+                    <div class="content">
+                        <div data-bind="template: { name: $data.vm.printViewName + '-content', data: $data }"></div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>
+                    <div class="footer-space">&nbsp;</div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div class="header">
+        <div class="container">
+            <img data-bind="attr: { src: $data.vm.getHospitalLogoPath($data.vm.medicalRecord) }" height="120px" class="float-left" alt="Logo Hospital">
+            <img data-bind="attr: {src: $data.vm.getDepartmentLogoPath($data.vm.medicalRecord) }"  width="120px" class="float-right" alt="Logo Departamento">
+        </div>
+        <div class="container">
+ 
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <p class="text-center text-muted"><small>Av. San Vicente de Paúl, No. 84, esq. Av. Presidente Estrella Ureña, Los Mina, Sto. Dgo. Este, República Dominicana.</small></p>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="admission-note-print-content">
+    <div class="container mt-2">
+                            
+        <h3 class="text-center text-uppercase">Departamento de Pediatría</h3>
+
+        <h4 class="text-center">Nota de ingreso</h4>
+                                
+        <h5 class="text-center" data-bind="text: $data.vm.getNormalizedDate($data.vm.medicalRecord.admissionDate, $data.vm.medicalRecord.admissionTime).date"></h5>              
+                            
+        <h5 class="text-center" data-bind="text: $data.vm.getNormalizedDate($data.vm.medicalRecord.admissionDate, $data.vm.medicalRecord.admissionTime).time"> </h5>
+                                 
+        <h3 class="text-center text-uppercase" data-bind="text: $data.vm.medicalRecord.firstName + ' ' + $data.vm.medicalRecord.lastName"></h3>         
+    </div>
+                                        
+    <div class="container mt-4" style="font-size: 20px;">       
+        <div class="mb-3 text-justify" data-bind="text: $data.vm.processedGeneralData"></div>
+        <div data-bind="foreach: $data.vm.medicalRecord.processChiefComplaintRows()">
+            <div class="mb-2 text-justify">
+                <span class="font-weight-bold" data-bind="text: ($index() +1) + ') ' + text + ': '"></span><span data-bind="text: description"></span> 
+            </div>
+        </div>
+    </div>
+                                       
+    <div class="container mt-4" data-bind="visible: $data.vm.medicalRecord.perinatalMedicalHistory">         
+        <h4 class="mb-3 text-center"><u>Antecedentes Perinatales</u></h4>
+
+        <div class="text-justify" style="font-size: 20px;">               
+            <div data-bind="html: $data.vm.medicalRecord.perinatalMedicalHistory"></div>         
+        </div>
+    </div>                            
+                                                    
+    <div class="container mt-4">                  
+        <h4 class="mb-3 text-center"><u>Antecedentes Personales Patológicos</u></h4>
+
+        <div class="text-justify" style="font-size: 20px;">
+            <div data-bind="html: $data.vm.medicalRecord.pastMedicalHistory"></div>     
+        </div>         
+    </div>
+                                                
+    <div class="container mt-4">                 
+        <h4 class="mb-3 text-center"><u>Antecedentes Heredo-Familiar</u></h4>
+                      
+        <div class="text-justify" style="font-size: 20px;">         
+            <div data-bind="html: $data.vm.medicalRecord.maybeOfFamilyHistoryContentString()"></div>             
+        </div>         
+    </div>
+              
+    <div class="container mt-4">           
+        <h4 class="mb-3 text-center"><u>Esquema de Inmunización</u></h4>
+                     
+        <div class="text-justify" style="font-size: 20px;">                 
+            <div data-bind="html: $data.vm.medicalRecord.immunization"></div>
+        </div>       
+    </div>
+                       
+    <div class="container mt-4 mb-4">          
+        <h4 class="mb-3 mt-4 text-center"><u>Examen Físico</u></h4>
+
+        <div class="text-justify" style="font-size: 20px;">
+            <div data-bind="html: $data.vm.medicalRecord.maybeOfPhysicalExaminationContentString()"></div>     
+        </div>     
+    </div>
+
+    <div class="container text-center mt-4">                   
+        <h4 class="mb-2"><u>Diagnóstico:</u></h4>
+        <!-- adhoc @lomina -->
+        <div data-bind="foreach: $data.vm.medicalRecord.diagnostic.slice().filter(x => x.recordStage === 1).sort((a,b)=> a.ordinal - b.ordinal)" style="font-size: 20px;">                      
+            <div class="mb-1">               
+                <span data-bind="text: name + '.'"></span>          
+            </div>               
+        </div>   
+        <!-- adhoc @lomina -->
+    </div>
+                                                
+    <div class="container text-center mt-4 mb-4">              
+        <h4 class="mb-2"><u>Tratamiento:</u></h4>
+        <!-- adhoc @lomina -->
+        <div data-bind="foreach: $data.vm.medicalRecord.treatment.slice().filter(x => x.recordStage === 1 && x.visibleInAdmissionForm).sort((a,b)=> a.ordinal - b.ordinal)" style="font-size: 20px;">
+            <div class="mb-1">            
+                <span data-bind="text: name + ' ' + (getAdmisionDosageString()? '(' + getAdmisionDosageString() + ') ' : '') + $parent.vm.getAdministrarionWayString($data)"></span>
+            </div>
+        </div>   
+        <!-- adhoc @lomina -->
+    </div>
+                   
+    <div class="container mt-4" data-bind="visible: $data.vm.medicalRecord.notes">               
+        <div class="text-justify" style="font-size: 20px;">
+            <div data-bind="html: $data.vm.medicalRecord.maybeOfNotesString()"></div>
+        </div>
+    </div>
+                  
+    <div class="container mt-4">              
+        <div class="row mt-4" style="margin-top:10px">
+                                    
+            <div class="col-6" style="font-size: 20px;">             
+                <div class="text-center"></div>   
+            </div>   
+
+            <div class="col-6" style="font-size: 20px;">      
+                <div class="text-right" data-bind="html: $data.vm.medicalRecord.maybeOfSingString()"></div>      
+            </div>              
+        </div>  
+    </div>
+</script>
+
+<style>
+    span[data-content] {
+        position: relative;
+    }
+
+    span[data-content]::after {
+        position: absolute;
+        content: attr(data-content);
+        display: block;
+        font-size: 10px;
+        top: -8px;
+        color: #7a7a7a;
+    }
+
+    .col-4[data-title]::after {
+        display: block;
+        content: attr(data-title);
+        position: absolute;
+        font-size: 10px;
+        color: #7a7a7a;
+        width: 100%;
+        left: 0;
+        text-align: center;
+    }
+</style>
+
+<script type="text/html" id="medical-discharge-print">
+    <header>
+        <div class="row justify-content-space-between">
+            <div class="col text-left">
+                <img width="400px" class="img-fluid" data-bind="attr: { src: $data.vm.getHospitalLogoPath($data.vm.medicalRecord) }" alt="Logo Hospital">
+                <small class="d-block" style="margin-left: 12vh;">RNC-4-30-04237-4</small>
+            </div>
+            <div class="col text-right align-self-center">
+                <img width="120px" class="img-fluid" data-bind="attr: {src: $data.vm.getDepartmentLogoPath($data.vm.medicalRecord) }" alt="Logo Departamento">
+            </div>
+        </div>
+
+        <div class="row mt-2">
+            <div class="col-4 p-2 border border-secondary">
+                <span class="d-block text-center" data-content="No. NSS"></span>
+            </div>
+            <h3 class="col-4 p-2 text-center font-weight-bold">EPICRISIS</h3>
+            <div class="col-4" data-title="Número Historia Clinica">
+                <div class="row">
+                    <div class="col p-2 border border-secondary">
+                        <span class="d-block text-center font-weight-bold h4" data-bind="text: $data.vm.medicalRecord.identifier? $data.vm.medicalRecord.identifier : '&nbsp;'"></span>
+                    </div>
+                    <!-- <div class="col-4 p-2 border border-secondary"><span class="d-block text-center">&nbsp;</span> </div>
+                    <div class="col-4 p-2 border border-secondary"><span class="d-block text-center">&nbsp;</span> </div>
+                    <div class="col-4 p-2 border border-secondary"><span class="d-block text-center">&nbsp;</span> </div> -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <table>
+        <thead>
+            <tr>
+                <td>
+                    <div style=" height: 10px;">&nbsp;</div>
+                    <div style="color: transparent;">Hacking</div>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <div class="content">
+                        <div>
+                            <div data-bind="template: { name: 'medical-discharge-content-print', data: $data }"></div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>
+                    <div style=" height: 30px;">&nbsp;</div>
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <footer class="fixed-bottom"> 
+         <div data-bind="template: { name: 'medical-discharge-sign-print', data: $data }"></div>
+
+        <div class="row mt-5">
+            <div class="col-12 font-weight-bold text-center" style="font-size: 0.9rem">Avenida San Vicente de Paul • Tel.: : 809-699-6666 • Fax.: 809-699--5301 • Santo Domingo Este, Rep. Dom.</div>
+        </div>
+    </footer>
+</script>
+
+<script type="text/html" id="medical-discharge-content-print">
+    <div class="mt-1">
+        <div class="row mt-4">
+            <div class="col-4 p-2 border border-secondary">
+                <span data-content="Apellidos" class="d-block"><span
+                    data-bind="text: $data.vm.medicalRecord.lastName" style="font-size: 23px;">Apellidos</span></span>
+            </div>
+            
+            <div class="col-4 p-2 border border-secondary">
+                <span data-content="Nombre" class="d-block"><span
+                    data-bind="text: $data.vm.medicalRecord.firstName" style="font-size: 23px;">Nombres</span></span>
+            </div>
+
+            <div class="col-2 p-2 border border-secondary">
+                <span data-content="Género" class="d-block text-center"><span
+                    data-bind="text: $data.vm.medicalRecord.gender === 'm'? 'Masculino' : 'Femenino'" style="font-size: 23px;">Edad</span></span>
+            </div>
+
+            <div class="col-2 p-2 border border-secondary">
+                <span data-content="Edad" class="d-block text-center"><span
+                    data-bind="text: $data.vm.medicalRecord.caculateShortAge()"
+                    style="font-size: 23px;">Edad</span></span>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-4 p-2 border border-secondary">
+                <span data-content="Nacionalidad" class="d-block text-center"><span
+                    data-bind="text: $data.vm.medicalRecord.nationality"
+                    style="font-size: 23px;">Nacionalidad</span></span>
+            </div>
+
+            <div class="col-8 p-2 border border-secondary">
+                <div style="font-size: 20px;">
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                            data-bind="checked: $data.vm.medicalRecord.egressType === 1">
+                        <label class="form-check-label" for="inlineCheckbox1">Alta médica</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox1"
+                            data-bind="checked: $data.vm.medicalRecord.egressType === 2">
+                        <label class="form-check-label" for="inlineCheckbox1">Alta a petición</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox3"
+                            data-bind="checked: $data.vm.medicalRecord.egressType === 3">
+                        <label class="form-check-label" for="inlineCheckbox3">Fuga</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox2"
+                            data-bind="checked: $data.vm.medicalRecord.egressType === 4">
+                        <label class="form-check-label" for="inlineCheckbox2">Traslado</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="inlineCheckbox4"
+                            data-bind="checked: $data.vm.medicalRecord.egressType === 5">
+                        <label class="form-check-label" for="inlineCheckbox4">Defunción</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-2 p-2 border border-secondary">
+                <span data-content="Fecha de Ingreso" class="d-block text-center"><span
+                        data-bind="text: $data.vm.getNormalizedDateString($data.vm.medicalRecord.admissionDate, $data.vm.medicalRecord.admissionTime, false)"
+                        style="font-size: 20px;"></span></span>
+            </div>
+            <div class="col-2 p-2 border border-secondary">
+                <span data-content="Fecha de Egreso" class="d-block text-center"><span
+                        data-bind="text: $data.vm.getNormalizedDateString ($data.vm.medicalRecord.egressDate, $data.vm.medicalRecord.egressTime, false)"
+                        style="font-size: 20px;"></span></span>
+            </div>
+            <div class="col-2 p-2 border border-secondary">
+                <span data-content="Días de Estadía" class="d-block text-center"><span
+                        data-bind="text: $data.vm.medicalRecord.calculateAdmisionTime()"
+                        style="font-size: 20px;"></span></span>
+            </div>
+            <div class="col-4 p-2 border border-secondary">
+                <span data-content="Especialidad" class="d-block text-center"><span
+                    data-bind="text: $data.vm.medicalRecord.egressDepartment"
+                    style="font-size: 20px;">Departamento</span></span>
+            </div>
+            <div class="col-2 p-2 border border-secondary">
+                <span data-content="Condiciones de Egreso" class="d-block text-center">&nbsp;</span>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-2 p-2 border border-secondary">
+                <div class="d-flex justify-content-center align-items-center h-100">
+                    <span class="text-center d-block font-weight-bold">Diagnóstico de Ingreso</span>
+                </div>
+            </div>
+            <div class="col-8 p-2 border border-secondary border-right-0" style="min-height: 100px;">
+                <span data-content="Diagnóstico" class="d-block text-center">&nbsp;</span>
+                <!-- Lista de diagnósticos -->
+                <div data-bind="foreach: $data.vm.medicalRecord.diagnostic.filter(x => x.recordStage === 1)">
+                    <div class="mb-1">
+                        <span data-bind="text: ($index() +1) + ') ' + name.trimEndChar('.') + '.'"
+                            style="font-size: 17px;"></span>
+                    </div>
+                </div>
+            </div>
+            <!-- border-left-0 a la linea de abajo -->
+            <div class="col-2 p-2 border border-secondary"><span data-content="Codigo CIE"
+                    class="d-block text-center">&nbsp;</span></div>
+        </div>
+    
+        <div class="row">
+            <div class="col-2 p-2 border border-secondary">
+                <div class="d-flex justify-content-center align-items-center h-100">
+                    <span class="text-center d-block font-weight-bold">Diagnóstico de Egreso</span>
+                </div>
+            </div>
+            <div class="col-8 p-2 border border-secondary border-right-0" style="min-height: 100px;">
+                <span data-content="Diagnóstico" class="d-block text-center">&nbsp;</span>
+                <!-- Lista de diagnósticos -->
+                <div
+                    data-bind="foreach: $data.vm.medicalRecord.diagnostic.filter(x => x.recordStage === $data.vm.medicalRecord.stage), visible: $data.vm.medicalRecord.egressType < 5">
+                    <div class="mb-1">
+                        <span data-bind="text: ($index() +1) + ') ' + name.trimEndChar('.') + '.'"
+                            style="font-size: 17px;"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2 p-2 border border-secondary"><span data-content="Codigo CIE"
+                    class="d-block text-center">&nbsp;</span></div>
+        </div>
+    
+        <div class="row">
+            <div class="col-2 p-2 border border-secondary">
+                <div class="d-flex justify-content-center align-items-center h-100">
+                    <span class="text-center d-block font-weight-bold">Hallazgos, estudios y procedimientos que
+                        fundamentaron el Diagnóstico Final</span>
+                </div>
+            </div>
+    
+            <div class="col-10 p-2 border border-secondary" style="min-height: 177px;">
+                <span class="d-block text-center">&nbsp;</span>
+                <!-- Hallazgos, estudios y procedimientos que fundamentaron el Diagnóstico Final-->
+                <div style="font-size: 17px;" data-bind="html: $data.vm.medicalRecord.maybeOfEgressCommentString()"></div>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-2 p-2 border border-secondary">
+                <div class="d-flex justify-content-center align-items-center h-100">
+                    <span class="text-center d-block font-weight-bold">Tratamiento</span>
+                </div>
+            </div>
+    
+            <div class="col-10 p-2 border border-secondary" style="min-height: 100px;">
+                <span class="d-block text-center">&nbsp;</span>
+                <!-- Lista de tratamientos internamiento-->
+                <div data-bind="foreach: $data.vm.medicalRecord.treatment.filter(x => x.visibleInEgressForm)">
+                    <div class="mb-1">
+                        <span
+                            data-bind="text: ($index() +1) + ') ' + name.trimEndChar('.') + ' ' + $parent.vm.options.treatmentAdministrations.find(x => x.value === administration).displayName"
+                            style="font-size: 17px;"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="row">
+            <div class="col-2 p-2 border border-secondary">
+                <div class="d-flex justify-content-center align-items-center h-100">
+                    <span class="text-center d-block font-weight-bold">En caso de Defunción</br><small>(Anotar las Causas)</small></span>
+                </div>
+            </div>
+    
+            <div class="col-8">
+                <div class="row">
+                    <div class="col p-2 border border-secondary border-right-0" style="min-height: 100px;"><span
+                            data-content="Diagnóstico" class="d-block text-center">&nbsp;</span></div>
+                    <!-- Lista de diagnósticos -->
+                    <div
+                        data-bind="foreach: $data.vm.medicalRecord.diagnostic.filter(x => x.recordStage === $data.vm.medicalRecord.stage), visible: $data.vm.medicalRecord.egressType === 5">
+                        <div class="mb-1">
+                            <span data-bind="text: ($index() +1) + ') ' + name.trimEndChar('.') + '.'"
+                                style="font-size: 17px;"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-2 p-2 border border-secondary">
+                <span data-content="Codigo CIE" class="d-block text-center">&nbsp;</span>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="medical-discharge-sign-print">
+    <div class="mt-1">
+        <div class="row mt-5 justify-content-between">
+            <div class="col-4" data-title="Nombre y No. Registro del Paciente">
+                <div class="row">
+                    <div class="col border-bottom border-secondary">
+                        <span>&nbsp;</span>
+                        <!-- Para mantener los mismos espacio que en Nombre y Código Médico Tratante  -->
+                        <span style="color: transparent;"
+                            data-bind="html: $data.vm.medicalRecord.maybeOfEgressSingHtmlString() + '.'"></span>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-4" data-title="Nombre y Código Médico Tratante">
+                <div class="row mt-0 mb-0">
+                    <div class="col border-bottom border-secondary text-center">
+                        <span>&nbsp;</span>
+                        <span data-bind="html: $data.vm.medicalRecord.maybeOfEgressSingHtmlString() + '.'"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script></div>
+	<div data-bind="component: { name:&#39;recordWirzarNavButtons&#39; , params: { vm: $data } }"><nav class="fixed-bottom bg-light py-2 d-print-none" style="">		
+    <footer class="container">	
+        <span class="float-left">	
+            <button id="previous" class="btn btn-primary btn-sm" data-bind="visible: $data.vm.hasPrevious(), click: $data.vm.goPrevious" style="display: none;">
+                <i class="fas fa-angle-double-left"></i><i> Anterior</i>	
+            </button>
+        </span>
+        <span class="float-right">
+            <button id="next" class="btn btn-primary btn-sm" data-bind="visible: $data.vm.hasNext(), click: $data.vm.goNext, enable: $data.vm.canGoNext()" style="display: none;" disabled="">					
+                <i>Continuar </i><i class="fas fa-angle-double-right"></i>			
+            </button>
+        </span>
+        <span class="float-left" data-bind="visible: !$data.vm.hasNext()" style="">
+            <button class="btn btn-primary btn-sm" data-bind="click: $data.vm.doSaveRecord, visible: !$data.vm.recordIsClosed()">
+                <i class="fas fa-check"></i> Guardar
+            </button>
+        </span>
+    </footer>
+</nav></div>
+</section><!-- /ko -->
+
+	<!-- ko if: currentRoute().footer --><!-- /ko -->
+<script type="text/javascript" src="./xPxApp2_files/main.bundle.js.download"></script>
+
+</body></html>

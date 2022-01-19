@@ -5,7 +5,7 @@
     $user_recibido = $_POST["user"];
     $password_recibido = $_POST["pass"];
 
-    $consulta = "SELECT user, contrasena, nombre, id, nombre from usuarios where estado = 1 and user = '$user_recibido' and  contrasena = '$password_recibido'"; 
+    $consulta = "SELECT user, contrasena, nombre, id, rol, nombre from usuarios where estado = 1 and user = '$user_recibido' and  contrasena = '$password_recibido'"; 
     $query = $conexion->query($consulta);
     $usuario = $query->fetch_assoc();
     if($query->num_rows > 0){

@@ -3,6 +3,7 @@ session_start();
 if(isset($_SESSION['usuario_logueado'])!=null){
  $acceso = 'logrado';
  include('../backend/control/cone.php');
+ include("plantilla/permisos/permisos.php");
 }
 else{
   header('location:../index.php');
@@ -32,7 +33,10 @@ else{
             <a class="nav-link" href="punto_de_facturacion.php">Facturación</a>
           </li>
         <li class="nav-item">
-          <a href="crear_cliente.php" class="nav-link ">Pacientes</a>
+          <a href="crear_cliente.php" class="nav-link ">Clientes</a>
+        </li>
+        <li class="nav-item">
+          <a href="registro_pacientes.php" class="nav-link ">Pacientes</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="lista_usuarios.php">Usuarios</a>
@@ -40,11 +44,14 @@ else{
         <li class="nav-item">
           <a class="nav-link" href="crear_codigo.php">Impuestos</a>
         </li>
+        
       </ul>
+      
     </div>
+    <div style="float:right">
+    </div>
+      <a href="../backend/control/cerrar.php"><button class="btn btn-dark">Cerrar sección</button></a>
   </div>
 </nav>
 
-<div class = "bg-dark fixed-bottom p-1">
-    <p class="text-light">Powered by GpGo</p> 
-</div>
+

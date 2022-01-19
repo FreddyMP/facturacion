@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<!-- saved from url=(0014)about:internet -->
+<html lang="es" translate="no" id="index-page"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>xPxApp</title>
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link rel="apple-touch-icon" sizes="57x57" href="https://xpxapp.azurewebsites.net/assets/media/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="https://xpxapp.azurewebsites.net/assets/media/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="https://xpxapp.azurewebsites.net/assets/media/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="https://xpxapp.azurewebsites.net/assets/media/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="https://xpxapp.azurewebsites.net/assets/media/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="https://xpxapp.azurewebsites.net/assets/media/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="https://xpxapp.azurewebsites.net/assets/media/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="https://xpxapp.azurewebsites.net/assets/media/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="https://xpxapp.azurewebsites.net/assets/media/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192" href="https://xpxapp.azurewebsites.net/assets/media/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="https://xpxapp.azurewebsites.net/assets/media/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="https://xpxapp.azurewebsites.net/assets/media/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="https://xpxapp.azurewebsites.net/assets/media/favicon-16x16.png">
+	<link rel="manifest" href="https://xpxapp.azurewebsites.net/manifest.json">
+	<meta name="msapplication-TileColor" content="#007bff">
+	<meta name="msapplication-TileImage" content="/./assets/media/ms-icon-144x144.png">
+	<meta name="theme-color" content="#007bff">
+<link href="./xPxApp_files/main.css" rel="stylesheet"></head>
+
+<body>
+		<!-- ko if: currentRoute().header -->
+		<!-- ko
+			component: { name: currentRoute().header, params: {  currentRoute: currentRoute } } --><nav class="navbar navbar-light bg-light">
+                <div class="container-fluid">
+                    <div class="nav navbar-nav mx-auto">
+                        <div class="d-none d-sm-block h6 text-primary" data-bind="text: `@${currentRoute.loggedUserName} | ${currentRoute.institution} | ${currentRoute.department}`">nombre usuario y especialidad</div>
+                        <div class="d-block d-sm-none h7 text-primary" data-bind="text: `@${currentRoute.loggedUserName} | ${currentRoute.institution} | ${currentRoute.department}`">nombre usuario y especialidad</div>	
+                    </div>
+                    <div class="nav navbar-nav">
+                        <a class="h5" href="https://xpxapp.azurewebsites.net/records/compose" data-bind="click: cancel">
+                            <!-- <i class="fas fa-times fa-lg"></i> -->
+                            <i class="far fa-times-circle text-primary fa-lg"></i>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+	<!-- /ko -->
+
+	<!-- ko
+		component: { name: currentRoute().page, params: { currentRoute: currentRoute, store: store }} --><section style="padding-bottom:80px;" data-bind="loading:isLoading">
+	<div data-bind="component: { name: currentView , params: { vm: $data } }"><style>
+    a.disabled-cont {
+        pointer-events: none;
+        opacity: 0.5;
+    }
+
+    @media (min-width: 576px) {
+        .container {
+            max-width: 97%;
+        }
+    }
+
+    @media (min-width: 768px) {
+        .container {
+            max-width: 95%;
+        }
+    }
+
+    @media (min-width: 992px) {
+        .container {
+            max-width: 95%;
+        }
+    }
+
+    @media (min-width: 1200px) {
+        .container {
+            max-width: 85%;
+        }
+    }
+</style>
+<div class="container" style="margin-top:20px" data-bind="topscroll: $data.vm.topscroll">
+    <div class="h4">Examen Físico <span data-bind="visible: $data.vm.isMedicalHistoryIncompleted()" class="badge badge-warning">Campos obligatorios, pero puede completar luego.</span></div>
+    <hr>
+
+    <div data-bind="foreach: $data.vm.medicalRecord.physicalExamination">
+        <span data-bind="template: { name: &#39;content-row-formateable&#39;, data: $data }">
+	<div style="margin-top:5px;margin-bottom:20px">
+		<div>
+			<span class="input-group">
+				<div class="input-group-text" data-bind="visible: isRemovable" style="background-color: white; display: none;">
+					<a href="https://xpxapp.azurewebsites.net/records/compose" role="button" class="btn-outline-danger" data-bind="click: function() { $parents[2].removeElement($parents[2].medicalRecord.physicalExamination, $data) }"><i class="fas fa-times"></i></a>
+				</div>
+
+                <div class="input-group-text" style="background-color: white; display: none;" data-bind="visible: $parents[2].medicalRecord.physicalExamination.indexOf($data) !== 0 &amp;&amp; $parents[2].medicalRecord.physicalExamination.indexOf($data) !== ($parents[2].medicalRecord.physicalExamination.length - 1)  ">
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success mr-3" data-bind="event: { click: function(data, event) { $parents[2].moveUp($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === 1 ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-up"></i>
+                    </a>
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success" data-bind="event: { click: function(data, event) { $parents[2].moveDown($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === ($parents[2].medicalRecord.physicalExamination.length - 2)  ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-down"></i>
+                    </a>
+                </div>
+
+				<div class="input-group-prepend" data-bind="visible: $data.isVisibleDisplayName" style="display: none;">
+					<span class="input-group-text font-weight-bold" style="background-color: white; border-color:white" data-bind="text: displayName + &#39;:&#39;">Síntesis examen físico:</span>
+				</div>				  
+			</span>
+
+			<textarea lang="es" spellcheck="true" class="form-control text-justify auto-expand" style="margin-top: 5px; background-color: rgb(255, 255, 153);" data-bind="textInput: $data.value, attr: { placeholder: displayName }, style: { &#39;background-color&#39;: value? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" rows="2" placeholder="Síntesis examen físico"></textarea>
+        </div>   
+    </div>
+</span>
+        <span data-bind="template: { name: &#39;vital-signs&#39;, data: $data, if:  $data.key === &#39;SintesisExamenFisico&#39; }">
+    <div class="font-weight-bold">Signos Vitales</div>
+    <div class="row" style="margin-top:5px;margin-bottom:20px">
+        <div class="col-4">
+            <div data-bind="foreach: $parents[1].vm.medicalRecord.vitalSigns">
+                <span data-bind="template: { name:  &#39;vital-sign-row&#39;, data: $data , if: ordinal &lt; 3 }">
+    <div style="margin-top:5px">
+        <div class="input-group">
+            <span class="input-group-prepend">
+                <span class="input-group-text font-weight-bold" data-bind="text: displayName + &#39;:&#39;">TA:</span>
+            </span>
+                
+            <input class="form-control text-right" type="text" data-bind="textInput: value, style: { &#39;background-color&#39;: value? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" style="background-color: rgb(255, 255, 153);">
+                
+            <span class="input-group-append">                      
+                <span class="input-group-text font-weight-bold" data-bind="text: unit">mmHg</span>
+            </span>                
+        </div>
+    </div>
+</span>
+            
+                <span data-bind="template: { name:  &#39;vital-sign-row&#39;, data: $data , if: ordinal &lt; 3 }">
+    <div style="margin-top:5px">
+        <div class="input-group">
+            <span class="input-group-prepend">
+                <span class="input-group-text font-weight-bold" data-bind="text: displayName + &#39;:&#39;">FC:</span>
+            </span>
+                
+            <input class="form-control text-right" type="text" data-bind="textInput: value, style: { &#39;background-color&#39;: value? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" style="background-color: rgb(255, 255, 153);">
+                
+            <span class="input-group-append">                      
+                <span class="input-group-text font-weight-bold" data-bind="text: unit">l/min</span>
+            </span>                
+        </div>
+    </div>
+</span>
+            
+                <span data-bind="template: { name:  &#39;vital-sign-row&#39;, data: $data , if: ordinal &lt; 3 }"></span>
+            
+                <span data-bind="template: { name:  &#39;vital-sign-row&#39;, data: $data , if: ordinal &lt; 3 }"></span>
+            
+                <span data-bind="template: { name:  &#39;vital-sign-row&#39;, data: $data , if: ordinal &lt; 3 }"></span>
+            </div>
+        </div>
+               
+        <div class="col-4">
+            <div data-bind="foreach: $parents[1].vm.medicalRecord.vitalSigns">
+                <span data-bind="template: { name:  &#39;vital-sign-row&#39;, data: $data , if: ordinal &gt; 2 &amp;&amp; ordinal &lt; 5 }"></span>
+            
+                <span data-bind="template: { name:  &#39;vital-sign-row&#39;, data: $data , if: ordinal &gt; 2 &amp;&amp; ordinal &lt; 5 }"></span>
+            
+                <span data-bind="template: { name:  &#39;vital-sign-row&#39;, data: $data , if: ordinal &gt; 2 &amp;&amp; ordinal &lt; 5 }">
+    <div style="margin-top:5px">
+        <div class="input-group">
+            <span class="input-group-prepend">
+                <span class="input-group-text font-weight-bold" data-bind="text: displayName + &#39;:&#39;">FR:</span>
+            </span>
+                
+            <input class="form-control text-right" type="text" data-bind="textInput: value, style: { &#39;background-color&#39;: value? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" style="background-color: rgb(255, 255, 153);">
+                
+            <span class="input-group-append">                      
+                <span class="input-group-text font-weight-bold" data-bind="text: unit">r/min</span>
+            </span>                
+        </div>
+    </div>
+</span>
+            
+                <span data-bind="template: { name:  &#39;vital-sign-row&#39;, data: $data , if: ordinal &gt; 2 &amp;&amp; ordinal &lt; 5 }">
+    <div style="margin-top:5px">
+        <div class="input-group">
+            <span class="input-group-prepend">
+                <span class="input-group-text font-weight-bold" data-bind="text: displayName + &#39;:&#39;">Temp.:</span>
+            </span>
+                
+            <input class="form-control text-right" type="text" data-bind="textInput: value, style: { &#39;background-color&#39;: value? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" style="background-color: rgb(255, 255, 153);">
+                
+            <span class="input-group-append">                      
+                <span class="input-group-text font-weight-bold" data-bind="text: unit">°C</span>
+            </span>                
+        </div>
+    </div>
+</span>
+            
+                <span data-bind="template: { name:  &#39;vital-sign-row&#39;, data: $data , if: ordinal &gt; 2 &amp;&amp; ordinal &lt; 5 }"></span>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div data-bind="foreach: $parents[1].vm.medicalRecord.vitalSigns">
+                <span data-bind="template: { name:  &#39;vital-sign-row&#39;, data: $data,  if: ordinal &gt; 4 }"></span>
+            
+                <span data-bind="template: { name:  &#39;vital-sign-row&#39;, data: $data,  if: ordinal &gt; 4 }"></span>
+            
+                <span data-bind="template: { name:  &#39;vital-sign-row&#39;, data: $data,  if: ordinal &gt; 4 }"></span>
+            
+                <span data-bind="template: { name:  &#39;vital-sign-row&#39;, data: $data,  if: ordinal &gt; 4 }"></span>
+            
+                <span data-bind="template: { name:  &#39;vital-sign-row&#39;, data: $data,  if: ordinal &gt; 4 }">
+    <div style="margin-top:5px">
+        <div class="input-group">
+            <span class="input-group-prepend">
+                <span class="input-group-text font-weight-bold" data-bind="text: displayName + &#39;:&#39;">SpO2:</span>
+            </span>
+                
+            <input class="form-control text-right" type="text" data-bind="textInput: value, style: { &#39;background-color&#39;: value? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" style="background-color: rgb(255, 255, 153);">
+                
+            <span class="input-group-append">                      
+                <span class="input-group-text font-weight-bold" data-bind="text: unit">%</span>
+            </span>                
+        </div>
+    </div>
+</span>
+            </div>
+        </div>
+    </div>
+</span>
+        <span data-bind="template: { name: &#39;add-button&#39;, data: $data}, visible: $parents[1].medicalRecord.physicalExamination.indexOf($data) === ($parents[1].medicalRecord.physicalExamination.length - 2) " style="display: none;">
+    <div class="row mt-1 mb-4">						
+        <div class="col-12">							
+            <button class="btn btn-primary btn-sm" data-target="#physicalExaminationRowModal" data-toggle="modal"> 		
+                <i class="fas fa-plus"></i> Agregar
+            </button>	
+        </div>		
+    </div>
+</span>
+    
+        <span data-bind="template: { name: &#39;content-row-formateable&#39;, data: $data }">
+	<div style="margin-top:5px;margin-bottom:20px">
+		<div>
+			<span class="input-group">
+				<div class="input-group-text" data-bind="visible: isRemovable" style="background-color: white; display: none;">
+					<a href="https://xpxapp.azurewebsites.net/records/compose" role="button" class="btn-outline-danger" data-bind="click: function() { $parents[2].removeElement($parents[2].medicalRecord.physicalExamination, $data) }"><i class="fas fa-times"></i></a>
+				</div>
+
+                <div class="input-group-text" style="background-color: white;" data-bind="visible: $parents[2].medicalRecord.physicalExamination.indexOf($data) !== 0 &amp;&amp; $parents[2].medicalRecord.physicalExamination.indexOf($data) !== ($parents[2].medicalRecord.physicalExamination.length - 1)  ">
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success mr-3 disabled-cont" data-bind="event: { click: function(data, event) { $parents[2].moveUp($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === 1 ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-up"></i>
+                    </a>
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success" data-bind="event: { click: function(data, event) { $parents[2].moveDown($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === ($parents[2].medicalRecord.physicalExamination.length - 2)  ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-down"></i>
+                    </a>
+                </div>
+
+				<div class="input-group-prepend" data-bind="visible: $data.isVisibleDisplayName">
+					<span class="input-group-text font-weight-bold" style="background-color: white; border-color:white" data-bind="text: displayName + &#39;:&#39;">Cabeza:</span>
+				</div>				  
+			</span>
+
+			<textarea lang="es" spellcheck="true" class="form-control text-justify auto-expand" style="margin-top: 5px; background-color: rgb(255, 255, 153);" data-bind="textInput: $data.value, attr: { placeholder: displayName }, style: { &#39;background-color&#39;: value? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" rows="2" placeholder="Cabeza"></textarea>
+        </div>   
+    </div>
+</span>
+        <span data-bind="template: { name: &#39;vital-signs&#39;, data: $data, if:  $data.key === &#39;SintesisExamenFisico&#39; }"></span>
+        <span data-bind="template: { name: &#39;add-button&#39;, data: $data}, visible: $parents[1].medicalRecord.physicalExamination.indexOf($data) === ($parents[1].medicalRecord.physicalExamination.length - 2) " style="display: none;">
+    <div class="row mt-1 mb-4">						
+        <div class="col-12">							
+            <button class="btn btn-primary btn-sm" data-target="#physicalExaminationRowModal" data-toggle="modal"> 		
+                <i class="fas fa-plus"></i> Agregar
+            </button>	
+        </div>		
+    </div>
+</span>
+    
+        <span data-bind="template: { name: &#39;content-row-formateable&#39;, data: $data }">
+	<div style="margin-top:5px;margin-bottom:20px">
+		<div>
+			<span class="input-group">
+				<div class="input-group-text" data-bind="visible: isRemovable" style="background-color: white; display: none;">
+					<a href="https://xpxapp.azurewebsites.net/records/compose" role="button" class="btn-outline-danger" data-bind="click: function() { $parents[2].removeElement($parents[2].medicalRecord.physicalExamination, $data) }"><i class="fas fa-times"></i></a>
+				</div>
+
+                <div class="input-group-text" style="background-color: white;" data-bind="visible: $parents[2].medicalRecord.physicalExamination.indexOf($data) !== 0 &amp;&amp; $parents[2].medicalRecord.physicalExamination.indexOf($data) !== ($parents[2].medicalRecord.physicalExamination.length - 1)  ">
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success mr-3" data-bind="event: { click: function(data, event) { $parents[2].moveUp($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === 1 ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-up"></i>
+                    </a>
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success" data-bind="event: { click: function(data, event) { $parents[2].moveDown($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === ($parents[2].medicalRecord.physicalExamination.length - 2)  ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-down"></i>
+                    </a>
+                </div>
+
+				<div class="input-group-prepend" data-bind="visible: $data.isVisibleDisplayName">
+					<span class="input-group-text font-weight-bold" style="background-color: white; border-color:white" data-bind="text: displayName + &#39;:&#39;">Ojos:</span>
+				</div>				  
+			</span>
+
+			<textarea lang="es" spellcheck="true" class="form-control text-justify auto-expand" style="margin-top: 5px; background-color: rgb(255, 255, 153);" data-bind="textInput: $data.value, attr: { placeholder: displayName }, style: { &#39;background-color&#39;: value? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" rows="2" placeholder="Ojos"></textarea>
+        </div>   
+    </div>
+</span>
+        <span data-bind="template: { name: &#39;vital-signs&#39;, data: $data, if:  $data.key === &#39;SintesisExamenFisico&#39; }"></span>
+        <span data-bind="template: { name: &#39;add-button&#39;, data: $data}, visible: $parents[1].medicalRecord.physicalExamination.indexOf($data) === ($parents[1].medicalRecord.physicalExamination.length - 2) " style="display: none;">
+    <div class="row mt-1 mb-4">						
+        <div class="col-12">							
+            <button class="btn btn-primary btn-sm" data-target="#physicalExaminationRowModal" data-toggle="modal"> 		
+                <i class="fas fa-plus"></i> Agregar
+            </button>	
+        </div>		
+    </div>
+</span>
+    
+        <span data-bind="template: { name: &#39;content-row-formateable&#39;, data: $data }">
+	<div style="margin-top:5px;margin-bottom:20px">
+		<div>
+			<span class="input-group">
+				<div class="input-group-text" data-bind="visible: isRemovable" style="background-color: white; display: none;">
+					<a href="https://xpxapp.azurewebsites.net/records/compose" role="button" class="btn-outline-danger" data-bind="click: function() { $parents[2].removeElement($parents[2].medicalRecord.physicalExamination, $data) }"><i class="fas fa-times"></i></a>
+				</div>
+
+                <div class="input-group-text" style="background-color: white;" data-bind="visible: $parents[2].medicalRecord.physicalExamination.indexOf($data) !== 0 &amp;&amp; $parents[2].medicalRecord.physicalExamination.indexOf($data) !== ($parents[2].medicalRecord.physicalExamination.length - 1)  ">
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success mr-3" data-bind="event: { click: function(data, event) { $parents[2].moveUp($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === 1 ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-up"></i>
+                    </a>
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success" data-bind="event: { click: function(data, event) { $parents[2].moveDown($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === ($parents[2].medicalRecord.physicalExamination.length - 2)  ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-down"></i>
+                    </a>
+                </div>
+
+				<div class="input-group-prepend" data-bind="visible: $data.isVisibleDisplayName">
+					<span class="input-group-text font-weight-bold" style="background-color: white; border-color:white" data-bind="text: displayName + &#39;:&#39;">Oídos:</span>
+				</div>				  
+			</span>
+
+			<textarea lang="es" spellcheck="true" class="form-control text-justify auto-expand" style="margin-top: 5px; background-color: rgb(255, 255, 153);" data-bind="textInput: $data.value, attr: { placeholder: displayName }, style: { &#39;background-color&#39;: value? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" rows="2" placeholder="Oídos"></textarea>
+        </div>   
+    </div>
+</span>
+        <span data-bind="template: { name: &#39;vital-signs&#39;, data: $data, if:  $data.key === &#39;SintesisExamenFisico&#39; }"></span>
+        <span data-bind="template: { name: &#39;add-button&#39;, data: $data}, visible: $parents[1].medicalRecord.physicalExamination.indexOf($data) === ($parents[1].medicalRecord.physicalExamination.length - 2) " style="display: none;">
+    <div class="row mt-1 mb-4">						
+        <div class="col-12">							
+            <button class="btn btn-primary btn-sm" data-target="#physicalExaminationRowModal" data-toggle="modal"> 		
+                <i class="fas fa-plus"></i> Agregar
+            </button>	
+        </div>		
+    </div>
+</span>
+    
+        <span data-bind="template: { name: &#39;content-row-formateable&#39;, data: $data }">
+	<div style="margin-top:5px;margin-bottom:20px">
+		<div>
+			<span class="input-group">
+				<div class="input-group-text" data-bind="visible: isRemovable" style="background-color: white; display: none;">
+					<a href="https://xpxapp.azurewebsites.net/records/compose" role="button" class="btn-outline-danger" data-bind="click: function() { $parents[2].removeElement($parents[2].medicalRecord.physicalExamination, $data) }"><i class="fas fa-times"></i></a>
+				</div>
+
+                <div class="input-group-text" style="background-color: white;" data-bind="visible: $parents[2].medicalRecord.physicalExamination.indexOf($data) !== 0 &amp;&amp; $parents[2].medicalRecord.physicalExamination.indexOf($data) !== ($parents[2].medicalRecord.physicalExamination.length - 1)  ">
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success mr-3" data-bind="event: { click: function(data, event) { $parents[2].moveUp($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === 1 ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-up"></i>
+                    </a>
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success" data-bind="event: { click: function(data, event) { $parents[2].moveDown($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === ($parents[2].medicalRecord.physicalExamination.length - 2)  ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-down"></i>
+                    </a>
+                </div>
+
+				<div class="input-group-prepend" data-bind="visible: $data.isVisibleDisplayName">
+					<span class="input-group-text font-weight-bold" style="background-color: white; border-color:white" data-bind="text: displayName + &#39;:&#39;">Nariz:</span>
+				</div>				  
+			</span>
+
+			<textarea lang="es" spellcheck="true" class="form-control text-justify auto-expand" style="margin-top: 5px; background-color: rgb(255, 255, 153);" data-bind="textInput: $data.value, attr: { placeholder: displayName }, style: { &#39;background-color&#39;: value? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" rows="2" placeholder="Nariz"></textarea>
+        </div>   
+    </div>
+</span>
+        <span data-bind="template: { name: &#39;vital-signs&#39;, data: $data, if:  $data.key === &#39;SintesisExamenFisico&#39; }"></span>
+        <span data-bind="template: { name: &#39;add-button&#39;, data: $data}, visible: $parents[1].medicalRecord.physicalExamination.indexOf($data) === ($parents[1].medicalRecord.physicalExamination.length - 2) " style="display: none;">
+    <div class="row mt-1 mb-4">						
+        <div class="col-12">							
+            <button class="btn btn-primary btn-sm" data-target="#physicalExaminationRowModal" data-toggle="modal"> 		
+                <i class="fas fa-plus"></i> Agregar
+            </button>	
+        </div>		
+    </div>
+</span>
+    
+        <span data-bind="template: { name: &#39;content-row-formateable&#39;, data: $data }">
+	<div style="margin-top:5px;margin-bottom:20px">
+		<div>
+			<span class="input-group">
+				<div class="input-group-text" data-bind="visible: isRemovable" style="background-color: white; display: none;">
+					<a href="https://xpxapp.azurewebsites.net/records/compose" role="button" class="btn-outline-danger" data-bind="click: function() { $parents[2].removeElement($parents[2].medicalRecord.physicalExamination, $data) }"><i class="fas fa-times"></i></a>
+				</div>
+
+                <div class="input-group-text" style="background-color: white;" data-bind="visible: $parents[2].medicalRecord.physicalExamination.indexOf($data) !== 0 &amp;&amp; $parents[2].medicalRecord.physicalExamination.indexOf($data) !== ($parents[2].medicalRecord.physicalExamination.length - 1)  ">
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success mr-3" data-bind="event: { click: function(data, event) { $parents[2].moveUp($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === 1 ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-up"></i>
+                    </a>
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success" data-bind="event: { click: function(data, event) { $parents[2].moveDown($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === ($parents[2].medicalRecord.physicalExamination.length - 2)  ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-down"></i>
+                    </a>
+                </div>
+
+				<div class="input-group-prepend" data-bind="visible: $data.isVisibleDisplayName">
+					<span class="input-group-text font-weight-bold" style="background-color: white; border-color:white" data-bind="text: displayName + &#39;:&#39;">Boca:</span>
+				</div>				  
+			</span>
+
+			<textarea lang="es" spellcheck="true" class="form-control text-justify auto-expand" style="margin-top: 5px; background-color: rgb(255, 255, 153);" data-bind="textInput: $data.value, attr: { placeholder: displayName }, style: { &#39;background-color&#39;: value? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" rows="2" placeholder="Boca"></textarea>
+        </div>   
+    </div>
+</span>
+        <span data-bind="template: { name: &#39;vital-signs&#39;, data: $data, if:  $data.key === &#39;SintesisExamenFisico&#39; }"></span>
+        <span data-bind="template: { name: &#39;add-button&#39;, data: $data}, visible: $parents[1].medicalRecord.physicalExamination.indexOf($data) === ($parents[1].medicalRecord.physicalExamination.length - 2) " style="display: none;">
+    <div class="row mt-1 mb-4">						
+        <div class="col-12">							
+            <button class="btn btn-primary btn-sm" data-target="#physicalExaminationRowModal" data-toggle="modal"> 		
+                <i class="fas fa-plus"></i> Agregar
+            </button>	
+        </div>		
+    </div>
+</span>
+    
+        <span data-bind="template: { name: &#39;content-row-formateable&#39;, data: $data }">
+	<div style="margin-top:5px;margin-bottom:20px">
+		<div>
+			<span class="input-group">
+				<div class="input-group-text" data-bind="visible: isRemovable" style="background-color: white; display: none;">
+					<a href="https://xpxapp.azurewebsites.net/records/compose" role="button" class="btn-outline-danger" data-bind="click: function() { $parents[2].removeElement($parents[2].medicalRecord.physicalExamination, $data) }"><i class="fas fa-times"></i></a>
+				</div>
+
+                <div class="input-group-text" style="background-color: white;" data-bind="visible: $parents[2].medicalRecord.physicalExamination.indexOf($data) !== 0 &amp;&amp; $parents[2].medicalRecord.physicalExamination.indexOf($data) !== ($parents[2].medicalRecord.physicalExamination.length - 1)  ">
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success mr-3" data-bind="event: { click: function(data, event) { $parents[2].moveUp($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === 1 ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-up"></i>
+                    </a>
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success" data-bind="event: { click: function(data, event) { $parents[2].moveDown($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === ($parents[2].medicalRecord.physicalExamination.length - 2)  ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-down"></i>
+                    </a>
+                </div>
+
+				<div class="input-group-prepend" data-bind="visible: $data.isVisibleDisplayName">
+					<span class="input-group-text font-weight-bold" style="background-color: white; border-color:white" data-bind="text: displayName + &#39;:&#39;">Cuello:</span>
+				</div>				  
+			</span>
+
+			<textarea lang="es" spellcheck="true" class="form-control text-justify auto-expand" style="margin-top: 5px; background-color: rgb(255, 255, 153);" data-bind="textInput: $data.value, attr: { placeholder: displayName }, style: { &#39;background-color&#39;: value? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" rows="2" placeholder="Cuello"></textarea>
+        </div>   
+    </div>
+</span>
+        <span data-bind="template: { name: &#39;vital-signs&#39;, data: $data, if:  $data.key === &#39;SintesisExamenFisico&#39; }"></span>
+        <span data-bind="template: { name: &#39;add-button&#39;, data: $data}, visible: $parents[1].medicalRecord.physicalExamination.indexOf($data) === ($parents[1].medicalRecord.physicalExamination.length - 2) " style="display: none;">
+    <div class="row mt-1 mb-4">						
+        <div class="col-12">							
+            <button class="btn btn-primary btn-sm" data-target="#physicalExaminationRowModal" data-toggle="modal"> 		
+                <i class="fas fa-plus"></i> Agregar
+            </button>	
+        </div>		
+    </div>
+</span>
+    
+        <span data-bind="template: { name: &#39;content-row-formateable&#39;, data: $data }">
+	<div style="margin-top:5px;margin-bottom:20px">
+		<div>
+			<span class="input-group">
+				<div class="input-group-text" data-bind="visible: isRemovable" style="background-color: white; display: none;">
+					<a href="https://xpxapp.azurewebsites.net/records/compose" role="button" class="btn-outline-danger" data-bind="click: function() { $parents[2].removeElement($parents[2].medicalRecord.physicalExamination, $data) }"><i class="fas fa-times"></i></a>
+				</div>
+
+                <div class="input-group-text" style="background-color: white;" data-bind="visible: $parents[2].medicalRecord.physicalExamination.indexOf($data) !== 0 &amp;&amp; $parents[2].medicalRecord.physicalExamination.indexOf($data) !== ($parents[2].medicalRecord.physicalExamination.length - 1)  ">
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success mr-3" data-bind="event: { click: function(data, event) { $parents[2].moveUp($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === 1 ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-up"></i>
+                    </a>
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success" data-bind="event: { click: function(data, event) { $parents[2].moveDown($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === ($parents[2].medicalRecord.physicalExamination.length - 2)  ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-down"></i>
+                    </a>
+                </div>
+
+				<div class="input-group-prepend" data-bind="visible: $data.isVisibleDisplayName">
+					<span class="input-group-text font-weight-bold" style="background-color: white; border-color:white" data-bind="text: displayName + &#39;:&#39;">Tórax:</span>
+				</div>				  
+			</span>
+
+			<textarea lang="es" spellcheck="true" class="form-control text-justify auto-expand" style="margin-top: 5px; background-color: rgb(255, 255, 153);" data-bind="textInput: $data.value, attr: { placeholder: displayName }, style: { &#39;background-color&#39;: value? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" rows="2" placeholder="Tórax"></textarea>
+        </div>   
+    </div>
+</span>
+        <span data-bind="template: { name: &#39;vital-signs&#39;, data: $data, if:  $data.key === &#39;SintesisExamenFisico&#39; }"></span>
+        <span data-bind="template: { name: &#39;add-button&#39;, data: $data}, visible: $parents[1].medicalRecord.physicalExamination.indexOf($data) === ($parents[1].medicalRecord.physicalExamination.length - 2) " style="display: none;">
+    <div class="row mt-1 mb-4">						
+        <div class="col-12">							
+            <button class="btn btn-primary btn-sm" data-target="#physicalExaminationRowModal" data-toggle="modal"> 		
+                <i class="fas fa-plus"></i> Agregar
+            </button>	
+        </div>		
+    </div>
+</span>
+    
+        <span data-bind="template: { name: &#39;content-row-formateable&#39;, data: $data }">
+	<div style="margin-top:5px;margin-bottom:20px">
+		<div>
+			<span class="input-group">
+				<div class="input-group-text" data-bind="visible: isRemovable" style="background-color: white; display: none;">
+					<a href="https://xpxapp.azurewebsites.net/records/compose" role="button" class="btn-outline-danger" data-bind="click: function() { $parents[2].removeElement($parents[2].medicalRecord.physicalExamination, $data) }"><i class="fas fa-times"></i></a>
+				</div>
+
+                <div class="input-group-text" style="background-color: white;" data-bind="visible: $parents[2].medicalRecord.physicalExamination.indexOf($data) !== 0 &amp;&amp; $parents[2].medicalRecord.physicalExamination.indexOf($data) !== ($parents[2].medicalRecord.physicalExamination.length - 1)  ">
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success mr-3" data-bind="event: { click: function(data, event) { $parents[2].moveUp($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === 1 ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-up"></i>
+                    </a>
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success" data-bind="event: { click: function(data, event) { $parents[2].moveDown($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === ($parents[2].medicalRecord.physicalExamination.length - 2)  ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-down"></i>
+                    </a>
+                </div>
+
+				<div class="input-group-prepend" data-bind="visible: $data.isVisibleDisplayName">
+					<span class="input-group-text font-weight-bold" style="background-color: white; border-color:white" data-bind="text: displayName + &#39;:&#39;">Pulmones:</span>
+				</div>				  
+			</span>
+
+			<textarea lang="es" spellcheck="true" class="form-control text-justify auto-expand" style="margin-top: 5px; background-color: rgb(255, 255, 153);" data-bind="textInput: $data.value, attr: { placeholder: displayName }, style: { &#39;background-color&#39;: value? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" rows="2" placeholder="Pulmones"></textarea>
+        </div>   
+    </div>
+</span>
+        <span data-bind="template: { name: &#39;vital-signs&#39;, data: $data, if:  $data.key === &#39;SintesisExamenFisico&#39; }"></span>
+        <span data-bind="template: { name: &#39;add-button&#39;, data: $data}, visible: $parents[1].medicalRecord.physicalExamination.indexOf($data) === ($parents[1].medicalRecord.physicalExamination.length - 2) " style="display: none;">
+    <div class="row mt-1 mb-4">						
+        <div class="col-12">							
+            <button class="btn btn-primary btn-sm" data-target="#physicalExaminationRowModal" data-toggle="modal"> 		
+                <i class="fas fa-plus"></i> Agregar
+            </button>	
+        </div>		
+    </div>
+</span>
+    
+        <span data-bind="template: { name: &#39;content-row-formateable&#39;, data: $data }">
+	<div style="margin-top:5px;margin-bottom:20px">
+		<div>
+			<span class="input-group">
+				<div class="input-group-text" data-bind="visible: isRemovable" style="background-color: white; display: none;">
+					<a href="https://xpxapp.azurewebsites.net/records/compose" role="button" class="btn-outline-danger" data-bind="click: function() { $parents[2].removeElement($parents[2].medicalRecord.physicalExamination, $data) }"><i class="fas fa-times"></i></a>
+				</div>
+
+                <div class="input-group-text" style="background-color: white;" data-bind="visible: $parents[2].medicalRecord.physicalExamination.indexOf($data) !== 0 &amp;&amp; $parents[2].medicalRecord.physicalExamination.indexOf($data) !== ($parents[2].medicalRecord.physicalExamination.length - 1)  ">
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success mr-3" data-bind="event: { click: function(data, event) { $parents[2].moveUp($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === 1 ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-up"></i>
+                    </a>
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success" data-bind="event: { click: function(data, event) { $parents[2].moveDown($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === ($parents[2].medicalRecord.physicalExamination.length - 2)  ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-down"></i>
+                    </a>
+                </div>
+
+				<div class="input-group-prepend" data-bind="visible: $data.isVisibleDisplayName">
+					<span class="input-group-text font-weight-bold" style="background-color: white; border-color:white" data-bind="text: displayName + &#39;:&#39;">Corazón:</span>
+				</div>				  
+			</span>
+
+			<textarea lang="es" spellcheck="true" class="form-control text-justify auto-expand" style="margin-top: 5px; background-color: rgb(255, 255, 153);" data-bind="textInput: $data.value, attr: { placeholder: displayName }, style: { &#39;background-color&#39;: value? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" rows="2" placeholder="Corazón"></textarea>
+        </div>   
+    </div>
+</span>
+        <span data-bind="template: { name: &#39;vital-signs&#39;, data: $data, if:  $data.key === &#39;SintesisExamenFisico&#39; }"></span>
+        <span data-bind="template: { name: &#39;add-button&#39;, data: $data}, visible: $parents[1].medicalRecord.physicalExamination.indexOf($data) === ($parents[1].medicalRecord.physicalExamination.length - 2) " style="display: none;">
+    <div class="row mt-1 mb-4">						
+        <div class="col-12">							
+            <button class="btn btn-primary btn-sm" data-target="#physicalExaminationRowModal" data-toggle="modal"> 		
+                <i class="fas fa-plus"></i> Agregar
+            </button>	
+        </div>		
+    </div>
+</span>
+    
+        <span data-bind="template: { name: &#39;content-row-formateable&#39;, data: $data }">
+	<div style="margin-top:5px;margin-bottom:20px">
+		<div>
+			<span class="input-group">
+				<div class="input-group-text" data-bind="visible: isRemovable" style="background-color: white; display: none;">
+					<a href="https://xpxapp.azurewebsites.net/records/compose" role="button" class="btn-outline-danger" data-bind="click: function() { $parents[2].removeElement($parents[2].medicalRecord.physicalExamination, $data) }"><i class="fas fa-times"></i></a>
+				</div>
+
+                <div class="input-group-text" style="background-color: white;" data-bind="visible: $parents[2].medicalRecord.physicalExamination.indexOf($data) !== 0 &amp;&amp; $parents[2].medicalRecord.physicalExamination.indexOf($data) !== ($parents[2].medicalRecord.physicalExamination.length - 1)  ">
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success mr-3" data-bind="event: { click: function(data, event) { $parents[2].moveUp($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === 1 ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-up"></i>
+                    </a>
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success" data-bind="event: { click: function(data, event) { $parents[2].moveDown($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === ($parents[2].medicalRecord.physicalExamination.length - 2)  ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-down"></i>
+                    </a>
+                </div>
+
+				<div class="input-group-prepend" data-bind="visible: $data.isVisibleDisplayName">
+					<span class="input-group-text font-weight-bold" style="background-color: white; border-color:white" data-bind="text: displayName + &#39;:&#39;">Abdomen:</span>
+				</div>				  
+			</span>
+
+			<textarea lang="es" spellcheck="true" class="form-control text-justify auto-expand" style="margin-top: 5px; background-color: rgb(255, 255, 153);" data-bind="textInput: $data.value, attr: { placeholder: displayName }, style: { &#39;background-color&#39;: value? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" rows="2" placeholder="Abdomen"></textarea>
+        </div>   
+    </div>
+</span>
+        <span data-bind="template: { name: &#39;vital-signs&#39;, data: $data, if:  $data.key === &#39;SintesisExamenFisico&#39; }"></span>
+        <span data-bind="template: { name: &#39;add-button&#39;, data: $data}, visible: $parents[1].medicalRecord.physicalExamination.indexOf($data) === ($parents[1].medicalRecord.physicalExamination.length - 2) " style="display: none;">
+    <div class="row mt-1 mb-4">						
+        <div class="col-12">							
+            <button class="btn btn-primary btn-sm" data-target="#physicalExaminationRowModal" data-toggle="modal"> 		
+                <i class="fas fa-plus"></i> Agregar
+            </button>	
+        </div>		
+    </div>
+</span>
+    
+        <span data-bind="template: { name: &#39;content-row-formateable&#39;, data: $data }">
+	<div style="margin-top:5px;margin-bottom:20px">
+		<div>
+			<span class="input-group">
+				<div class="input-group-text" data-bind="visible: isRemovable" style="background-color: white; display: none;">
+					<a href="https://xpxapp.azurewebsites.net/records/compose" role="button" class="btn-outline-danger" data-bind="click: function() { $parents[2].removeElement($parents[2].medicalRecord.physicalExamination, $data) }"><i class="fas fa-times"></i></a>
+				</div>
+
+                <div class="input-group-text" style="background-color: white;" data-bind="visible: $parents[2].medicalRecord.physicalExamination.indexOf($data) !== 0 &amp;&amp; $parents[2].medicalRecord.physicalExamination.indexOf($data) !== ($parents[2].medicalRecord.physicalExamination.length - 1)  ">
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success mr-3" data-bind="event: { click: function(data, event) { $parents[2].moveUp($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === 1 ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-up"></i>
+                    </a>
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success" data-bind="event: { click: function(data, event) { $parents[2].moveDown($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === ($parents[2].medicalRecord.physicalExamination.length - 2)  ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-down"></i>
+                    </a>
+                </div>
+
+				<div class="input-group-prepend" data-bind="visible: $data.isVisibleDisplayName">
+					<span class="input-group-text font-weight-bold" style="background-color: white; border-color:white" data-bind="text: displayName + &#39;:&#39;">Genitales:</span>
+				</div>				  
+			</span>
+
+			<textarea lang="es" spellcheck="true" class="form-control text-justify auto-expand" style="margin-top: 5px; background-color: rgb(255, 255, 153);" data-bind="textInput: $data.value, attr: { placeholder: displayName }, style: { &#39;background-color&#39;: value? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" rows="2" placeholder="Genitales"></textarea>
+        </div>   
+    </div>
+</span>
+        <span data-bind="template: { name: &#39;vital-signs&#39;, data: $data, if:  $data.key === &#39;SintesisExamenFisico&#39; }"></span>
+        <span data-bind="template: { name: &#39;add-button&#39;, data: $data}, visible: $parents[1].medicalRecord.physicalExamination.indexOf($data) === ($parents[1].medicalRecord.physicalExamination.length - 2) " style="display: none;">
+    <div class="row mt-1 mb-4">						
+        <div class="col-12">							
+            <button class="btn btn-primary btn-sm" data-target="#physicalExaminationRowModal" data-toggle="modal"> 		
+                <i class="fas fa-plus"></i> Agregar
+            </button>	
+        </div>		
+    </div>
+</span>
+    
+        <span data-bind="template: { name: &#39;content-row-formateable&#39;, data: $data }">
+	<div style="margin-top:5px;margin-bottom:20px">
+		<div>
+			<span class="input-group">
+				<div class="input-group-text" data-bind="visible: isRemovable" style="background-color: white; display: none;">
+					<a href="https://xpxapp.azurewebsites.net/records/compose" role="button" class="btn-outline-danger" data-bind="click: function() { $parents[2].removeElement($parents[2].medicalRecord.physicalExamination, $data) }"><i class="fas fa-times"></i></a>
+				</div>
+
+                <div class="input-group-text" style="background-color: white;" data-bind="visible: $parents[2].medicalRecord.physicalExamination.indexOf($data) !== 0 &amp;&amp; $parents[2].medicalRecord.physicalExamination.indexOf($data) !== ($parents[2].medicalRecord.physicalExamination.length - 1)  ">
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success mr-3" data-bind="event: { click: function(data, event) { $parents[2].moveUp($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === 1 ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-up"></i>
+                    </a>
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success" data-bind="event: { click: function(data, event) { $parents[2].moveDown($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === ($parents[2].medicalRecord.physicalExamination.length - 2)  ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-down"></i>
+                    </a>
+                </div>
+
+				<div class="input-group-prepend" data-bind="visible: $data.isVisibleDisplayName">
+					<span class="input-group-text font-weight-bold" style="background-color: white; border-color:white" data-bind="text: displayName + &#39;:&#39;">Extremidades Superiores:</span>
+				</div>				  
+			</span>
+
+			<textarea lang="es" spellcheck="true" class="form-control text-justify auto-expand" style="margin-top: 5px; background-color: rgb(255, 255, 153);" data-bind="textInput: $data.value, attr: { placeholder: displayName }, style: { &#39;background-color&#39;: value? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" rows="2" placeholder="Extremidades Superiores"></textarea>
+        </div>   
+    </div>
+</span>
+        <span data-bind="template: { name: &#39;vital-signs&#39;, data: $data, if:  $data.key === &#39;SintesisExamenFisico&#39; }"></span>
+        <span data-bind="template: { name: &#39;add-button&#39;, data: $data}, visible: $parents[1].medicalRecord.physicalExamination.indexOf($data) === ($parents[1].medicalRecord.physicalExamination.length - 2) " style="display: none;">
+    <div class="row mt-1 mb-4">						
+        <div class="col-12">							
+            <button class="btn btn-primary btn-sm" data-target="#physicalExaminationRowModal" data-toggle="modal"> 		
+                <i class="fas fa-plus"></i> Agregar
+            </button>	
+        </div>		
+    </div>
+</span>
+    
+        <span data-bind="template: { name: &#39;content-row-formateable&#39;, data: $data }">
+	<div style="margin-top:5px;margin-bottom:20px">
+		<div>
+			<span class="input-group">
+				<div class="input-group-text" data-bind="visible: isRemovable" style="background-color: white; display: none;">
+					<a href="https://xpxapp.azurewebsites.net/records/compose" role="button" class="btn-outline-danger" data-bind="click: function() { $parents[2].removeElement($parents[2].medicalRecord.physicalExamination, $data) }"><i class="fas fa-times"></i></a>
+				</div>
+
+                <div class="input-group-text" style="background-color: white;" data-bind="visible: $parents[2].medicalRecord.physicalExamination.indexOf($data) !== 0 &amp;&amp; $parents[2].medicalRecord.physicalExamination.indexOf($data) !== ($parents[2].medicalRecord.physicalExamination.length - 1)  ">
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success mr-3" data-bind="event: { click: function(data, event) { $parents[2].moveUp($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === 1 ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-up"></i>
+                    </a>
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success" data-bind="event: { click: function(data, event) { $parents[2].moveDown($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === ($parents[2].medicalRecord.physicalExamination.length - 2)  ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-down"></i>
+                    </a>
+                </div>
+
+				<div class="input-group-prepend" data-bind="visible: $data.isVisibleDisplayName">
+					<span class="input-group-text font-weight-bold" style="background-color: white; border-color:white" data-bind="text: displayName + &#39;:&#39;">Extremidades Inferiores:</span>
+				</div>				  
+			</span>
+
+			<textarea lang="es" spellcheck="true" class="form-control text-justify auto-expand" style="margin-top: 5px; background-color: rgb(255, 255, 153);" data-bind="textInput: $data.value, attr: { placeholder: displayName }, style: { &#39;background-color&#39;: value? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" rows="2" placeholder="Extremidades Inferiores"></textarea>
+        </div>   
+    </div>
+</span>
+        <span data-bind="template: { name: &#39;vital-signs&#39;, data: $data, if:  $data.key === &#39;SintesisExamenFisico&#39; }"></span>
+        <span data-bind="template: { name: &#39;add-button&#39;, data: $data}, visible: $parents[1].medicalRecord.physicalExamination.indexOf($data) === ($parents[1].medicalRecord.physicalExamination.length - 2) " style="display: none;">
+    <div class="row mt-1 mb-4">						
+        <div class="col-12">							
+            <button class="btn btn-primary btn-sm" data-target="#physicalExaminationRowModal" data-toggle="modal"> 		
+                <i class="fas fa-plus"></i> Agregar
+            </button>	
+        </div>		
+    </div>
+</span>
+    
+        <span data-bind="template: { name: &#39;content-row-formateable&#39;, data: $data }">
+	<div style="margin-top:5px;margin-bottom:20px">
+		<div>
+			<span class="input-group">
+				<div class="input-group-text" data-bind="visible: isRemovable" style="background-color: white; display: none;">
+					<a href="https://xpxapp.azurewebsites.net/records/compose" role="button" class="btn-outline-danger" data-bind="click: function() { $parents[2].removeElement($parents[2].medicalRecord.physicalExamination, $data) }"><i class="fas fa-times"></i></a>
+				</div>
+
+                <div class="input-group-text" style="background-color: white;" data-bind="visible: $parents[2].medicalRecord.physicalExamination.indexOf($data) !== 0 &amp;&amp; $parents[2].medicalRecord.physicalExamination.indexOf($data) !== ($parents[2].medicalRecord.physicalExamination.length - 1)  ">
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success mr-3" data-bind="event: { click: function(data, event) { $parents[2].moveUp($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === 1 ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-up"></i>
+                    </a>
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success disabled-cont" data-bind="event: { click: function(data, event) { $parents[2].moveDown($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === ($parents[2].medicalRecord.physicalExamination.length - 2)  ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-down"></i>
+                    </a>
+                </div>
+
+				<div class="input-group-prepend" data-bind="visible: $data.isVisibleDisplayName">
+					<span class="input-group-text font-weight-bold" style="background-color: white; border-color:white" data-bind="text: displayName + &#39;:&#39;">Piel y Anexos:</span>
+				</div>				  
+			</span>
+
+			<textarea lang="es" spellcheck="true" class="form-control text-justify auto-expand" style="margin-top: 5px; background-color: rgb(255, 255, 153);" data-bind="textInput: $data.value, attr: { placeholder: displayName }, style: { &#39;background-color&#39;: value? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" rows="2" placeholder="Piel y Anexos"></textarea>
+        </div>   
+    </div>
+</span>
+        <span data-bind="template: { name: &#39;vital-signs&#39;, data: $data, if:  $data.key === &#39;SintesisExamenFisico&#39; }"></span>
+        <span data-bind="template: { name: &#39;add-button&#39;, data: $data}, visible: $parents[1].medicalRecord.physicalExamination.indexOf($data) === ($parents[1].medicalRecord.physicalExamination.length - 2) ">
+    <div class="row mt-1 mb-4">						
+        <div class="col-12">							
+            <button class="btn btn-primary btn-sm" data-target="#physicalExaminationRowModal" data-toggle="modal"> 		
+                <i class="fas fa-plus"></i> Agregar
+            </button>	
+        </div>		
+    </div>
+</span>
+    
+        <span data-bind="template: { name: &#39;content-row-formateable&#39;, data: $data }">
+	<div style="margin-top:5px;margin-bottom:20px">
+		<div>
+			<span class="input-group">
+				<div class="input-group-text" data-bind="visible: isRemovable" style="background-color: white; display: none;">
+					<a href="https://xpxapp.azurewebsites.net/records/compose" role="button" class="btn-outline-danger" data-bind="click: function() { $parents[2].removeElement($parents[2].medicalRecord.physicalExamination, $data) }"><i class="fas fa-times"></i></a>
+				</div>
+
+                <div class="input-group-text" style="background-color: white; display: none;" data-bind="visible: $parents[2].medicalRecord.physicalExamination.indexOf($data) !== 0 &amp;&amp; $parents[2].medicalRecord.physicalExamination.indexOf($data) !== ($parents[2].medicalRecord.physicalExamination.length - 1)  ">
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success mr-3" data-bind="event: { click: function(data, event) { $parents[2].moveUp($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === 1 ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-up"></i>
+                    </a>
+                    <a href="https://xpxapp.azurewebsites.net/records/compose#" role="button" class="btn-outline-success" data-bind="event: { click: function(data, event) { $parents[2].moveDown($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === ($parents[2].medicalRecord.physicalExamination.length - 2)  ? &#39;disabled-cont&#39;: &#39;&#39;">
+                        <i class="fas fa-chevron-circle-down"></i>
+                    </a>
+                </div>
+
+				<div class="input-group-prepend" data-bind="visible: $data.isVisibleDisplayName">
+					<span class="input-group-text font-weight-bold" style="background-color: white; border-color:white" data-bind="text: displayName + &#39;:&#39;">Resumen historia clínica:</span>
+				</div>				  
+			</span>
+
+			<textarea lang="es" spellcheck="true" class="form-control text-justify auto-expand" style="margin-top: 5px; background-color: rgb(255, 255, 153);" data-bind="textInput: $data.value, attr: { placeholder: displayName }, style: { &#39;background-color&#39;: value? &#39;white&#39; : &#39;rgb(255,255,153)&#39; }" rows="2" placeholder="Resumen historia clínica"></textarea>
+        </div>   
+    </div>
+</span>
+        <span data-bind="template: { name: &#39;vital-signs&#39;, data: $data, if:  $data.key === &#39;SintesisExamenFisico&#39; }"></span>
+        <span data-bind="template: { name: &#39;add-button&#39;, data: $data}, visible: $parents[1].medicalRecord.physicalExamination.indexOf($data) === ($parents[1].medicalRecord.physicalExamination.length - 2) " style="display: none;">
+    <div class="row mt-1 mb-4">						
+        <div class="col-12">							
+            <button class="btn btn-primary btn-sm" data-target="#physicalExaminationRowModal" data-toggle="modal"> 		
+                <i class="fas fa-plus"></i> Agregar
+            </button>	
+        </div>		
+    </div>
+</span>
+    </div>
+</div>
+
+<script type="text/html" id="vital-signs">
+    <div class="font-weight-bold">Signos Vitales</div>
+    <div class="row" style="margin-top:5px;margin-bottom:20px">
+        <div class="col-4">
+            <div data-bind="foreach: $parents[1].vm.medicalRecord.vitalSigns">
+                <span data-bind="template: { name:  'vital-sign-row', data: $data , if: ordinal < 3 }"></span>
+            </div>
+        </div>
+               
+        <div class="col-4">
+            <div data-bind="foreach: $parents[1].vm.medicalRecord.vitalSigns">
+                <span data-bind="template: { name:  'vital-sign-row', data: $data , if: ordinal > 2 && ordinal < 5 }"></span>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div data-bind="foreach: $parents[1].vm.medicalRecord.vitalSigns">
+                <span data-bind="template: { name:  'vital-sign-row', data: $data,  if: ordinal > 4 }"></span>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/html" id="content-row-formateable">
+	<div style="margin-top:5px;margin-bottom:20px">
+		<div>
+			<span class="input-group">
+				<div class="input-group-text" data-bind="visible: isRemovable" style="background-color: white;">
+					<a href="" role="button" class="btn-outline-danger" data-bind="click: function() { $parents[2].removeElement($parents[2].medicalRecord.physicalExamination, $data) }"><i class="fas fa-times"></i></a>
+				</div>
+
+                <div class="input-group-text" style="background-color: white;" data-bind="visible: $parents[2].medicalRecord.physicalExamination.indexOf($data) !== 0 && $parents[2].medicalRecord.physicalExamination.indexOf($data) !== ($parents[2].medicalRecord.physicalExamination.length - 1)  ">
+                    <a href="#" role="button" class="btn-outline-success mr-3" data-bind="event: { click: function(data, event) { $parents[2].moveUp($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === 1 ? 'disabled-cont': ''">
+                        <i class="fas fa-chevron-circle-up"></i>
+                    </a>
+                    <a href="#" role="button" class="btn-outline-success" data-bind="event: { click: function(data, event) { $parents[2].moveDown($parents[2].medicalRecord.physicalExamination, $data)} }, class: $parents[2].medicalRecord.physicalExamination.indexOf($data) === ($parents[2].medicalRecord.physicalExamination.length - 2)  ? 'disabled-cont': ''">
+                        <i class="fas fa-chevron-circle-down"></i>
+                    </a>
+                </div>
+
+				<div class="input-group-prepend" data-bind="visible: $data.isVisibleDisplayName">
+					<span class="input-group-text font-weight-bold"  style="background-color: white; border-color:white" data-bind="text: displayName + ':'"></span>
+				</div>				  
+			</span>
+
+			<textarea lang="es" spellcheck="true" class="form-control text-justify auto-expand" style="margin-top:5px" data-bind="textInput: $data.value, attr: { placeholder: displayName }, style: { 'background-color': value? 'white' : 'rgb(255,255,153)' }" rows="2"></textarea>
+        </div>   
+    </div>
+</script>
+
+<script type="text/html" id="vital-sign-row">
+    <div style="margin-top:5px">
+        <div class="input-group">
+            <span class="input-group-prepend">
+                <span class="input-group-text font-weight-bold"  data-bind="text: displayName + ':'"></span>
+            </span>
+                
+            <input class="form-control text-right"  type="text"  data-bind="textInput: value, style: { 'background-color': value? 'white' : 'rgb(255,255,153)' }">
+                
+            <span class="input-group-append">                      
+                <span class="input-group-text font-weight-bold" data-bind="text: unit">unit</span>
+            </span>                
+        </div>
+    </div>
+</script>
+
+<div class="modal fade" id="physicalExaminationRowModal" tabindex="-1" role="dialog" aria-labelledby="physicalExaminationRowModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <span class="h5">Agregar sección a la exploración física </span>
+                </div>
+                   
+                <button id="btnPhysicalExaminationRowModal" type="button" class="close" aria-label="Close" data-bind="click: function() { document.getElementById(&#39;physicalExaminationRowName&#39;).value = null;  $(&#39;#physicalExaminationRowModal&#39;).modal(&#39;hide&#39;) }">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+                
+            <div class="modal-body">
+                    
+                <input id="physicalExaminationRowName" class="form-control">
+
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <button data-bind="click: function() { $data.vm.pushPhysicalExaminationRow($data.vm.medicalRecord.physicalExamination, document.getElementById(&#39;physicalExaminationRowName&#39;).value) }" class="btn btn-success btn-sm">
+                            <i class="fas fa-check"></i> Aceptar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id="add-button">
+    <div class="row mt-1 mb-4">						
+        <div class="col-12">							
+            <button class="btn btn-primary btn-sm" data-target="#physicalExaminationRowModal" data-toggle="modal" > 		
+                <i class="fas fa-plus"></i> Agregar
+            </button>	
+        </div>		
+    </div>
+</script></div>
+	<div data-bind="component: { name:&#39;recordWirzarNavButtons&#39; , params: { vm: $data } }"><nav class="fixed-bottom bg-light py-2 d-print-none">		
+    <footer class="container">	
+        <span class="float-left">	
+            <button id="previous" class="btn btn-primary btn-sm" data-bind="visible: $data.vm.hasPrevious(), click: $data.vm.goPrevious" style="">
+                <i class="fas fa-angle-double-left"></i><i> Anterior</i>	
+            </button>
+        </span>
+        <span class="float-right">
+            <button id="next" class="btn btn-primary btn-sm" data-bind="visible: $data.vm.hasNext(), click: $data.vm.goNext, enable: $data.vm.canGoNext()" style="">					
+                <i>Continuar </i><i class="fas fa-angle-double-right"></i>			
+            </button>
+        </span>
+        <span class="float-left" data-bind="visible: !$data.vm.hasNext()" style="display: none;">
+            <button class="btn btn-primary btn-sm" data-bind="click: $data.vm.doSaveRecord, visible: !$data.vm.recordIsClosed()">
+                <i class="fas fa-check"></i> Guardar
+            </button>
+        </span>
+    </footer>
+</nav></div>
+</section><!-- /ko -->
+
+	<!-- ko if: currentRoute().footer --><!-- /ko -->
+<script type="text/javascript" src="./xPxApp_files/main.bundle.js.download"></script>
+
+</body></html>

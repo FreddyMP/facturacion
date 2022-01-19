@@ -1,91 +1,196 @@
-<?
-launchExtension("funciones",$_POST['module']);
-
-if($_POST['filter_Date_Ini']!='') $Date_Ini=$_POST['filter_Date_Ini'];
-else if(getFilter('','Date_Ini')!='') $Date_Ini=getFilter('','Date_Ini');
-else $Date_Ini='';
-
-if($_POST['filter_Date_Fin']!='') $Date_Fin=$_POST['filter_Date_Fin'];
-else if(getFilter('','Date_Fin')!='') $Date_Fin=getFilter('','Date_Fin');
-else $Date_Fin='';
-
-if($Date_Ini !=''){
-$and_sql.="collections_received.Date_Doc >= ' ".$Date_Ini." ' ";
-$and=" AND ";
-}
-if($Date_Fin !=''){
-$and_sql.=$and."collections_received.Date_Doc <= ' ".$Date_Fin." '";
-}
-/*Comentado por Freddy 
-    if($Date_Ini =='' && $Date_Fin ==''){
-    $and_sql.=$and."collections_received.Date_Doc >=DATEADD(day, -2, GETDATE())  ";
-     }
+<?php 
+/*
+* @filename: cmd_LoadSellers_createLoad.php 
+* @version: 29/09/2017
+* @author: Diego Aguado (modificado por) 
+* @project: Mercasid
+* @module: LoadSellers
 */
-if($and_sql !=''){
-$and_sql.=" collections_received.Canceled<>'1'   ";
-} else {
-$and_sql.=" collections_received.Canceled<>'1' ";
-}
-putParamView("customAndSQL",$and_sql);
 
-
-if($_POST['paramUser1']=="nuevo"){ // relleno por la funcion js
-//construccion de los campos a visualizar (los parametros name enganchan con los resultados de la consulta)
-$fs=array();
-array_push($fs,array("name"=>"Code_Seller","label"=>"Repartidor","type"=>"text"));
-array_push($fs,array("name"=>"Code_Account","label"=>"C. Cliente","type"=>"text"));
-array_push($fs,array("name"=>"Account","label"=>"Cliente","type"=>"text"));
-array_push($fs,array("name"=>"Code_Sales_Org","label"=>"Org. Ventas","type"=>"text"));
-array_push($fs,array("name"=>"Order_Num_ofClient","label"=>"Pedido Telynet","type"=>"text"));
-array_push($fs,array("name"=>"Order_Date","label"=>"Fecha","type"=>"date"));
-array_push($fs,array("name"=>"Code_Product","label"=>"C. Material","type"=>"text"));
-array_push($fs,array("name"=>"Product","label"=>"Material","type"=>"text"));
-array_push($fs,array("name"=>"Quantity","label"=>"Cantidad","type"=>"text"));
-array_push($fs,array("name"=>"Lot_Number","label"=>"Lote","type"=>"date"));
-array_push($fs,array("name"=>"Total_Com","label"=>"Comisión","type"=>"text"));
-array_push($fs,array("name"=>"Net_Amount","label"=>"Importe Neto","type"=>"text"));
-//array_push($fs,array("name"=>"campo2","label"=>"Campo 2","type"=>"text")); // a modificar
-// .. añadir los necesarios
-$clave="Order_Num"; // a modificar
-$and="1=1";
-if($Date_Ini!=''){
-$and.=" AND prj_orders_header.Order_Date >= '".$Date_Ini."'";
-}
-if($Date_Fin!=''){
-$and.=" AND prj_orders_header.Order_Date <= '".$Date_Fin."'";
-}
-
-$sql ="SELECT Order_Num, Num_Line, Orden, Code_Seller, Code_Account, Account, Code_Sales_Org, Order_Num_ofClient, Order_Date, Code_Product, Product, Quantity, Lot_Number, Total_Com, Net_Amount FROM (
-SELECT prj_orders_lines.Order_Num, prj_orders_lines.Num_Line, 0 AS Orden, sellers.Description AS Code_Seller, accounts.Code_ofClient AS Code_Account, accounts.Name1 AS Account,
-sales_organization.Description AS Code_Sales_Org, prj_orders_header.Order_Num_ofClient, prj_orders_header.Order_Date, products.Code_ofClient AS Code_Product, products.Description AS Product,
-CAST(prj_orders_lines.Quantity AS int) AS Quantity, '' AS Lot_Number, prj_orders_lines.Total_Com, prj_orders_lines.Net_Amount 
-FROM prj_orders_header 
-INNER JOIN prj_orders_lines ON prj_orders_header.Order_Num = prj_orders_lines.Order_Num 
-INNER JOIN sellers ON prj_orders_header.Code_Seller = sellers.Code 
-INNER JOIN accounts ON prj_orders_header.Code_Account = accounts.Code 
-INNER JOIN sales_organization ON prj_orders_header.Code_Sales_Org = sales_organization.Code 
-INNER JOIN products ON prj_orders_lines.Code_Product = products.Code 
-WHERE ".$and." 
-UNION ALL 
-SELECT prj_orders_lines_lots.Order_Num,prj_orders_lines_lots.Num_Line,1 AS Orden,'' AS Code_Seller,'' AS Code_Account,'' AS Account,'' AS Code_Sales_Org,'' AS Order_Num_ofClient,'' AS Order_Date,
-'' AS Code_Product,'' AS Product,CAST(prj_orders_lines_lots.Quantity AS int) AS Quantity, prj_orders_lines_lots.Lot_Number AS Lot_Number,null AS Total_Com,
-null AS Net_Amount FROM prj_orders_header 
-INNER JOIN prj_orders_lines_lots ON prj_orders_header.Order_Num = prj_orders_lines_lots.Order_Num 
-WHERE ".$and." ) A ORDER BY 1,2,3";
-
-//$sql="select 1 as Id, 'c1' as campo1, 'c2' as campo2 union all select 2 as Id, 'c3' as campo1, 'c4' as campo2"; // a modificar
- 
-// no modificar nada de aqui hasta el final
-$GLOBALS['fields']=array();
-constructFields($fs,"search");
-putParamView("constructDatagrid","0");
-$grid=array();
+/**
+ * COMENTARIO LIZBETH DAVIS (24-04-2018):
+ * FUE AGREGADA LA FUNCIÓN SLEEP(1) PARA QUE AL FINAL DE LA CONDICIÓN ESPERE UN SEGUNDO 
+ * PARA VOLVER A EJECUTARSE.
+ */
+$time_inicio= date()
+$Code=""; $lastCode="";
+$i=0;
+while (isset($_POST['gridkey_'.$i])){
+if ($_POST['gridchange_'.$i]=='1'){
+//$claves=explode(',',$_POST['gridkey_'.$i]);
+//alert($_POST['gridkey_'.$i]);
+$sql="select prj_orders_header.Order_Num, sellers.Description from prj_orders_header inner join sellers on prj_orders_header.Code_Seller_Del=sellers.Code where Code_Seller_Del='".$_POST['gridkey_'.$i]."' and Assigned_Dispatch='1' and Dispatched='0' and Order_Num not in (select Order_Num from loads_orders) and Status='0' and prj_orders_header.Delete_Date is null and prj_orders_header.Order_Type='ZOR'";
 $results=getFromSQL($sql);
-for($i=0;$i<count($results);$i++) {
-  $gridPart=array();
-  for($j=0;$j<count($fs);$j++) $gridPart[$fs[$j]['name']]=$results[$i][strtoupper($fs[$j]['name'])];
-array_push($grid,$gridPart);
+if (count($results)>0){
+alert ("ERROR: Existen pedidos abiertos asignados al repartidor: ".$results[0]['DESCRIPTION']);
+}else{
+$lastCode=$Code;
+$Code = getNewKeySync("numeric",18);
+if($Code==$lastCode) {
+ sleep(1);
+ $Code = getNewKeySync("numeric",18);
 }
-putGridrows($grid);
-putParamView("keyField",$clave);
+$sql="select * from view_prj_user_wares where Code_Seller='".$_POST['gridkey_'.$i]."'";
+$results=getFromSQL($sql);
+$Code_Warhouse_Des=$results[0]['CODE_WARHOUSE_DES'];
+if (!$Code_Warhouse_Des)
+$Code_Warhouse_Des="NULL";
+else
+$Code_Warhouse_Des="'".$Code_Warhouse_Des."'";
+$Code_Warehouse_Sou=$results[0]['CODE_WAREHOUSE_SOU'];
+if (!$Code_Warehouse_Sou)
+$Code_Warehouse_Sou="NULL";
+else
+$Code_Warehouse_Sou="'".$Code_Warehouse_Sou."'";
+
+
+$sql="select Code_Product, SUM(Quantity_Unit) as Quantity, Lot_Number from (
+select prj_orders_lines_lots.Code_Product, prj_orders_lines_lots.Quantity_Unit, prj_orders_lines_lots.Unit_Type_Sel, 
+prj_orders_lines_lots.Factor_Conversion, prj_orders_lines_lots.Lot_Number 
+from prj_orders_header inner join prj_orders_lines_lots on prj_orders_header.Order_Num=prj_orders_lines_lots.Order_Num 
+where code_seller_del='".$_POST['gridkey_'.$i]."' and prj_orders_header.Delete_Date is null and prj_orders_lines_lots.Delete_Date is null and Dispatched='0' 
+and Assigned_Dispatch='1' and Status='1' and prj_orders_header.Order_Type = 'ZOR' and
+prj_orders_header.Order_Num not in (select order_num from loads_orders where delete_date is null) 
+UNION ALL
+select prj_orders_packs_lines.Code_Product, prj_orders_packs_lines.Quantity_Unit, prj_orders_packs_lines.Unit_Type_Sel, 
+prj_orders_packs_lines.Factor_Conversion, '9999999999' as Lot_Number 
+from prj_orders_header inner join prj_orders_packs_lines on prj_orders_header.Order_Num=prj_orders_packs_lines.Order_Num 
+where code_seller_del='".$_POST['gridkey_'.$i]."' and prj_orders_header.Delete_Date is null and prj_orders_packs_lines.Delete_Date is null and Dispatched='0' 
+and Assigned_Dispatch='1' and Status='1' and prj_orders_header.Order_Type = 'ZOR' and prj_orders_packs_lines.Included = '1' and
+prj_orders_header.Order_Num not in (select order_num from loads_orders where delete_date is null)) as Charged_Sell
+group by Code_Product, Lot_Number";
+$results=getFromSQL($sql);
+/*
+$rotura_stock=false;
+$productos=array();
+if(true) {
+ $block=50;
+ for($j=0;$j<ceil(count($results)/$block);$j++) {
+  $condQuantity=array();
+  for($z=$j*$block;$z<count($results)&&$z<($j+1)*$block;$z++) {
+   $condQuantity[$results[$z]['CODE_PRODUCT']]=$results[$z]['QUANTITY'];
+  }
+  $sql="select distinct code_product,stock,products.Code_ofClient as ProdSAPID from view_rotura_stock inner join products on view_rotura_stock.code_product=products.code where code_seller_del='".$_POST['gridkey_'.$i]."' and Code_Product in ('".join("','",array_keys($condQuantity))."')";
+  $results2=getFromSQL($sql);
+  foreach($results2 as $r) {
+   if($r['STOCK']<$condQuantity[$r['CODE_PRODUCT']]) {
+    $rotura_stock=true;
+    $productos[]=$r['PRODSAPID'];
+}}}}
+else {
+ foreach ($results as $r){
+  $sql="select distinct code_product, stock, products.Code_ofClient as ProdSAPID from view_rotura_stock inner join products on view_rotura_stock.code_product=products.code where code_seller_del='".$_POST['gridkey_'.$i]."' and Code_Product='".$r['CODE_PRODUCT']."'";
+  $results2=getFromSQL($sql);
+  if ($results2[0]['STOCK']<$r['QUANTITY']){
+   $rotura_stock=true;
+   $productos[]=$results2[0]['PRODSAPID'];
+}}}
+*/
+//if (!$rotura_stock){
+$date=date('Ymd');
+$fooObj=getSqlSystemVars("insert");
+$sql="insert into loads_head (".$fooObj[0].", Code_Warehouse_Sou, Code_Warehouse_Des, Code_Type, Date_load, Code_Status, Code) values (".$fooObj[1].", ".$Code_Warehouse_Sou.", ".$Code_Warhouse_Des.", '01', '".$date."', '9', '".$Code."')";
+updateSQL($sql);
+$sql="insert into prj_loads_head (".$fooObj[0].", Code_Type2, Code) values (".$fooObj[1].", '7', '".$Code."')";
+updateSQL($sql);
+$sql="select Code_Product, SUM(Quantity) as Quantity, Unit_Type_Sel, Factor_Conversion, Lot_Number from (select prj_orders_lines_lots.Code_Product, prj_orders_lines_lots.Quantity, prj_orders_lines_lots.Unit_Type_Sel, prj_orders_lines_lots.Factor_Conversion, prj_orders_lines_lots.Lot_Number 
+from prj_orders_header 
+inner join prj_orders_lines_lots on prj_orders_header.Order_Num=prj_orders_lines_lots.Order_Num 
+where code_seller_del='".$_POST['gridkey_'.$i]."' and prj_orders_header.Delete_Date is null and prj_orders_lines_lots.Delete_Date is null and Dispatched='0' 
+and Assigned_Dispatch='1' and Status='1' and prj_orders_header.Order_Type = 'ZOR' and
+prj_orders_header.Order_Num not in (select order_num from loads_orders where delete_date is null) 
+UNION ALL
+select prj_orders_packs_lines.Code_Product, prj_orders_packs_lines.Quantity, prj_orders_packs_lines.Unit_Type_Sel, prj_orders_packs_lines.Factor_Conversion, '9999999999' as Lot_Number 
+from prj_orders_header 
+inner join prj_orders_packs_lines on prj_orders_header.Order_Num=prj_orders_packs_lines.Order_Num 
+where code_seller_del='".$_POST['gridkey_'.$i]."' and prj_orders_header.Delete_Date is null and prj_orders_packs_lines.Delete_Date is null and Dispatched='0' 
+and Assigned_Dispatch='1' and Status='1' and prj_orders_header.Order_Type = 'ZOR' and prj_orders_packs_lines.Included = '1' and
+prj_orders_header.Order_Num not in (select order_num from loads_orders where delete_date is null)) as Charged_Sell
+group by Code_Product, Unit_Type_Sel, Factor_Conversion, Lot_Number";
+$results=getFromSQL($sql);
+$num_line=10;
+for ($j=0;$j<count($results);$j++){
+$Unit_Type_Sel=$results[$j]['UNIT_TYPE_SEL'];
+if (!$Unit_Type_Sel)
+$Unit_Type_Sel="NULL";
+else
+$Unit_Type_Sel="'".$Unit_Type_Sel."'";
+$Factor_Conversion=$results[$j]['FACTOR_CONVERSION'];
+if (!$Factor_Conversion)
+$Factor_Conversion="NULL";
+else
+$Factor_Conversion="'".$Factor_Conversion."'";
+$sql="insert into loads_detail (".$fooObj[0].", Code, Num_Line, Code_Product, Quantity, Quantity_Real, Unit_Type, Factor_Conversion, Prepared, Lot_Group) values (".$fooObj[1].", '".$Code."', '".$num_line."', '".$results[$j]['CODE_PRODUCT']."', '".$results[$j]['QUANTITY']."', '".$results[$j]['QUANTITY']."', ".$Unit_Type_Sel.", ".$Factor_Conversion.", '0', '".$results[$j]['LOT_NUMBER']."')";
+updateSQL($sql);
+$sql="insert into prj_loads_detail (".$fooObj[0].", Code, Num_Line, Promotional) values (".$fooObj[1].", '".$Code."', '".$num_line."', '0')";
+updateSQL($sql);
+//writeCustomLog($sql);
+$num_line+=10;
 }
+$sql="select distinct prj_orders_header.Order_Num from prj_orders_header where code_seller_del='".$_POST['gridkey_'.$i]."' and prj_orders_header.Delete_Date is null and  Dispatched='0' and Assigned_Dispatch='1' and Status='1' and prj_orders_header.Order_Num not in (select order_num from loads_orders where delete_date is null)";
+$results=getFromSQL($sql);
+$fooObj2=getSqlSystemVars("update");
+
+$orderNums = "";
+
+for ($j=0;$j<count($results);$j++){
+    $sql="insert into loads_orders (".$fooObj[0].", Code_Load, Order_Num) values (".$fooObj[1].", '".$Code."', '".$results[$j]['ORDER_NUM']."')";
+    updateSQL($sql);
+    if($j == 0){
+        $orderNums .= "'". $results[$j]['ORDER_NUM'] . "'";
+    }else{
+        $orderNums .= ", '". $results[$j]['ORDER_NUM'] . "'";
+    }
+
+    /*
+$sql="insert into loads_orders (".$fooObj[0].", Code_Load, Order_Num) values (".$fooObj[1].", '".$Code."', '".$results[$j]['ORDER_NUM']."')";
+updateSQL($sql);
+$sql="update prj_orders_header set ".$fooObj2[0].", Invoiced='1' where Order_Num='".$results[$j]['ORDER_NUM']."'";
+updateSQL($sql);
+$sql="update prj_orders_lines set ".$fooObj2[0]." where Order_Num='".$results[$j]['ORDER_NUM']."'";
+updateSQL($sql);
+$sql="update prj_orders_lines_lots set ".$fooObj2[0]." where Order_Num='".$results[$j]['ORDER_NUM']."'";
+updateSQL($sql);
+$sql="update prj_orders_packs_header set ".$fooObj2[0]." where Order_Num='".$results[$j]['ORDER_NUM']."'";
+updateSQL($sql);
+$sql="update prj_orders_packs_lines set ".$fooObj2[0]." where Order_Num='".$results[$j]['ORDER_NUM']."'";
+updateSQL($sql);
+$sql="update prj_orders_packs_taxes set ".$fooObj2[0]." where Order_Num='".$results[$j]['ORDER_NUM']."'";
+updateSQL($sql);
+$sql="update prj_orders_promo_list set ".$fooObj2[0]." where Order_Num='".$results[$j]['ORDER_NUM']."'";
+updateSQL($sql);
+$sql="update prj_orders_secuences set ".$fooObj2[0]." where Order_Num='".$results[$j]['ORDER_NUM']."'";
+updateSQL($sql);*/
+} 
+
+
+$sql="update prj_orders_header set ".$fooObj2[0].", Invoiced='1' where Order_Num in(".$orderNums.")";
+updateSQL($sql);
+$sql="update prj_orders_lines set ".$fooObj2[0]."  where Order_Num in(".$orderNums.")";
+updateSQL($sql);
+$sql="update prj_orders_lines_lots set ".$fooObj2[0]."  where Order_Num in(".$orderNums.")";
+updateSQL($sql);
+$sql="update prj_orders_packs_header set ".$fooObj2[0]." where Order_Num in(".$orderNums.")";
+updateSQL($sql);
+$sql="update prj_orders_packs_lines set ".$fooObj2[0]." where Order_Num in(".$orderNums.")";
+updateSQL($sql);
+$sql="update prj_orders_packs_taxes set ".$fooObj2[0]." where Order_Num in(".$orderNums.")";
+updateSQL($sql);
+$sql="update prj_orders_promo_list set ".$fooObj2[0]." where Order_Num in(".$orderNums.")";
+updateSQL($sql);
+$sql="update prj_orders_secuences set ".$fooObj2[0]." where Order_Num in(".$orderNums.")";
+updateSQL($sql);
+
+/*}else{
+$sql="select Description from sellers where Code='".$_POST['gridkey_'.$i]."'";
+$results2=getFromSQL($sql);
+$productos = implode(",", $productos);
+alert ("No se puede hacer carga a este vendedor ".$results2[0]['DESCRIPTION']." porque estos productos no tienen stock: ".$productos);
+}*/
+}
+//writeCustomLog("Espera un segundo");
+//sleep(1);
+}
+$i++;
+}
+

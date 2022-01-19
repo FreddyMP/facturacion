@@ -75,7 +75,7 @@
                     <input type="Number" name="precio_c"  step="0.01" class="form-control" placeholder="0.00">
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="exampleFormControlInput1" class="form-label">Precio de venta</label>
+                    <label for="exampleFormControlInput1" class="form-label">Porcentaje de ganancia</label>
                     <input type="Number" name="precio_v"  step="0.01" class="form-control" placeholder="0.00">
                 </div>
                 

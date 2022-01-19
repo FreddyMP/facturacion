@@ -9,7 +9,10 @@
  echo $estado = $_POST["estado"];
  echo $categoria = $_POST["categoria"];
  echo $precio_c = $_POST["precio_c"];
- echo $precio_v = $_POST["precio_v"];
+ echo $precio_porciento = $_POST["precio_v"];
+ $porciento_ganancia = $_POST["precio_v"] /100;
+ $ganancia = $_POST["precio_c"] * $porciento_ganancia;
+ $precio_v = $precio_c = $_POST["precio_c"] + $ganancia;
  echo $casa_productora = $_POST["casa_productora"];
  echo $cantidad_disponible = $existencia - $stock;
  echo $codigo_impuesto = $_POST["impuestos"];

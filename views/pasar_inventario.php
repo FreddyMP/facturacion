@@ -3,7 +3,7 @@
  include('plantilla/menu_articulos.php');
  include('../backend/inventario/listas_articulos.php');
 ?>
-
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <div class="p-5">
     <h3>Pasar inventario</h3>
         <div class="col-md-12">
@@ -61,3 +61,30 @@
 </table>
         </div>
 </div>
+
+<script>
+$("#busqueda").keyup(function()
+        {
+          if( $("#busqueda").val() != ''){
+            $("#table_init").hide();
+            $("#tabla_busqueda").show();
+            var articulo = $("#busqueda").val();
+            $.ajax
+            ({
+                type:"post",
+                url:"busquedas/buscar_articulo.php",
+                dataType:'html',
+                data:{'nombre':articulo},
+                success: function(data)
+                {
+                    $("#tabla_busqueda").empty();
+                    $("#tabla_busqueda").append(data);
+                }
+            }); 
+          }else{
+            $("#table_init").show();
+            $("#tabla_busqueda").hide();
+          }
+            
+        });
+</script>

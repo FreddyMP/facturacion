@@ -28,8 +28,8 @@
                 <td><?php echo $categorias["descripcion"] ?></td>
                 <td>
                     <small>
-                        <button class="btn btn-info">Ver</button>
-                        <button class= "btn btn-danger">del</button>
+                        <a href="ver_categoria.php?id=<?php echo $categorias['id'] ?>" class="btn btn-info">Ver</a>
+                        <a href="../backend/inventario/del_categoria.php?id=<?php echo $categorias['id'] ?>" class= "btn btn-danger">del</a>
                     </small>
                 </td>
             </tr>
