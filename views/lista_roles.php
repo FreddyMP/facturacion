@@ -6,7 +6,7 @@
  $query_roles = $conexion->query($consulta_roles);
 ?>
 
-<div class="p-5">
+<div class="p-5 contenido">
   <h3>Almacenes</h3>
         <div class="col-md-12">
         <table class="table">

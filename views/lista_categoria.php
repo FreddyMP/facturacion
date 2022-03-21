@@ -5,7 +5,7 @@
  $consulta_categorias = "SELECT * FROM categorias where borrado_por is null";
  $query_categorias = $conexion->query($consulta_categorias);
 ?>
-<div class="p-5">
+<div class="p-5 contenido">
 <h3>Categorías</h3>
         <div class="col-md-12">
             <input type="text" class="form-control" name="" id="" placeholder="Buscar almacén"><br>

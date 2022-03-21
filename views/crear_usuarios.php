@@ -7,7 +7,7 @@
 ?>
 <form action="../backend/usuarios/crear_usuarios.php" method="post">
 
-<div class="container p-3">
+<div class="container p-3 contenido">
         <div class="col-md-12">
             <H3>Crear usuario</H3><br>
             <div class="row">

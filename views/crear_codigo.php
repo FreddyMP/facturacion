@@ -16,7 +16,7 @@
 
 ?>
 <script src="../js/jquery-mask/src/jquery.mask.js"></script>
-<div class="container p-5">
+<div class="container p-5 contenido">
         <div class="col-md-12">
             <H3>Crear código de impuestos</H3><br>
             <form action="../backend/impuestos/crear.php" method="post">

@@ -6,7 +6,7 @@
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <script src="../js/jquery-mask/src/jquery.mask.js"></script>
 <script src="../js/mascaras.js"></script>
-<div class="p-5">
+<div class="p-5 contenido">
   <h3>Artículos</h3> 
         <div class="col-md-12">
             <input type="text" class="form-control" name="" id="busqueda" placeholder="Buscar articulo"><br>

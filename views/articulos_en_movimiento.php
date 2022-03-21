@@ -10,7 +10,8 @@
     $query_all = $conexion->query($consulta_all);
 ?>
 
-<div class="p-5">
+
+<div class="p-5 contenido" >
   <h3>Artículos en movimiento</h3>
         <div class="col-md-12">
             <input type="text" class="form-control" name="" id="busqueda" placeholder="Buscar articulo"><br>

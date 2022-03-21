@@ -8,7 +8,7 @@
  $result = $query->fetch_assoc();
 
 ?>
-<div class="container p-5">
+<div class="container p-5 contenido">
         <div class="col-md-12">
             <H3>Crear categoría</H3><br>
             <form action="../backend/inventario/modificar_categoria.php" method="post">

@@ -5,7 +5,7 @@
  $consulta_usuarios = "SELECT * FROM usuarios where estado = 1 and borrado_por is null";
  $query_usuarios = $conexion->query($consulta_usuarios);
 ?>
-<div class="p-5">
+<div class="p-5 contenido">
 <h3>Usuarios</h3>
         <div class="col-md-12">
         <table class="table">

@@ -4,7 +4,7 @@
  include('../backend/clientes/ver.php');
 ?>
 
-<div class="p-5">
+<div class="p-5 contenido">
         <div class="col-md-12">
             <input type="text" class="form-control" name="" id="" placeholder="Buscar paciente"><br>
         <table class="table">

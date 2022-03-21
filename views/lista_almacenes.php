@@ -6,7 +6,7 @@
  $query_almacenes = $conexion->query($consulta_almacenes);
 ?>
 
-<div class="p-5">
+<div class="p-5 contenido">
   <h3>Almacenes</h3>
         <div class="col-md-12">
             <input type="text" class="form-control" name="" id="" placeholder="Buscar almacén"><br>

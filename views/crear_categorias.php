@@ -2,7 +2,7 @@
  include('plantilla/menu_top.php');
  include('plantilla/menu_articulos.php');
 ?>
-<div class="container p-5">
+<div class="container p-5 contenido">
         <div class="col-md-12">
             <H3>Crear categoría</H3><br>
             <form action="../backend/inventario/crear_categoria.php" method="post">

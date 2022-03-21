@@ -7,6 +7,9 @@ html {
     font-family: "Poppins", sans-serif;
     height: 100vh;
   }
+  body{
+    background-color: #380d0d;
+  }
   
   a {
     color: #92badd;

@@ -10,7 +10,7 @@ $consulta_categoria_nombre = "SELECT * from categorias where borrado_por is null
 $query_categoria = $conexion->query($consulta_categoria_nombre);
 ?>
 <form action="../backend/inventario/modificar_articulo.php" method="post">
-<div class="container p-5">
+<div class="container p-5 contenido">
     <div class="col-md-12">
         <div class="row">
             <div class="col-md-2">

@@ -9,9 +9,10 @@
  $consulta_cuadres_filtro= "SELECT * FROM cuadres where usuario_inicio = '$usuario' and estado = 'Abierto'";
  $query_cuadres_filtro = $conexion->query($consulta_cuadres_filtro);
  $resultados = $query_cuadres_filtro->num_rows;
+
 ?>
     
-    <div class="row p-5">
+    <div class="row p-5 contenido">
         <h3 >Conteo en caja</h3>
         <div class="col-md-2">
             <input type="number" min="0" class="form-control m-3 efe" placeholder="$1" id="uno" required>

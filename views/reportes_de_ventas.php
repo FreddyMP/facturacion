@@ -8,7 +8,7 @@
  
 ?>
 
-<div class="p-5">
+<div class="p-5 contenido">
      <h3>Reporte de ventas</h3> <br>
         <div class="row">
             <div class="col-md-2" id="Factura">

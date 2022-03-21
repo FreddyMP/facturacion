@@ -9,7 +9,7 @@
 <script src="../js/jquery-mask/src/jquery.mask.js"></script>
 <script src="../js/mascaras.js"></script>
 <form action="../backend/inventario/crear_articulo.php" method="post">
-<div class="container p-3">
+<div class="container p-3 contenido">
         <div class="col-md-12">
             <H3>Crear nuevo artículo</H3><br>
             <div class="row">

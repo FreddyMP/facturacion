@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 19, 2022 at 03:40 PM
--- Server version: 10.4.20-MariaDB
--- PHP Version: 8.0.9
+-- Generation Time: Jan 31, 2022 at 03:42 PM
+-- Server version: 10.4.22-MariaDB
+-- PHP Version: 8.1.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -84,8 +84,8 @@ CREATE TABLE `articulos` (
 
 INSERT INTO `articulos` (`id`, `nombre`, `descripcion`, `existencia`, `stock`, `cantidad_disponible`, `cantidad_en_movimiento`, `almacen`, `fcc`, `fcv`, `status`, `categoria`, `precio_compra`, `precio_venta`, `codigo_impuesto`, `casa_productora`, `fecha_creacion`, `creado_por`, `fecha_modificacion`, `modificado_por`, `fecha_borrado`, `borrado_por`) VALUES
 (8, 'Aspirina 300 bayer cambiado', 'Ejemplo de un artículo 3', 376, 15, 366, 0, 1, 'Unidad', 'Caja', 'Inactivo', '1', 400, 600.88, 14, 'Laboratorio el proba', '2022-01-13 19:14:00', '', '0000-00-00', 'super_admin', NULL, NULL),
-(9, 'coca cola cero', 'Coca cola sin azucar', 249, 20, 229, 0, 1, '', 'Unidad', 'Activo', '1', 300, 360, 15, 'Laboratorio el probado', '2022-01-13 13:37:01', '', NULL, NULL, NULL, NULL),
-(10, 'Diclofenal', 'No se lo que es pero he escuchado el nombre', 232, 25, 207, 18, 1, '', 'Unidad', 'Activo', '1', 350, 500, 15, 'Laboratorio el probado', '2021-12-08 14:36:32', '', NULL, NULL, NULL, NULL),
+(9, 'coca cola cero', 'Coca cola sin azucar', 248, 20, 228, 1, 1, '', 'Unidad', 'Activo', '1', 300, 360, 15, 'Laboratorio el probado', '2022-01-28 20:49:16', '', NULL, NULL, NULL, NULL),
+(10, 'Diclofenal', 'No se lo que es pero he escuchado el nombre', 228, 25, 203, 22, 1, '', 'Unidad', 'Activo', '1', 350, 500, 15, 'Laboratorio el probado', '2022-01-28 20:53:34', '', NULL, NULL, NULL, NULL),
 (11, 'Ibuprofen', 'etesgs', 64, 4, 60, 5, 1, NULL, 'Unidad', 'Activo', '1', 352, 400, 15, 'Laboratorio el probado', '2022-01-13 13:37:00', '', NULL, NULL, NULL, NULL),
 (12, 'Omeprazon 100ml', 'Para la diarrea', 299, 20, 279, 1, 1, NULL, 'Unidad', 'Activo', '1', 330, 330, 14, 'tu mai', '2021-12-08 13:36:36', '', NULL, NULL, NULL, NULL);
 
@@ -114,6 +114,33 @@ CREATE TABLE `categorias` (
 INSERT INTO `categorias` (`id`, `nombre`, `descripcion`, `fecha_creacion`, `creado_por`, `fecha_modificacion`, `modificado_por`, `fecha_borrado`, `borrado_por`) VALUES
 (1, 'Electricos ', '  Todos los electricos \r\n\r\n', 0, '', '2022-01-18', 'super_admin', NULL, NULL),
 (2, 'Construccion', '  Esto no es un codigo de impuestos', 0, '', '2022-01-18', 'super_admin', '2022-01-18', 'super_admin');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `cuadres`
+--
+
+CREATE TABLE `cuadres` (
+  `id` int(11) NOT NULL,
+  `usuario_inicio` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `usuario_cierre` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `encontrado` float NOT NULL,
+  `sistema` float NOT NULL,
+  `cierre` float DEFAULT NULL,
+  `estado` varchar(10) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'Abierto',
+  `fecha_creacion` timestamp NOT NULL DEFAULT current_timestamp(),
+  `modificacion_fecha` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `modificado_por` int(10) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+--
+-- Dumping data for table `cuadres`
+--
+
+INSERT INTO `cuadres` (`id`, `usuario_inicio`, `usuario_cierre`, `encontrado`, `sistema`, `cierre`, `estado`, `fecha_creacion`, `modificacion_fecha`, `modificado_por`) VALUES
+(1, 'super_admin', 'super_admin', 200, 1032, 411, 'Cerrado', '2022-01-28 18:00:00', '2022-01-28 20:50:05', NULL),
+(2, 'super_admin', 'super_admin', 500, 1800, 611, 'Abierto', '2022-01-28 20:51:40', '2022-01-28 21:12:01', NULL);
 
 -- --------------------------------------------------------
 
@@ -331,7 +358,7 @@ CREATE TABLE `tipos_comprobantes` (
 --
 
 INSERT INTO `tipos_comprobantes` (`id`, `nombre`, `codigo`, `proximo`, `limite`, `fecha_creacion`, `creado_por`, `fecha_modificacion`, `modificado_por`, `fecha_borrado`, `borrado_por`) VALUES
-(1, 'Consumidor final', 'B02', 46, 150, '2021-12-29 20:31:37', 'super_admin', NULL, NULL, NULL, NULL),
+(1, 'Consumidor final', 'B02', 48, 150, '2022-01-28 20:53:38', 'super_admin', NULL, NULL, NULL, NULL),
 (2, 'Valor Fiscal', 'B01', 4, 220, '2021-11-25 15:55:18', 'super_admin', NULL, NULL, NULL, NULL),
 (3, 'Comprobante gubernamentales', 'B04', 50, 300, '2021-12-06 23:43:40', 'super_admin', NULL, NULL, NULL, NULL);
 
@@ -402,7 +429,9 @@ INSERT INTO `venta_cabecera` (`id`, `numero_factura`, `codigo_detalles`, `client
 (51, '1250000002151', '2979405011221/12/05/03', 4, 'Efectivo', 'Al contado', 'B0200000042', 814.8, 124.8, 690, 0, 'super_admin', 'Activo', '2021-12-05 02:04:11', NULL, NULL, NULL, NULL),
 (52, '1270000002152', '363759575121/12/07/12', 4, 'Efectivo', 'Al contado', 'B0200000043', 813.62, 112.22, 701.4, 0, 'super_admin', 'Activo', '2021-12-06 23:37:10', NULL, NULL, NULL, NULL),
 (53, '1280000002153', '1544537586521/12/08/03', 4, 'Efectivo', 'Al contado', 'B0200000044', 886.81, 136.11, 750.7, 0, 'super_admin', 'Activo', '2021-12-08 14:36:53', NULL, NULL, NULL, NULL),
-(54, '12290000002154', '2343019720321/12/29/09', 4, 'Efectivo', 'Al contado', 'B0200000045', 852.84, 142.14, 710.7, 0, 'super_admin', 'Activo', '2021-12-29 20:31:37', NULL, NULL, NULL, NULL);
+(54, '12290000002154', '2343019720321/12/29/09', 4, 'Efectivo', 'Al contado', 'B0200000045', 852.84, 142.14, 710.7, 0, 'super_admin', 'Activo', '2021-12-29 20:31:37', NULL, NULL, NULL, NULL),
+(55, '1280000002255', '2942870647222/01/28/09', 4, 'Efectivo', 'Al contado', 'B0200000046', 1032, 172, 860, 0, 'super_admin', 'Activo', '2022-01-28 20:49:24', NULL, NULL, NULL, NULL),
+(56, '1280000002256', '1238394228422/01/28/09', 4, 'Efectivo', 'Al contado', 'B0200000047', 1800, 300, 1500, 0, 'super_admin', 'Activo', '2022-01-28 20:53:38', NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -463,7 +492,10 @@ INSERT INTO `venta_detalle` (`id`, `codigo`, `id_articulo`, `articulo`, `precio_
 (291, '1544537586521/12/08/03', 11, 'Ibuprofen', 400, 480, 80, 1, 80, 400, 480, '', 'super_admin', '2021-12-08 14:36:49', NULL, NULL, NULL, NULL),
 (292, '3017149733521/12/22/02', 8, 'Aspirina 300 bayer', 350.7, 406.81, 56.11, 2, 112.22, 701.4, 813.62, '', 'super_admin', '2021-12-22 13:10:17', NULL, NULL, NULL, NULL),
 (293, '2343019720321/12/29/09', 8, 'Aspirina 300 bayer 2', 350.7, 420.84, 70.14, 1, 70.14, 350.7, 420.84, '', 'super_admin', '2021-12-29 20:31:08', NULL, NULL, NULL, NULL),
-(294, '2343019720321/12/29/09', 9, 'coca cola cero', 360, 432, 72, 1, 72, 360, 432, '', 'super_admin', '2021-12-29 20:31:12', NULL, NULL, NULL, NULL);
+(294, '2343019720321/12/29/09', 9, 'coca cola cero', 360, 432, 72, 1, 72, 360, 432, '', 'super_admin', '2021-12-29 20:31:12', NULL, NULL, NULL, NULL),
+(298, '2942870647222/01/28/09', 9, 'coca cola cero', 360, 432, 72, 1, 72, 360, 432, '', 'super_admin', '2022-01-28 20:49:16', NULL, NULL, NULL, NULL),
+(299, '2942870647222/01/28/09', 10, 'Diclofenal', 500, 600, 100, 1, 100, 500, 600, '', 'super_admin', '2022-01-28 20:49:21', NULL, NULL, NULL, NULL),
+(300, '1238394228422/01/28/09', 10, 'Diclofenal', 500, 600, 100, 3, 300, 1500, 1800, '', 'super_admin', '2022-01-28 20:53:34', NULL, NULL, NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -485,6 +517,12 @@ ALTER TABLE `articulos`
 -- Indexes for table `categorias`
 --
 ALTER TABLE `categorias`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `cuadres`
+--
+ALTER TABLE `cuadres`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -564,6 +602,12 @@ ALTER TABLE `categorias`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT for table `cuadres`
+--
+ALTER TABLE `cuadres`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `impuestos`
 --
 ALTER TABLE `impuestos`
@@ -609,13 +653,13 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT for table `venta_cabecera`
 --
 ALTER TABLE `venta_cabecera`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `venta_detalle`
 --
 ALTER TABLE `venta_detalle`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=298;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=301;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
