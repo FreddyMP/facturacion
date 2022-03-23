@@ -6,13 +6,13 @@
     if($permiso_futuro==1)
     {
     ?>
-        <a href="registro_pacientes.php" type="button" class="btn btn-primary" >Registrar pacientes</a>
+        <a href="registro_pacientes.php" type="button" class="btn btn-secondary" >Registrar pacientes</a>
     <?php
     }
     if($permiso_futuro==1)
     {
     ?>
-        <a href="lista_pacientes.php" type="button" class="btn btn-primary">Lista de pacientes</a>
+        <a href="lista_pacientes.php" type="button" class="btn btn-secondary">Lista de pacientes</a>
     <?php
     }
    ?>

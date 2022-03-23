@@ -4,7 +4,7 @@
 ?>
 <form action="../backend/clientes/crear.php" method="post">
 
-<div class="container p-3 contenido">
+<div class="p-3 contenido">
         <div class="col-md-12">
             <H3>Crear paciente</H3><br>
             <div class="row">

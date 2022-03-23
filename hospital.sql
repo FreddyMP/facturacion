@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 31, 2022 at 03:42 PM
+-- Generation Time: Mar 21, 2022 at 03:34 AM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.1.2
 
@@ -140,7 +140,28 @@ CREATE TABLE `cuadres` (
 
 INSERT INTO `cuadres` (`id`, `usuario_inicio`, `usuario_cierre`, `encontrado`, `sistema`, `cierre`, `estado`, `fecha_creacion`, `modificacion_fecha`, `modificado_por`) VALUES
 (1, 'super_admin', 'super_admin', 200, 1032, 411, 'Cerrado', '2022-01-28 18:00:00', '2022-01-28 20:50:05', NULL),
-(2, 'super_admin', 'super_admin', 500, 1800, 611, 'Abierto', '2022-01-28 20:51:40', '2022-01-28 21:12:01', NULL);
+(2, 'super_admin', 'super_admin', 500, 1800, 611, 'Cerrado', '2022-01-28 20:51:40', '2022-03-21 01:07:47', NULL),
+(3, 'super_admin', '', 0, 0, NULL, 'Abierto', '2022-03-21 01:15:34', '2022-03-21 01:15:34', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `devoluciones`
+--
+
+CREATE TABLE `devoluciones` (
+  `id_devolucion` int(11) NOT NULL,
+  `id_venta_cabecera` int(10) NOT NULL,
+  `id_venta_detalle` int(10) NOT NULL,
+  `cantidad` int(10) NOT NULL,
+  `id_razon` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `creado_por` varchar(100) COLLATE utf8_spanish_ci NOT NULL,
+  `modificado_por` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `borrado_por` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `fecha_creacion` timestamp NOT NULL DEFAULT current_timestamp(),
+  `fecha_modificacion` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `fecha_borrado` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
 
@@ -526,6 +547,12 @@ ALTER TABLE `cuadres`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `devoluciones`
+--
+ALTER TABLE `devoluciones`
+  ADD PRIMARY KEY (`id_devolucion`);
+
+--
 -- Indexes for table `impuestos`
 --
 ALTER TABLE `impuestos`
@@ -605,7 +632,13 @@ ALTER TABLE `categorias`
 -- AUTO_INCREMENT for table `cuadres`
 --
 ALTER TABLE `cuadres`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `devoluciones`
+--
+ALTER TABLE `devoluciones`
+  MODIFY `id_devolucion` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `impuestos`

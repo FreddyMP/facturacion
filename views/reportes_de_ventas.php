@@ -9,7 +9,7 @@
 ?>
 
 <div class="p-5 contenido">
-     <h3>Reporte de ventas</h3> <br>
+     <h3>Listado de ventas</h3> <br>
         <div class="row">
             <div class="col-md-2" id="Factura">
                 <input type="text" class="form-control" name="" id="factura" placeholder="Factura"><br>

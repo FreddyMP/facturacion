@@ -9,7 +9,7 @@
  $result = $query->fetch_assoc();
 
 ?>
-<div class="container p-5 contenido">
+<div class="p-5 contenido">
         <div class="col-md-12">
             <H3>Crear nuevo almacén</H3><br>
             <form action="../backend/inventario/modificar_almacen.php" method="post">

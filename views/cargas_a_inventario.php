@@ -6,7 +6,7 @@
  $query_articulos = $conexion->query($consulta_articulos);
 ?>
 
-<div class="container p-5 contenido">
+<div class="p-5 contenido">
     <h3>Cargar inventario</h3>
         <div class="col-md-12">
             <input type="text" class="form-control" id="busqueda" placeholder="Buscar artículo"><br>

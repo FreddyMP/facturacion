@@ -5,7 +5,7 @@
  $consulta_detalles = "SELECT * FROM impuestos_detalles where cabecera = $id";
  $query_detalle = $conexion->query($consulta_detalles);
 ?>
-<div class="container p-5 contenido">
+<div class="p-5 contenido">
         <div class="col-md-12  mb-5">
             <H3>Crear código de impuestos</H3><br>
 <form action="../backend/impuestos/compuesto.php" method="post">

@@ -65,21 +65,8 @@ writeCustomLog("query: " . $query);
   }
 
 }
-
 //9130_postStore_v1.php
 //Plugin para guardar la price list y el payment way
-$verificacion_en_tipo_comprobante = "select prj_accounts_organization.Code_Account as cuenta_org,prj_orders_header.Code_Account as cuenta_order, prj_accounts_organization.Code_Segment,prj_orders_header.Order_Num, prj_fiscal_segment.Generate_fiscal_document as genera
-from prj_orders_header 
-inner join prj_accounts_organization on prj_accounts_organization.Code_Account = prj_orders_header.Code_Account
-inner join prj_fiscal_segment on prj_fiscal_segment.Code=prj_accounts_organization.Code_Segment
-where prj_orders_header.Order_Num = '$key'";
-$verificacion_generar_comprobante = getFromSQL($verificacion_en_tipo_comprobante);
-if($verificacion_generar_comprobante[0]['genera'] == '1'){
-    $genera = 1;
-}
-else{
-    $genera = 0;
-}
 
 /** 30/01/2017: cerrar pedidos**/
 if($_POST['key']!=''){
@@ -89,15 +76,10 @@ updateSQL($sql);
 }
 }else{
 //Ver que price list corresponde
-    
-       
-   if($genera == true){
+     
     $fooObj=getSqlSystemVars("update");
     $sql="update users_counter set ".$fooObj[0].", N_Counter=N_Counter+1 where Code_User='".$_POST['userId']."' and cast(Series as varchar)+''+cast(N_Counter as varchar) = '".$_POST['info_Order_Num_ofClient']."'";    
-    
-   }
-
-       
+ 
     
 //$results=getFromSQL($sql);
 
@@ -345,11 +327,11 @@ if($OrderT == 'ZOR' && $Invoiced =='1' && $NCF_3=='')
             
     if($OrderT == 'ZOR' && $Invoiced =='1' && $NCF_3=='')
     {
-        if($genera == true){
+      
             $cmd = "exec sp_actualizarNCFFactura '".$key."'";
 
         updateSQL($cmd);
-        }        
+          
     }
 
 }else {
