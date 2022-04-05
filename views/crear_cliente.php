@@ -6,15 +6,15 @@
 
 <div class="p-3 contenido">
         <div class="col-md-12">
-            <H3>Crear paciente</H3><br>
+            <H3>Crear records</H3><br>
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" name="nombre" id="exampleFormControlInput1" placeholder="Inserte el nombre del paciente">
+                    <input type="text" class="form-control" name="nombre" id="exampleFormControlInput1" placeholder="Inserte nombre/s del paciente">
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Apellido</label>
-                    <input type="text" class="form-control" name="apellido" id="exampleFormControlInput1" placeholder="Inserte el apellido del paciente">
+                    <input type="text" class="form-control" name="apellido" id="exampleFormControlInput1" placeholder="Inserte apellido/s del paciente">
                 </div>
                 <div class="col-md-6 mb-3">
                     <label for="exampleFormControlInput1" class="form-label">Teléfono</label>
@@ -42,7 +42,7 @@
                 </div>
                 <div class="col-md-12 mb-3">
                     <label for="exampleFormControlTextarea1" class="form-label">Notas</label>
-                    <textarea class="form-control" name="notas" id="exampleFormControlTextarea1" placeholder="Detalles a tomar en cuenta acerca del paciente" rows="3"></textarea>
+                    <textarea class="form-control" name="notas" id="exampleFormControlTextarea1" placeholder="Detalles a tomar en cuenta acerca del cliente" rows="3"></textarea>
                 </div>
                
                 <div class="col-md-6 mt-3">

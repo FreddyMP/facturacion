@@ -90,7 +90,7 @@ while($row = $resultados_detalle = $query_detalle->fetch_assoc()){
     $pdf->Cell(25,14,'$RD '.$row['precio_full'],0,0,'c');
     $pdf->LN(5);
 }
-include('../backend/control/cone.php');
+
 
 $factura = $_GET['factura'];
 $consulta_db = "SELECT vc.itbis as itbis_full, vc.neto as neto_full, vc.bruto as bruto_full from venta_cabecera vc

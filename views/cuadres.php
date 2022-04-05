@@ -76,12 +76,12 @@
                                 if($cuadres["estado"]=='Abierto'){
                                     $id= $cuadres["id"];
                                     ?>
-                                        <a href="cuadre.php?id=<?php echo $id ?>" class="btn btn-info">Abierto</a>
+                                        <a href="cuadre.php?id=<?php echo $id ?>" class="btn btn-info"><i class="fa-solid fa-check"></i> Abierto</a>
                                     <?php
                                 }
                                 else{
                                     ?>
-                                        <a  class= "btn btn-danger">Cerrado</a>
+                                        <a  class= "btn btn-danger"><i class="fa-regular fa-circle-xmark"></i> Cerrado</a>
                                     <?php
                                 }
                         ?>

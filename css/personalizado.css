@@ -9,3 +9,6 @@ body{
     border-radius: 7px;
     border-color: gray;
 }
+a:active {
+    color: red;
+  }

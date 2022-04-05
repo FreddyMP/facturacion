@@ -5,7 +5,7 @@
  $consulta_comprobantes = "SELECT * FROM tipos_comprobantes where borrado_por is null";
  $query_comprobantes = $conexion->query($consulta_comprobantes);
 ?>
-<div class="p- contenido">
+<div class="p-5 contenido">
 <h3>Lista de comprobantes</h3>
         <div class="col-md-12">
             <input type="text" class="form-control" name="" id="" placeholder="Buscar almacén"><br>

@@ -10,8 +10,9 @@ else{
 }
 
   ?>
-  
-   <script src="../bootstrap/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<!--  Los iconos son tomandos desde https://fontawesome.com/icons/magnifying-glass?s=solid    -->
+<script src="../bootstrap/fonta.js" crossorigin="anonymous"></script>
+<script src="../bootstrap/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <link href="../bootstrap/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <script src="../bootstrap/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 <script src="../bootstrap/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
@@ -28,22 +29,22 @@ else{
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a href="inventario.php" class="nav-link" href="#">Artículos</a>
+        <a href="inventario.php" class="nav-link " ><i class="fa-solid fa-cart-flatbed"></i> Insumos</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="punto_de_facturacion.php">Facturación</a>
+            <a class="nav-link" href="punto_de_facturacion.php"><i class="fa-solid fa-cash-register"></i> Facturación</a>
           </li>
         <li class="nav-item">
-          <a href="crear_cliente.php" class="nav-link ">Clientes</a>
+          <a href="crear_cliente.php" class="nav-link "><i class="fa-solid fa-people-group"></i> Records</a>
         </li>
         <li class="nav-item">
-          <a href="registro_pacientes.php" class="nav-link ">Pacientes</a>
+          <a href="registro_pacientes.php" class="nav-link "><i class="fa-solid fa-user-injured"></i> Pacientes</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="lista_usuarios.php">Usuarios</a>
+          <a class="nav-link" href="lista_usuarios.php"><i class="fa-solid fa-user-check"></i> Usuarios</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="crear_codigo.php">Impuestos</a>
+          <a class="nav-link" href="crear_codigo.php"><i class="fa-solid fa-percent"></i> Impuestos</a>
         </li>
         
       </ul>
@@ -51,8 +52,14 @@ else{
     </div>
     <div style="float:right">
     </div>
-      <a href="../backend/control/cerrar.php"><button class="btn btn-dark">Cerrar sección</button></a>
+      <a href="../backend/control/cerrar.php"><button class="btn btn-dark"><i class="fa-regular fa-circle-xmark"></i> Cerrar sección</button></a>
   </div>
 </nav>
 
+<script>
+  $(".nav-link").click(function(){
+    
+    $(this).addClass("active");
+  })
+</script>
 

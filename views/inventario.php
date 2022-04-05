@@ -7,7 +7,7 @@
 <script src="../js/jquery-mask/src/jquery.mask.js"></script>
 <script src="../js/mascaras.js"></script>
 <div class="p-5 contenido">
-  <h3>Artículos</h3> 
+  <h3>Insumos</h3> 
         <div class="col-md-12">
             <input type="text" class="form-control" name="" id="busqueda" placeholder="Buscar articulo"><br>
             <div id="table_init">

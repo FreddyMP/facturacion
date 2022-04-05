@@ -42,14 +42,14 @@
                             </select>
                         </div>
                         <div class="col-md-3 mb-3">
-                            <label for="exampleFormControlInput1" class="form-label" id="ee">Forma de pago</label>
+                            <label for="exampleFormControlInput1" class="form-label" id="ee">Forma</label>
                             <select class="form-control" name="forma" id="">
                                 <option value="Efectivo">Efectivo</option>
                                 <option value="Cheque">Cheque</option>
                             </select>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label for="exampleFormControlInput1" class="form-label">Condición de pago</label>
+                            <label for="exampleFormControlInput1" class="form-label">Condición</label>
                                 <select class="form-control" name="condicion" id="">
                                     <option value="Al contado">Al contado</option>
                                     <option value="15 Dias">15 dias</option>

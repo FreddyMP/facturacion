@@ -3,12 +3,8 @@
  include('plantilla/menu_ventas.php');
 
  $usuario = $_SESSION["usuario_logueado"];
- $consulta_cuadres= "SELECT * FROM cuadres order by id  desc";
- $query_cuadres = $conexion->query($consulta_cuadres);
-
- $consulta_cuadres_filtro= "SELECT * FROM cuadres where usuario_inicio = '$usuario' and estado = 'Abierto'";
- $query_cuadres_filtro = $conexion->query($consulta_cuadres_filtro);
- $resultados = $query_cuadres_filtro->num_rows;
+ $consulta_devoluciones= "SELECT * FROM devoluciones order by id_devolucion  desc";
+ $query_devolucion = $conexion->query($consulta_devoluciones);
 
 
 
@@ -18,59 +14,74 @@
   <h3>Devoluciones</h3>
         <div class="row">
             <div class="col-md-2">
-                <button class="btn btn-secondary ps-5 pe-5 mb-3" id="iniciar">Nueva devolución</button>
+                <button class="btn btn-secondary ps-5 pe-5 mb-3" id="iniciar" data-bs-toggle="modal" data-bs-target="#exampleModalx">Nueva</button>
             </div>
         </div>
         <div class="col-md-12">
             <input type="text" class="form-control" name="" id="" placeholder="Buscar Cuadre"><br>
+
+<div class="modal fade" id="exampleModalx" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Realizar devoluciones</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+        <div class="row">
+            <div class="col-md-10 p-3">
+                <input type="text" class="form-control" name="" id="factura" placeholder= "Número de fáctura">
+            </div>
+            <div class="col-md-2 p-3">
+                <i id="busqueda" class="fa-solid fa-magnifying-glass fa-2x "></i>
+            </div>
+        </div>
+        <hr>
+      <div id="factura">
+        <div class="modal-body row">
+            <div class="col-md-3">
+                <strong> <small>Num. Fáctura </small></strong>
+            </div>
+            <div class="col-md-4">
+                <strong><small> Cliente </small></strong>
+            </div>
+            <div class="col-md-3">
+                <strong> <small>Action</small></strong>
+            </div>
+        </div>
+        <div class="modal-body row" id="caja_busqueda">
+            
+        </div>
+        <div class="modal-body" id="caja_articulos">
+            
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
         <table class="table">
   <thead>
     <tr>
       <th scope="col">Código</th>
       <th scope="col">Fáctura</th>
-      <th scope="col">Fecha</th>
       <th scope="col">Tipo</th>
-      <th scope="col">Sistema</th>
-      <th scope="col">Cierre dia</th>
-      <th scope="col">Diferencia</th>
-      <th scope="col">Estado</th>
-      <th scope="col">Reabrir</th>
+      <th scope="col">Razón</th>
     </tr>
   </thead>
   <tbody>
       <?php
-        while($cuadres = $query_cuadres->fetch_assoc()){
+        while($devoluciones_result = $query_devolucion->fetch_assoc()){
         ?>
             <tr>
-                <th scope="row"><?php echo $cuadres["id"] ?></th>
-                <td><?php echo $cuadres["usuario_inicio"] ?></td>
-                <td><?php echo $cuadres["fecha_creacion"] ?></td>
-                <td><?php echo $cuadres["encontrado"] ?></td>
-                <td><?php echo $cuadres["sistema"] ?></td>
-                <td><?php echo $cuadres["cierre"] ?></td>
-                <td><?php echo $cuadres["cierre"] - ($cuadres["encontrado"] + $cuadres["sistema"] )?></td>
-                <td>
-                    <small>
-                        <?php
-                                if($cuadres["estado"]=='Abierto'){
-                                    $id= $cuadres["id"];
-                                    ?>
-                                        <a href="cuadre.php?id=<?php echo $id ?>" class="btn btn-info">Abierto</a>
-                                    <?php
-                                }
-                                else{
-                                    ?>
-                                        <a  class= "btn btn-danger">Cerrado</a>
-                                    <?php
-                                }
-                        ?>
-                    </small>
-                </td>
-                <td>
-                    <small>
-                        <a href = "../backend/ventas/reabrir_cierre.php?id=<?php $id= $cuadres["id"]; echo $id ?>"  class="btn btn-info">Abrir</a>
-                    </small>
-                </td>
+                <th scope="row"><?php echo $devoluciones_result["id_devolucion"] ?></th>
+                <td><?php echo $devoluciones_result["numero_factura"] ?></td>
+                <td><?php echo $devoluciones_result["tipo_devolucion"] ?></td>
+                <td><?php echo $devoluciones_result["id_razon"] ?></td>
             </tr>
         <?php
         }
@@ -80,9 +91,25 @@
         </div>
 </div>
 
+<script src="../bootstrap/jquery.min.js"></script>
 <script>
-    $("#encontrado").hide();
-    $("#iniciar").click(function(){
-        $("#encontrado").toggle();
-    });
+$("#busqueda").click(function()
+        {
+            $("#caja_busqueda").show();
+            var Factura = $("#factura").val();
+            $.ajax
+            ({
+                type:"post",
+                url:"busquedas/buscar_factura.php",
+                dataType:'html',
+                data:{'factura':Factura },
+                success: function(data)
+                {
+                    $("#caja_busqueda").empty();
+                    $("#caja_busqueda").append(data);
+                }
+            });  
+        });
+
+     
 </script>

@@ -6,11 +6,8 @@ html {
   body {
     font-family: "Poppins", sans-serif;
     height: 100vh;
+    background-color:rgb(230, 233, 233) ;
   }
-  body{
-    background-color: #380d0d;
-  }
-  
   a {
     color: #92badd;
     display:inline-block;
